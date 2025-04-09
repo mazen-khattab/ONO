@@ -7,7 +7,6 @@ const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
   const [language, setLanguage] = useState("EN");
   const [menuActive, setMenuActive] = useState(false);
-  console.log(menuActive)
   const languages = [
     { code: "EN", name: "English" },
     { code: "AR", name: "Arabic" },
@@ -19,7 +18,6 @@ const Navbar = () => {
 
   const CloseMenu = () => {
     setMenuActive(!menuActive);
-    console.log(menuActive)
   };
 
   return (

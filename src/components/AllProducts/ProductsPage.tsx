@@ -207,6 +207,14 @@ const ProductsPage = () => {
     startIndex + ITEMS_PER_PAGE
   );
 
+  const hadleCategoryChange = (e) => {
+      setFilters((prev) => ({
+        ...prev,
+        searchQuery: e.target.value,
+      }))
+      
+  }
+
   const handleAgeRangeChange = (range: string) => {
     setFilters((prev) => ({
       ...prev,
@@ -214,6 +222,7 @@ const ProductsPage = () => {
         ? prev.ageRange.filter((r) => r !== range)
         : [...prev.ageRange, range],
     }));
+    
     setCurrentPage(1);
   };
 
@@ -237,15 +246,33 @@ const ProductsPage = () => {
       <Navbar />
 
       <div className="allProducts-page">
-        <div className="allProducts-header"></div>
-        <div className="allProducts-container">
-          <div className="productFilters-section">
-            <div className={filterActive? "filter-title space" : "filter-title"}
-            onClick={activeFilter}>
-              <p>Filter</p>
-              <i className={filterActive? "fa-solid fa-angle-down turn" : "fa-solid fa-angle-down"}></i>
+        <div className="filter-section">
+          <div className="filter-section-right" onClick={activeFilter}>
+            <p>Filter</p>
+            <i className="fa-solid fa-filter"></i>
+          </div>
+
+          <div className="filter-section-left">
+            <div className="search-input search-input-mobile">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={filters.searchQuery}
+                onChange={(e) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    searchQuery: e.target.value,
+                  }))
+                }
+                className="productForm-input"
+              />
             </div>
-            <aside className={filterActive? "productFilter-aside appear" : "productFilter-aside"}>
+          </div>
+        </div>
+        <div className="allProducts-container">
+          <div className={filterActive? "productFilters-section appear" : "productFilters-section"}>
+            <i className="fa-solid fa-xmark filter-close" onClick={activeFilter}></i>
+            <aside className="productFilter-aside">
               <div className="productFilter-group">
                 <h3 className="productFilter-title">Search</h3>
                 <div className="search-input">
@@ -253,12 +280,7 @@ const ProductsPage = () => {
                     type="text"
                     placeholder="Search products..."
                     value={filters.searchQuery}
-                    onChange={(e) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        searchQuery: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => hadleCategoryChange(e)}
                     className="productForm-input"
                   />
                 </div>
@@ -353,7 +375,7 @@ const ProductsPage = () => {
                 <button
                   className="page-btn"
                   onClick={() =>
-                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    {setCurrentPage((prev) => Math.max(prev - 1, 1)); window.scrollTo(0, 0);}
                   }
                   disabled={currentPage === 1}
                 >
@@ -365,7 +387,7 @@ const ProductsPage = () => {
                     className={`page-btn ${
                       currentPage === i + 1 ? "active" : ""
                     }`}
-                    onClick={() => setCurrentPage(i + 1)}
+                    onClick={() => {setCurrentPage(i + 1); window.scrollTo(0, 0);}}
                   >
                     {i + 1}
                   </button>
@@ -373,7 +395,7 @@ const ProductsPage = () => {
                 <button
                   className="page-btn"
                   onClick={() =>
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    {setCurrentPage((prev) => Math.min(prev + 1, totalPages)); window.scrollTo(0, 0);}
                   }
                   disabled={currentPage === totalPages}
                 >
