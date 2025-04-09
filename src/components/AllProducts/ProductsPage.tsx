@@ -243,7 +243,7 @@ const ProductsPage = () => {
             <div className={filterActive? "filter-title space" : "filter-title"}
             onClick={activeFilter}>
               <p>Filter</p>
-              <i className={filterActive? "fa-solid fa-angle-down" : "fa-solid fa-angle-down turn"}></i>
+              <i className={filterActive? "fa-solid fa-angle-down turn" : "fa-solid fa-angle-down"}></i>
             </div>
             <aside className={filterActive? "productFilter-aside appear" : "productFilter-aside"}>
               <div className="productFilter-group">

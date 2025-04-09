@@ -1,19 +1,13 @@
-* {
-    box-sizing: border-box;
-}
-
 .body {
     font-family: 'Roboto', serif;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 100vh;
+    gap: 30px;
 }
 
 .login-page {
-    position: relative;
-    top: -90px;
     font-size: 50px;
     color: #dc2626;
 }
@@ -21,7 +15,7 @@
 .login-container {
     border-radius: 10px;
     border: 2px solid #d7d7d7;
-    width: 800px;
+    width: 70%;
     height: 600px;
     position: relative;
     overflow: hidden;
@@ -210,34 +204,38 @@
 
 @media (max-width: 900px) {
     .login-container {
-        width: 650px;
+        width: 80%;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        width: 90%;
     }
 }
 
 @media (max-width: 690px) {
-    .login-container {
-        width: 500px;
+    .form h2 {
+        font-size: 34px;
     }
 
-    .form h2 {
-        font-size: 37px;
+    .WH-container p {
+        font-size: 15px;
+    }
+
+    .WH-container h1 {
+        font-size: 30px;
     }
 }
 
 @media (max-width: 530px) {
+    .form {
+        padding: 10px 12px;
+    }
+
     .login-container {
-        width: 400px;
         height: 550px;
     }
-
-    #signUp-form {
-        width: 150px;
-    }
-
-    #signIn-form{
-        width: 150px;
-    }
-    
 
     .form h2 {
         font-size: 30px;
@@ -253,21 +251,16 @@
 }
 
 @media (max-width: 420px) {
+    .login-container {
+        width: 95%;
+    }
+
     .logo {
         top: -70px;
     }
 
     .login-container {
-        width: 320px;
         height: 450px;
-    }
-
-    #signIn-form {
-        width: 120px;
-    }
-
-    #signUp-form {
-        width: 120px;
     }
 
     .form h2 {
@@ -284,7 +277,7 @@
     }
 
     .WH-container h1 {
-        font-size: 25px;
+        font-size: 24px;
     }
 
     .WH-container p {
