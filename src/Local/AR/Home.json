@@ -1,0 +1,49 @@
+{
+  "header": {
+    "home": "الرئسيه",
+    "products": "المنتجات",
+    "about": "تعرف علينا",
+    "why us": "ليه إحنا",
+    "register": "تسجيل",
+    "login": "تسجيل الدخول",
+    "Arabic": "العربية",
+    "English": "الانجليزية",
+    "code": "ع"
+  },
+  "hero": {
+    "title": "ساعد ابنك يطوّر",
+    "mind": "عقله", 
+    "Intelligence": "ذكاءه", 
+    "Thinking": "تفكيره", 
+    "Creativity": "إبداعه", 
+    "description": "اكتشف تشكيلتنا من الألغاز والألعاب الممتعة",
+    "Shop Now": "تسوق الآن"
+  },
+  "featured products": {
+    "title": "منتجات مميزة",
+    "show": "عرض كل الألعاب"
+  },
+  "contact": {
+    "contactUs": "اتواصل معانا",
+    "weLoveToHear": "يهمنا نسمع رأيك",
+    "getInTouch": "كلمنا"
+  },
+  "form": {
+    "email": "الإيميل",
+    "phone": "الهاتف",
+    "address": "العنوان",
+    "name": "الاسم",
+    "message": "الرسالة",
+    "sendMessage": "ابعت الرسالة"
+  },
+  "offers": {
+    "specialOffers": "عروض مميزة",
+    "limitedTimeDeals": "عروض لفترة محدودة على حاجات مختارة",
+    "flashSale": "تخفيضات سريعة",
+    "bundleDeal": "عروض باكيد",
+    "shopNow": "اشتري دلوقتي",
+    "learnMore": "اعرف أكتر"
+  },
+  "slogan": "بننمي العقول بألعاب ذكاء وأفكار جديدة",
+  "copyright": "© ألعاب ONO. كل الحقوق محفوظة."
+}

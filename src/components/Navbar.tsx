@@ -2,15 +2,23 @@ import { useState } from "react";
 import { ShoppingCart, Menu, Globe } from "lucide-react";
 import "./Navbar.css";
 import logo from "../images/Logo.jpg";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
   const [language, setLanguage] = useState("EN");
   const [menuActive, setMenuActive] = useState(false);
+  const { i18n, t } = useTranslation();
   const languages = [
     { code: "EN", name: "English" },
     { code: "AR", name: "Arabic" },
   ];
+
+  const changeAllLanguage = (lng: string) => {
+    console.log("done")
+    i18n.changeLanguage(lng);
+    document.documentElement.dir = lng.toLowerCase() === "ar" ? "rtl" : "ltr";
+  };
 
   const dropdownLang = () => {
     setIsActive(!isActive);
@@ -82,7 +90,7 @@ const Navbar = () => {
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
-                      onClick={() => setLanguage(lang.code)}
+                      onClick={() => {setLanguage(lang.code); changeAllLanguage(lang.code)}}
                       className="language-option"
                     >
                       {lang.name}

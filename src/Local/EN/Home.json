@@ -1,0 +1,49 @@
+{
+  "header": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About",
+    "why us": "Why Us",
+    "register": "Register",
+    "login": "LogIn",
+    "Arabic": "Arabic",
+    "English": "English",
+    "code": "EN"
+  },
+  "hero": {
+    "title": "Imporve Your Child's",
+    "mind": "Mind", 
+    "Intelligence": "Intelligence", 
+    "Thinking": "Thinking", 
+    "Creativity": "Creativity", 
+    "description": "Discover our collection of puzzles and intelligent toys",
+    "Shop Now": "Shop Now"
+  },
+  "featured products": {
+    "title": "Featured Products",
+    "show": "Show All Products"
+  },
+  "contact": {
+    "contactUs": "Contact Us",
+    "weLoveToHear": "We'd love to hear from you",
+    "getInTouch": "Get in Touch"
+  },
+  "form": {
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "name": "Name",
+    "message": "Email",
+    "sendMessage": "Message"
+  },
+  "offers": {
+    "specialOffers": "Special Offers",
+    "limitedTimeDeals": "Limited time deals on selected items",
+    "flashSale": "Flash Sale",
+    "bundleDeal": "Bundle Deal",
+    "shopNow": "Shop Now",
+    "learnMore": "Learn More"
+  },
+  "slogan": "Challenging minds with innovative puzzles and intelligent toys.",
+  "copyright": "© 2025 ONO Puzzles. All rights reserved."
+}

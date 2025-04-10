@@ -128,7 +128,7 @@ const Products = () => {
   };
 
   return (
-    <section id="products" className="products-section">
+    <section id="products" className="products-section" style={{ direction: "ltr" }}>
       <div className="products-container">
         <h2 className="section-title">Featured Products</h2>
 
