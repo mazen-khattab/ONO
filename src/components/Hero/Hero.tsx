@@ -1,8 +1,12 @@
 import React from "react";
 import "./Hero.css";
 import HomeCarousel from "../HomeCarousel/HomeCarousel.tsx";
+import { useTranslation } from "react-i18next";
 
 const Hero = () => {
+  const { i18n, t } = useTranslation("Home");
+  const savedLang = JSON.parse(localStorage.getItem("lang"));
+
   return (
     <div
       className="hero"
@@ -15,28 +19,26 @@ const Hero = () => {
       <div className="hero-overlay" />
       <div className="card">
         <div className="loader">
-          <p><span style={{fontWeight: 700}}>Imporve</span> Your Child's</p>
+          <p>{t("hero.title")}</p>
           <div className="words">
-            <span className="word">Mind</span>
-            <span className="word">Intelligence</span>
-            <span className="word">Thinking</span>
-            <span className="word">Creativity</span>
-            <span className="word">Mind</span>
+            <span className="word">{t("hero.mind")}</span>
+            <span className="word">{t("hero.Intelligence")}</span>
+            <span className="word">{t("hero.Thinking")}</span>
+            <span className="word">{t("hero.Creativity")}</span>
+            <span className="word">{t("hero.mind")}</span>
           </div>
         </div>
-        <p className="hero-description">
-          Discover our collection of puzzles and intelligent toys
-        </p>
+        <p className="hero-description">{t("hero.description")}</p>
 
         <a href="./AllProducts" className="shop-now">
-          Shop Now
+          {t("hero.Shop Now")}
         </a>
       </div>
 
-      <div className="home-carousel-container">
-        <HomeCarousel classname="carousel-container1" />
-        <HomeCarousel direction="reverse" classname="carousel-container2" />
-        <HomeCarousel classname="carousel-container3" />
+      <div className="home-carousel-container" style={savedLang?.code === `ar` ? { left: 0 } : {right: 0} }>
+        <HomeCarousel classname={savedLang?.code === `ar`? "carousel-container-ar1" : "carousel-container-en1"} />
+        <HomeCarousel direction="reverse" classname={savedLang?.code === `ar`? "carousel-container-ar2" : "carousel-container-en2"} />
+        <HomeCarousel classname={savedLang?.code === `ar`? "carousel-container-ar3" : "carousel-container-en3"} />
       </div>
     </div>
   );

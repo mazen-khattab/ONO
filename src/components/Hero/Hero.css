@@ -18,7 +18,6 @@
   height: 100vh;
   position: absolute;
   top: 0;
-  right: 0;
 }
 
 .card {
@@ -34,7 +33,7 @@
   font-weight: 600;
   -webkit-box-sizing: content-box;
   box-sizing: content-box;
-  height: 50px;
+  height: 60px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -54,7 +53,7 @@
   font-weight: 900;
   display: block;
   height: 100%;
-  padding-left: 6px;
+  padding: 0 6px;
   color: var(--main-color);
 }
 

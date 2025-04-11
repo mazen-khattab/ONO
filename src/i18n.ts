@@ -30,7 +30,10 @@ i18n
         WhyUs: arWhyUs,
       },
     },
+    lng: "en",
     fallbackLng: "en",
+    ns: ["home", "about", "allProducts", "whyUs"],
+    defaultNS: "home",
     interpolation: {
       escapeValue: false,
     },

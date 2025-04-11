@@ -103,10 +103,11 @@ const items: CarouselItem[] = [
 
 const HomeCarousel: React.FC = (props) => {
   const [isPaused, setIsPaused] = useState(false);
+  const savedLang = JSON.parse(localStorage.getItem("lang"));
 
   return (
     <div 
-      className={`${props.classname} carousel-container`}
+      className={`${props.classname} ${savedLang?.code === `ar`? "carousel-container-ar" : "carousel-container-en"} carousel-container`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
