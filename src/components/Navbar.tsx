@@ -19,7 +19,7 @@ const Navbar = () => {
     if (savedLang) {
       changeAllLanguage(savedLang.code);
     }
-  });
+  }, []);
 
   const changeAllLanguage = (lng: string) => {
     i18n.changeLanguage(lng);

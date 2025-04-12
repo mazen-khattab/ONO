@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ProductsPage.css";
 import Navbar from "../Navbar";
 import Footer from "../Footer/Footer";
+import { useTranslation } from "react-i18next";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -170,6 +171,9 @@ const products = [
 ];
 
 const ProductsPage = () => {
+  const savedLang = JSON.parse(localStorage.getItem("lang"));
+  const { i18n, t } = useTranslation("AllProducts");
+
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     category: "All Categories",
@@ -179,7 +183,6 @@ const ProductsPage = () => {
   });
   const [filterActive, setFilterActive] = useState();
 
-  // Filter products based on current filters
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
       filters.category === "All Categories" ||
@@ -199,7 +202,6 @@ const ProductsPage = () => {
     return matchesCategory && matchesAge && matchesPrice && matchesSearch;
   });
 
-  // Calculate pagination
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedProducts = filteredProducts.slice(
@@ -208,12 +210,11 @@ const ProductsPage = () => {
   );
 
   const hadleCategoryChange = (e) => {
-      setFilters((prev) => ({
-        ...prev,
-        searchQuery: e.target.value,
-      }))
-      
-  }
+    setFilters((prev) => ({
+      ...prev,
+      searchQuery: e.target.value,
+    }));
+  };
 
   const handleAgeRangeChange = (range: string) => {
     setFilters((prev) => ({
@@ -222,7 +223,7 @@ const ProductsPage = () => {
         ? prev.ageRange.filter((r) => r !== range)
         : [...prev.ageRange, range],
     }));
-    
+
     setCurrentPage(1);
   };
 
@@ -248,7 +249,7 @@ const ProductsPage = () => {
       <div className="allProducts-page">
         <div className="filter-section">
           <div className="filter-section-right" onClick={activeFilter}>
-            <p>Filter</p>
+            <p>{t("filter")}</p>
             <i className="fa-solid fa-filter"></i>
           </div>
 
@@ -270,11 +271,22 @@ const ProductsPage = () => {
           </div>
         </div>
         <div className="allProducts-container">
-          <div className={filterActive? "productFilters-section appear" : "productFilters-section"}>
-            <i className="fa-solid fa-xmark filter-close" onClick={activeFilter}></i>
+          <div
+            style={savedLang?.code === `ar` ? { left: 30 } : { right: 30 }}
+            className={
+              filterActive
+                ? "productFilters-section appear"
+                : "productFilters-section"
+            }
+          >
+            <i
+              className="fa-solid fa-xmark filter-close"
+              onClick={activeFilter}
+              style={savedLang?.code === `ar` ? {marginRight: "auto"} : {marginLeft: "auto"}}
+            ></i>
             <aside className="productFilter-aside">
               <div className="productFilter-group">
-                <h3 className="productFilter-title">Search</h3>
+                <h3 className="productFilter-title">{t("search")}</h3>
                 <div className="search-input">
                   <input
                     type="text"
@@ -287,7 +299,7 @@ const ProductsPage = () => {
               </div>
 
               <div className="productFilter-group">
-                <h3 className="productFilter-title">Category</h3>
+                <h3 className="productFilter-title">{t("category")}</h3>
                 <select
                   value={filters.category}
                   onChange={(e) =>
@@ -307,7 +319,7 @@ const ProductsPage = () => {
               </div>
 
               <div className="productFilter-group">
-                <h3 className="productFilter-title">Price Range</h3>
+                <h3 className="productFilter-title">{t("price_range")}</h3>
                 <div className="productPrice-range">
                   <div className="range-slider">
                     <input
@@ -329,7 +341,7 @@ const ProductsPage = () => {
               </div>
 
               <div className="productFilter-group">
-                <h3 className="productFilter-title">Age Range</h3>
+                <h3 className="productFilter-title">{t("age_range")}</h3>
                 <div className="productCheckbox-group">
                   {ageRanges.map((range) => (
                     <label key={range} className="productCheckbox-label">
@@ -363,7 +375,7 @@ const ProductsPage = () => {
                     </p>
                     <div className="allProduct-footer">
                       <div className="allProduct-price">${product.price}</div>
-                      <button className="add-to-cart">Add to Cart</button>
+                      <button className="add-to-cart">{t("add")}</button>
                     </div>
                   </div>
                 </div>
@@ -374,12 +386,13 @@ const ProductsPage = () => {
               <div className="pagination">
                 <button
                   className="page-btn"
-                  onClick={() =>
-                    {setCurrentPage((prev) => Math.max(prev - 1, 1)); window.scrollTo(0, 0);}
-                  }
+                  onClick={() => {
+                    setCurrentPage((prev) => Math.max(prev - 1, 1));
+                    window.scrollTo(0, 0);
+                  }}
                   disabled={currentPage === 1}
                 >
-                  Previous
+                  {t("previous")}
                 </button>
                 {[...Array(totalPages)].map((_, i) => (
                   <button
@@ -387,19 +400,23 @@ const ProductsPage = () => {
                     className={`page-btn ${
                       currentPage === i + 1 ? "active" : ""
                     }`}
-                    onClick={() => {setCurrentPage(i + 1); window.scrollTo(0, 0);}}
+                    onClick={() => {
+                      setCurrentPage(i + 1);
+                      window.scrollTo(0, 0);
+                    }}
                   >
                     {i + 1}
                   </button>
                 ))}
                 <button
                   className="page-btn"
-                  onClick={() =>
-                    {setCurrentPage((prev) => Math.min(prev + 1, totalPages)); window.scrollTo(0, 0);}
-                  }
+                  onClick={() => {
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                    window.scrollTo(0, 0);
+                  }}
                   disabled={currentPage === totalPages}
                 >
-                  Next
+                  {t("next")}
                 </button>
               </div>
             )}

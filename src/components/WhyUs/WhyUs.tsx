@@ -17,109 +17,110 @@ import {
   Star,
   Award,
   Gift,
-  MessageCircle 
+  MessageCircle,
 } from "lucide-react";
 import "./WhyUs.css";
 import Footer from "../Footer/Footer";
+import { useTranslation } from "react-i18next";
 
 function Why() {
+  const { i18n, t } = useTranslation("WhyUs");
+
   return (
     <div>
-      <Navbar isHome={false}></Navbar>
+      <Navbar></Navbar>
 
       <div className="why-us-page">
-        {/* Section 1: Why Choose Our Puzzle & Brain Games */}
         <section className="why-section">
-          <div className="section-content" style={{ padding: 0 }} >
+          <div className="section-content" style={{ padding: 0 }}>
             <h2 className="section-title main-content">
-              Why Buy Puzzle and <span>Intelligence Games ?</span>
+              {t("why_buy")} <span>{t("games")}</span>
             </h2>
             <p className="section-subtitle ">
-              In a time where everything is becoming digital and virtual, it’s
-              very important that our children have things that <span>develop their
-              minds, make them think smartly, and enjoy at the same time</span>. That’s
-              why we offer a unique collection of puzzles and intelligence games
-              that help stimulate the brain, strengthen thinking skills, and
-              enhance creativity in both children and even adults!
+              {t("why_buy_desc1")}{" "}
+              <span>
+              {t("why_buy_desc2")}
+              </span>
+              {t("why_buy_desc3")}
             </p>
           </div>
         </section>
 
-        {/* Section 3: How Do Puzzle Games Make Kids Smarter? */}
         <section className="why-section alternate">
           <div className="section-content">
             <h2 className="section-title">
-              How Do Puzzle Games Make Kids Smarter?
+            {t("how_puzzles_make_smarter")}
             </h2>
             <p className="section-subtitle">
-              Understanding the impact on cognitive development
+            {t("cognitive_impact")}
             </p>
 
             <div className="cards-grid">
               <div className="feature-card">
                 <Lightbulb className="card-icon" />
-                <h3>Problem Solving</h3>
+                <h3>{t("problem_solving")}</h3>
                 <p>
-                When a child faces a puzzle, they start thinking logically to solve the problem
+                {t("problem_solving_desc")}
                 </p>
               </div>
               <div className="feature-card">
                 <Brain className="card-icon" />
-                <h3>Strengthens Memory and Focus</h3>
-                <p>Some puzzles require remembering details or certain steps, which helps in boosting memory</p>
-              </div>
-              <div className="feature-card">
-                <Users className="card-icon" />
-                <h3>Develops Social Skills</h3>
+                <h3>{t("strengthens_memory")}</h3>
                 <p>
-                Some games require teamwork, teaching children how to interact and cooperate with others
+                {t("memory_focus_desc")}
                 </p>
               </div>
               <div className="feature-card">
-                <Sparkles  className="card-icon" />
-                <h3>Encourages Creativity</h3>
-                <p>Some puzzles require thinking outside the box and finding non-traditional solutions</p>
+                <Users className="card-icon" />
+                <h3>{t("develops_social_skills")}</h3>
+                <p>
+                {t("social_skills_desc")}
+                </p>
+              </div>
+              <div className="feature-card">
+                <Sparkles className="card-icon" />
+                <h3>{t("encourages_creativity")}</h3>
+                <p>
+                {t("creativity_desc")}
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Section 2: Why Buy from Us? */}
         <section className="why-section">
           <div className="section-content">
-            <h2 className="section-title">What’s Special About Our Games?</h2>
+            <h2 className="section-title">{t("whats_special")}</h2>
             <p className="section-subtitle">
-              Experience excellence in every purchase
+            {t("whats_special_desc")}
             </p>
 
             <div className="cards-grid">
               <div className="feature-card">
                 <ShieldCheck className="card-icon" />
-                <h3>High Quality</h3>
+                <h3>{t("high_quality")}</h3>
                 <p>
-                  Durable and well-made games that are safe for children,
-                  ensuring they last with you for a long time
+                {t("high_quality_desc")}
                 </p>
               </div>
               <div className="feature-card">
                 <Truck className="card-icon" />
-                <h3>Fast Delivery and Excellent Support</h3>
+                <h3>{t("fast_delivery")}</h3>
                 <p>
-                  Your order will reach you quickly, and if you face any issues,
-                  we’re always here to help
+                {t("fast_delivery_desc")}
                 </p>
               </div>
               <div className="feature-card">
                 <MessageCircle className="card-icon" />
-                <h3>Exceptional Customer Support</h3>
+                <h3>{t("exceptional_support")}</h3>
                 <p>
-                We prioritize your satisfaction with fast responses, helpful assistance, and a smooth shopping experience
+                {t("exceptional_support_desc")}
                 </p>
               </div>
               <div className="feature-card">
                 <Users className="card-icon" />
-                <h3>Suitable for All Ages</h3>
-                <p>We have games that both kids and adults will love</p>
+              <h3>{t("suitable_for_all_ages")}</h3>
+                <p>{t("suitable_for_all_ages_desc")}</p>
               </div>
             </div>
           </div>

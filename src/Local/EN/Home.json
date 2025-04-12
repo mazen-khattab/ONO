@@ -25,15 +25,13 @@
   "contact": {
     "contactUs": "Contact Us",
     "weLoveToHear": "We'd love to hear from you",
-    "getInTouch": "Get in Touch"
-  },
-  "form": {
+    "getInTouch": "Get in Touch",
     "email": "Email",
     "phone": "Phone",
     "address": "Address",
     "name": "Name",
-    "message": "Email",
-    "sendMessage": "Message"
+    "message": "Message",
+    "sendMessage": "send Message"
   },
   "offers": {
     "specialOffers": "Special Offers",
@@ -41,8 +39,10 @@
     "flashSale": "Flash Sale",
     "bundleDeal": "Bundle Deal",
     "shopNow": "Shop Now",
+    "30%" : "Discount up to 30%",
+    "get free": "Buy 2 Get 1 Free on selected items",
     "learnMore": "Learn More"
   },
   "slogan": "Challenging minds with innovative puzzles and intelligent toys.",
-  "copyright": "© 2025 ONO Puzzles. All rights reserved."
+  "copyright": "ONO Puzzles. All rights reserved."
 }

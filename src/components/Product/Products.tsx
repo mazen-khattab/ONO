@@ -12,6 +12,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./Products.css";
+import { useTranslation } from "react-i18next";
 
 const products = [
   {
@@ -118,6 +119,7 @@ const products = [
 
 const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const { i18n, t } = useTranslation("Home");
 
   const toggleFavorite = (productId: number) => {
     setFavorites((prev) =>
@@ -128,9 +130,13 @@ const Products = () => {
   };
 
   return (
-    <section id="products" className="products-section" style={{ direction: "ltr" }}>
+    <section
+      id="products"
+      className="products-section"
+      style={{ direction: "ltr" }}
+    >
       <div className="products-container">
-        <h2 className="section-title">Featured Products</h2>
+        <h2 className="products-section-title">{t("featured products.title")}</h2>
 
         <div className="products-grid">
           <Swiper
@@ -139,9 +145,9 @@ const Products = () => {
             slidesPerView={"auto"}
             spaceBetween={35}
             loop={true}
-            // autoplay={{
-            //   delay: 3000,
-            // }}
+            autoplay={{
+              delay: 3000,
+            }}
             coverflowEffect={{
               rotate: 0,
               stretch: 0,
@@ -228,7 +234,7 @@ const Products = () => {
       )}
 
       <a href="AllProducts" className="showAll">
-        Show All Products
+        {t("featured products.show")}
       </a>
     </section>
   );

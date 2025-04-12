@@ -25,13 +25,12 @@ i18n
       },
       en: {
         Home: enHome,
-        About: arAbout,
-        AllProducts: arProduct,
-        WhyUs: arWhyUs,
+        About: enAbout,
+        AllProducts: enProduct,
+        WhyUs: enWhyUs,
       },
     },
-    lng: "en",
-    fallbackLng: "en",
+    fallbackLng: "ar",
     ns: ["home", "about", "allProducts", "whyUs"],
     defaultNS: "home",
     interpolation: {

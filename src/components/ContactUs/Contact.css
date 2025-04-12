@@ -1,12 +1,20 @@
 .contact {
   position: relative;
-  left: 50%;
-  transform: translateX(-50%);
   margin: 2rem;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 0 11px 5px #dedede;
   width: 70%;
+}
+
+.contact-en {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.contact-ar {
+  right: 50%;
+  transform: translateX(50%);
 }
 
 .contact-header {
@@ -34,7 +42,6 @@
 
 .contact-info {
   padding: 30px;
-  right: 30%;
   height: 90%;
   position: relative;
   top: 50%;
@@ -44,6 +51,15 @@
   color: white;
   border-radius: 10px;
 }
+
+.contact-info-en {
+  right: 30%;
+}
+
+.contact-info-ar {
+  left: 30%;
+}
+
 
 .contact-info h3 {
   font-size: 1.5rem;

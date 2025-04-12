@@ -1,6 +1,9 @@
 {
-    "why_buy": "Why Buy Puzzle and Intelligence Games ?",
-    "why_buy_desc": "In a time where everything is becoming digital and virtual, it’s very important that our children have things that develop their minds, make them think smartly, and enjoy at the same time. That’s why we offer a unique collection of puzzles and intelligence games that help stimulate the brain, strengthen thinking skills, and enhance creativity in both children and even adults!",
+    "why_buy": "Why Buy Puzzle and ",
+    "games": "Intelligence Games ?",
+    "why_buy_desc1": "In a time where everything is becoming digital and virtual, it’s very important that our children have things that ",
+    "why_buy_desc2": "develop their minds, make them think smartly, and enjoy at the same time. ",
+    "why_buy_desc3": "That’s why we offer a unique collection of puzzles and intelligence games that help stimulate the brain, strengthen thinking skills, and enhance creativity in both children and even adults!",
     "how_puzzles_make_smarter": "How Do Puzzle Games Make Kids Smarter?",
     "cognitive_impact": "Understanding the impact on cognitive development",
     "problem_solving": "Problem Solving",
@@ -18,7 +21,7 @@
     "fast_delivery": "Fast Delivery and Excellent Support",
     "fast_delivery_desc": "Your order will reach you quickly, and if you face any issues, we’re always here to help",
     "exceptional_support": "Exceptional Customer Support",
-    "exceptional_support_desc": "We prioritize your satisfaction with fast responses, helpful assistance, and a smooth shopping experience",
+    "exceptional_support_desc": "we are trying to help you reach an exceptional and smooth marketing experience through a quick response and after-sales service.",
     "suitable_for_all_ages": "Suitable for All Ages",
     "suitable_for_all_ages_desc": "We have games that both kids and adults will love"
   }

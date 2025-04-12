@@ -25,9 +25,7 @@
   "contact": {
     "contactUs": "اتواصل معانا",
     "weLoveToHear": "يهمنا نسمع رأيك",
-    "getInTouch": "كلمنا"
-  },
-  "form": {
+    "getInTouch": "كلمنا",
     "email": "الإيميل",
     "phone": "الهاتف",
     "address": "العنوان",
@@ -36,13 +34,15 @@
     "sendMessage": "ابعت الرسالة"
   },
   "offers": {
-    "specialOffers": "عروض مميزة",
+    "specialOffers": "عروض خاصة",
     "limitedTimeDeals": "عروض لفترة محدودة على حاجات مختارة",
     "flashSale": "تخفيضات سريعة",
     "bundleDeal": "عروض باكيد",
     "shopNow": "اشتري دلوقتي",
+    "30%" : "تخفيض يصل الي 30% ",
+    "get free": "اشتري 2 واحصل على 1 مجانًا على منتجات مختارة",
     "learnMore": "اعرف أكتر"
   },
   "slogan": "بننمي العقول بألعاب ذكاء وأفكار جديدة",
-  "copyright": "© ألعاب ONO. كل الحقوق محفوظة."
+  "copyright": "ألعاب ONO. كل الحقوق محفوظة."
 }

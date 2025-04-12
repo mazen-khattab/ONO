@@ -1,6 +1,10 @@
 {
+  "filter": "تصنيف",
   "search": "البحث",
   "category": "الفئة",
-  "price_range": "مدى السعر",
-  "age_range": "مدى العمر"
+  "price_range": "السعر",
+  "age_range": "العمر",
+  "next": "التالى",
+  "previous": "السابق",
+  "add": "اضف الى العربة"
 }

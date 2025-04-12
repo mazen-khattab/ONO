@@ -55,7 +55,6 @@
 }
 
 .filter-close {
-  margin-left: auto;
   display: block;
   width: fit-content;
   display: none;
@@ -244,7 +243,7 @@
 }
 
 .add-to-cart {
-  background: var(--primary-color);
+  background: var(--main-color);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -256,7 +255,7 @@
 }
 
 .add-to-cart:hover {
-  background: var(--primary-hover);
+  background: #e10b14;
   transform: translateY(-2px);
 }
 
@@ -363,7 +362,6 @@
 
   .productFilters-section {
     position: fixed;
-    right: 30px;
     top: 200px;
     z-index: -19;
     transition: 0.3s;

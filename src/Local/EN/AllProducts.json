@@ -1,7 +1,10 @@
 {
-    "search": "Search",
-    "category": "Category",
-    "price_range": "Price Range",
-    "age_range": "Age Range"
-  }
-  
+  "filter": "Filter",
+  "search": "Search",
+  "category": "Category",
+  "price_range": "Price Range",
+  "age_range": "Age Range",
+  "next": "Next",
+  "previous": "Previous",
+  "add": "Add to Card"
+}

@@ -1,86 +1,102 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import './Contact.css';
+import React, { useState } from "react";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
+import "./Contact.css";
+import { useTranslation } from "react-i18next";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
+
+  const { i18n, t } = useTranslation("Home");
+  const savedLang = JSON.parse(localStorage.getItem("lang"));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setFormData({ name: '', email: '', message: '' });
+    setFormData({ name: "", email: "", message: "" });
   };
 
   return (
-    <section id="contact" className="contact">
+    <section id="contact" className={savedLang?.code === `ar` ? "contact contact-ar" : "contact contact-en"}>
       <div className="contact-content">
-        <div className="contact-info">
-          <h3>Get in Touch</h3>
+        <div className={savedLang?.code === `ar` ? "contact-info contact-info-ar" : "contact-info contact-info-en"}>
+          <h3>{t("contact.getInTouch")}</h3>
           <div className="info-item">
             <i className="fa-solid fa-envelope info-icon"></i>
             <div className="info-text">
-              <h4>Email</h4>
-              <p>info@onopuzzles.com</p>
+              <h4>{t("contact.email")}</h4>
+              <p>------------</p>
             </div>
           </div>
           <div className="info-item">
             <i className="fa-solid fa-phone-flip info-icon"></i>
             <div className="info-text">
-              <h4>Phone</h4>
-              <p>+1 (555) 123-4567</p>
+              <h4>{t("contact.phone")}</h4>
+              <p>------------</p>
             </div>
           </div>
           <div className="info-item">
             <i className="fa-solid fa-location-dot info-icon"></i>
             <div className="info-text">
-              <h4>Address</h4>
-              <p>123 Puzzle Street, NY 10001</p>
+              <h4>{t("contact.address")}</h4>
+              <p>------------</p>
             </div>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="contact-form">
-        <div className="contact-header">
-        <h2 className="contact-title">Contact Us</h2>
-        <p className="contact-subtitle">We'd love to hear from you</p>
-      </div>
+          <div className="contact-header">
+            <h2 className="contact-title">{t("contact.contactUs")}</h2>
+            <p className="contact-subtitle">{t("contact.weLoveToHear")}</p>
+          </div>
           <div className="form-group">
-            <label htmlFor="name" className="form-label">Name</label>
+            <label htmlFor="name" className="form-label">
+              {t("contact.name")}
+            </label>
             <input
               type="text"
               id="name"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               className="form-input"
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="email" className="form-label">Email</label>
+            <label htmlFor="email" className="form-label">
+              {t("contact.email")}
+            </label>
             <input
               type="email"
               id="email"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               className="form-input"
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="message" className="form-label">Message</label>
+            <label htmlFor="message" className="form-label">
+              {t("contact.message")}
+            </label>
             <textarea
               id="message"
               value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, message: e.target.value })
+              }
               className="form-textarea"
               required
             />
           </div>
           <button type="submit" className="submit-btn">
-            <span>Send Message</span>
+            <span>{t("contact.sendMessage")}</span>
             <i className="fa-solid fa-paper-plane"></i>
           </button>
         </form>
