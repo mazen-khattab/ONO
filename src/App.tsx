@@ -9,8 +9,9 @@ import Footer from "./components/Footer/Footer";
 import LoginPage from "./components/Login/Login";
 import Contact from "./components/ContactUs/Contact";
 import HomeCarousel from "./components/HomeCarousel/HomeCarousel";
-import AllProducts from "./components/AllProducts/ProductsPage"
-import WhyUs from "./components/WhyUs/WhyUs"
+import AllProducts from "./components/AllProducts/ProductsPage";
+import WhyUs from "./components/WhyUs/WhyUs";
+import CartPage from "./components/CartPage/cart";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
           path="/"
           element={
             <div className="min-h-screen">
-              <Navbar/>
+              <Navbar />
               <Hero />
               <Products />
               <Contact />
@@ -41,10 +42,13 @@ function App() {
         <Route path="/AllProducts" element={<AllProducts />} />
 
         {/* Why us page Route */}
-        <Route path="/WhyUs" element={<WhyUs></WhyUs>}/>
+        <Route path="/WhyUs" element={<WhyUs></WhyUs>} />
 
         {/* About Page Route */}
-        <Route path="/About" element={<About></About>}/>
+        <Route path="/About" element={<About></About>} />
+
+        {/* Cart Page Route */}
+        <Route path="/Cart" element={<CartPage></CartPage>} />
       </Routes>
     </Router>
   );

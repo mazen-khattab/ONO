@@ -111,7 +111,7 @@ const Navbar = () => {
                 </div>
               </div>
 
-              <i className="fa-solid fa-cart-shopping icon cart"></i>
+              <a href="/Cart" className="fa-solid fa-cart-shopping icon cart"></a>
             </div>
 
             <div className="registration">

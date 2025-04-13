@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "./Loign.css";
+import { useTranslation } from "react-i18next";
 
 function LoginPage(props) {
   console.log(props.move)
   const [signIn, setSignIn] = useState(props.move);
   const [singUp, setSignUp] = useState(props.move);
-  console.log(singUp)
+  const { i18n, t } = useTranslation("Login");
 
   const handleSingIn = () => {
     setSignIn(!signIn);
@@ -32,10 +33,10 @@ function LoginPage(props) {
               : "WH-container welcome-container"
           }
         >
-          <h1>Hello, Friend</h1>
-          <p>Enter your personal details and start journey with us</p>
-          <button id="sign-in" onClick={handleSingIn}>
-            SIGN IN
+          <h1>{t("hello")}</h1>
+          <p>{t("start_journey")}</p>
+          <button id="sign-in" onClick={handleSingIn} style={{ fontFamily: "cairo, serif" }}>
+          {t("sign_in")}
           </button>
         </div>
 
@@ -46,10 +47,10 @@ function LoginPage(props) {
               : "WH-container hello-container hello-container-disappear"
           }
         >
-          <h1>Welcome Back</h1>
-          <p>To keep connected with us please login with your personal info</p>
-          <button id="sign-up" onClick={handleSingUp}>
-            SIGN UP
+          <h1>{t("welcome_back")}</h1>
+          <p>{t("keep_connected")}</p>
+          <button id="sign-up" onClick={handleSingUp} style={{ fontFamily: "cairo, serif" }}>
+          {t("sign_up")}
           </button>
         </div>
 
@@ -60,21 +61,21 @@ function LoginPage(props) {
               : "form sign-up-form"
           }
         >
-          <h2>Create Account</h2>
+          <h2>{t("create_account")}</h2>
           <form id="signUp-form">
             <div className="form-group">
-              <label htmlFor="name">Name</label>
+              <label htmlFor="name">{t("name")}</label>
               <input type="text" id="name" name="name" required/>
             </div>
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">{t("email")}</label>
               <input type="text" id="email" name="email" required/>
             </div>
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t("password")}</label>
               <input type="password" id="password" name="password" required />
             </div>
-            <button type="submit">SIGN UP</button>
+            <button type="submit">{t("sign_up")}</button>
           </form>
         </div>
 
@@ -85,14 +86,14 @@ function LoginPage(props) {
               : "form sign-in-form sign-in-form-disappear"
           }
         >
-          <h2>Sign in</h2>
+          <h2>{t("sign_in")}</h2>
           <form id="signIn-form">
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">{t("email")}</label>
               <input type="text" id="email" name="email" required />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t("password")}</label>
               <input
                 type="password"
                 id="password"
@@ -100,7 +101,7 @@ function LoginPage(props) {
                 required
               />
             </div>
-            <button type="submit">SIGN IN</button>
+            <button type="submit">{t("sign_in")}</button>
           </form>
         </div>
       </div>
