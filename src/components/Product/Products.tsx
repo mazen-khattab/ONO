@@ -13,6 +13,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./Products.css";
 import { useTranslation } from "react-i18next";
+import { useCart } from "../../CartContext";
 
 const products = [
   {
@@ -120,6 +121,7 @@ const products = [
 const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { i18n, t } = useTranslation("Home");
+  const { addToCart } = useCart();
 
   const toggleFavorite = (productId: number) => {
     setFavorites((prev) =>
@@ -136,7 +138,9 @@ const Products = () => {
       style={{ direction: "ltr" }}
     >
       <div className="products-container">
-        <h2 className="products-section-title">{t("featured products.title")}</h2>
+        <h2 className="products-section-title">
+          {t("featured products.title")}
+        </h2>
 
         <div className="products-grid">
           <Swiper
@@ -145,9 +149,9 @@ const Products = () => {
             slidesPerView={"auto"}
             spaceBetween={35}
             loop={true}
-            autoplay={{
-              delay: 3000,
-            }}
+            // autoplay={{
+            //   delay: 3000,
+            // }}
             coverflowEffect={{
               rotate: 0,
               stretch: 0,
@@ -182,7 +186,17 @@ const Products = () => {
                     <p className="product-age">Age: {product.ageRange}</p>
                     <div className="product-footer">
                       <span className="product-price">${product.price}</span>
-                      <button className="cart-btn">Add to Cart</button>
+                      <div className="add-to-cart">
+                        <i
+                          className="fa-solid fa-cart-plus"
+                          onClick={() => addToCart(selectedProduct)}
+                        ></i>
+                        <div className="count">
+                          <i>+</i>
+                          <span>0</span>
+                          <i>-</i>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </SwiperSlide>
@@ -226,7 +240,17 @@ const Products = () => {
                   Recommended Age: {selectedProduct.ageRange}
                 </p>
                 <div className="modal-price">${selectedProduct.price}</div>
-                <button className="modal-button">Add to Cart</button>
+                <div className="add-to-cart">
+                  <i
+                    className="fa-solid fa-cart-plus modal-button"
+                    onClick={() => addToCart(selectedProduct)}
+                  ></i>
+                  <div className="count">
+                    <i>+</i>
+                    <span>0</span>
+                    <i>-</i>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

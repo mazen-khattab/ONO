@@ -3,6 +3,7 @@ import "./ProductsPage.css";
 import Navbar from "../Navbar";
 import Footer from "../Footer/Footer";
 import { useTranslation } from "react-i18next";
+import { useCart } from "../../CartContext";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -173,7 +174,6 @@ const products = [
 const ProductsPage = () => {
   const savedLang = JSON.parse(localStorage.getItem("lang"));
   const { i18n, t } = useTranslation("AllProducts");
-
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     category: "All Categories",
@@ -270,6 +270,7 @@ const ProductsPage = () => {
             </div>
           </div>
         </div>
+
         <div className="allProducts-container">
           <div
             style={savedLang?.code === `ar` ? { left: 30 } : { right: 30 }}
@@ -282,7 +283,11 @@ const ProductsPage = () => {
             <i
               className="fa-solid fa-xmark filter-close"
               onClick={activeFilter}
-              style={savedLang?.code === `ar` ? {marginRight: "auto"} : {marginLeft: "auto"}}
+              style={
+                savedLang?.code === `ar`
+                  ? { marginRight: "auto" }
+                  : { marginLeft: "auto" }
+              }
             ></i>
             <aside className="productFilter-aside">
               <div className="productFilter-group">
@@ -375,7 +380,6 @@ const ProductsPage = () => {
                     </p>
                     <div className="allProduct-footer">
                       <div className="allProduct-price">${product.price}</div>
-                      <button className="add-to-cart">{t("add")}</button>
                     </div>
                   </div>
                 </div>
