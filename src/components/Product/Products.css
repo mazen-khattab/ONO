@@ -22,7 +22,6 @@
 .select-input:focus {
   outline: none;
   border-color: #dc2626;
-
 }
 
 .swiper-wrapper {
@@ -42,7 +41,7 @@
 
 .product-image {
   width: 100%;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .product-info {
@@ -85,7 +84,7 @@
 
 .swiper-slide-shadow-left,
 .swiper-slide-shadow-right {
-  display: none
+  display: none;
 }
 
 .modal-overlay {
@@ -159,6 +158,13 @@
   margin-bottom: 1rem;
 }
 
+.price-cart {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
 .modal-price {
   font-size: 1.875rem;
   font-weight: bold;
@@ -224,7 +230,7 @@
 
 @media (max-width: 1024px) {
   .products-section {
-    padding: 48px 32px
+    padding: 48px 32px;
   }
 
   .swiper-slide {

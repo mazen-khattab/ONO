@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./AddToCart.css";
 import { useCart } from "../../CartContext";
 
-const AddToCart = ({ Product }) => {
-  const [quantity, setQuantity] = useState(1);
+const AddToCart = ({ Product, quant = 1}) => {
+  const [quantity, setQuantity] = useState(quant);
   const { addToCart, increaseQuantity, decreaseQuantity } = useCart();
 
   const handleAddToCart = () => {
@@ -23,12 +23,11 @@ const AddToCart = ({ Product }) => {
   return (
     <div className="add-to-cart-container">
       <div className="quantity-selector">
-        <button onClick={() => decrease(Product)} disabled={quantity <= 1}>-</button>
+        <button className="decrease" onClick={() => decrease(Product)} disabled={quantity <= 1}>-</button>
         <span>{quantity}</span>
-        <button onClick={() => increase(Product)}>+</button>
+        <button className="increase" onClick={() => increase(Product)}>+</button>
       </div>
-      <button className="add-to-cart-button" onClick={handleAddToCart}>
-        <i className="fa-solid fa-cart-plus cart-btn"></i>
+      <button className="cart-btn fa-solid fa-cart-plus" onClick={handleAddToCart}> 
       </button>
     </div>
   );

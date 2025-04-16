@@ -14,6 +14,7 @@ import "swiper/css/pagination";
 import "./Products.css";
 import { useTranslation } from "react-i18next";
 import { useCart } from "../../CartContext";
+import AddToCart from "../AddToCart/AddToCart";
 
 const products = [
   {
@@ -186,17 +187,7 @@ const Products = () => {
                     <p className="product-age">Age: {product.ageRange}</p>
                     <div className="product-footer">
                       <span className="product-price">${product.price}</span>
-                      <div className="add-to-cart">
-                        <i
-                          className="fa-solid fa-cart-plus"
-                          onClick={() => addToCart(selectedProduct)}
-                        ></i>
-                        <div className="count">
-                          <i>+</i>
-                          <span>0</span>
-                          <i>-</i>
-                        </div>
-                      </div>
+                      <AddToCart Product={product}></AddToCart>
                     </div>
                   </div>
                 </SwiperSlide>
@@ -239,17 +230,9 @@ const Products = () => {
                 <p className="modal-age">
                   Recommended Age: {selectedProduct.ageRange}
                 </p>
-                <div className="modal-price">${selectedProduct.price}</div>
-                <div className="add-to-cart">
-                  <i
-                    className="fa-solid fa-cart-plus modal-button"
-                    onClick={() => addToCart(selectedProduct)}
-                  ></i>
-                  <div className="count">
-                    <i>+</i>
-                    <span>0</span>
-                    <i>-</i>
-                  </div>
+                <div className="price-cart">
+                  <div className="modal-price">${selectedProduct.price}</div>
+                  <AddToCart Product={selectedProduct}></AddToCart>
                 </div>
               </div>
             </div>

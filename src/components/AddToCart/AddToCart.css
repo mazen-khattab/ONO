@@ -1,0 +1,24 @@
+.add-to-cart-container {
+  display: flex;
+  gap: 10px;
+}
+
+.add-to-cart-container .quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.add-to-cart-container .quantity-selector button {
+    padding: 4px;
+    font-family: none;
+    border-radius: 5px;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    width: 24px;
+}
+
+.add-to-cart-container .quantity-selector button:disabled {
+    cursor: no-drop;
+}
