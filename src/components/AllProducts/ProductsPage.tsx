@@ -4,6 +4,7 @@ import Navbar from "../Navbar";
 import Footer from "../Footer/Footer";
 import { useTranslation } from "react-i18next";
 import { useCart } from "../../CartContext";
+import AddToCart from "../AddToCart/AddToCart";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -381,6 +382,7 @@ const ProductsPage = () => {
                     <div className="allProduct-footer">
                       <div className="allProduct-price">${product.price}</div>
                     </div>
+                    <AddToCart Product={product}></AddToCart>
                   </div>
                 </div>
               ))}
