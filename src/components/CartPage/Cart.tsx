@@ -7,7 +7,7 @@ import { useCart } from "../../CartContext";
 import AddToCart from "../AddToCart/AddToCart";
 
 const CartPage = () => {
-  const { cartItems } = useCart();
+  const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
   const [discount, setDiscount] = useState(0);
   const [formData, setFormData] = useState({
     products: [],
@@ -16,17 +16,22 @@ const CartPage = () => {
     totalPrice: 0,
   });
 
+  const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
     setFormData({ products: [], discount: 0, price: 0, totalPrice: 0 });
   };
 
+  const DeleteProduct = (id) => {
+    removeFromCart(id);
+  }
+
   if (cartItems.length === 0) {
     return (
       <div>
         <Navbar></Navbar>
-
 
         <div className="cart-content-empty">
           <ShoppingBag className="empty-cart-icon" />
@@ -36,7 +41,6 @@ const CartPage = () => {
             Shop Now
           </a>
         </div>
-        <AddToCart></AddToCart>
 
         <Footer></Footer>
       </div>
@@ -65,9 +69,10 @@ const CartPage = () => {
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
                   <p>Age: {item.ageRange}</p>
-                  <p>${item.price}</p>
+                  <p style={{marginBottom: "10px"}}>${item.price}</p>
                   <div>
-                    <i className="fa-solid fa-trash"></i>
+                    <i className="fa-solid fa-trash" onClick={() => DeleteProduct(item.id)}></i>
+                    <AddToCart Product={item} quant={item.quantity} disable={false} increaseable={true}></AddToCart>
                   </div>
                 </div>
               </div>
@@ -79,16 +84,14 @@ const CartPage = () => {
 
             <div className="items-details">
               <p>Items</p>
-              <p>{cartItems.length}</p>
+              <p>{totalQuantity}</p>
             </div>
 
             <div className="sub-price">
               <p>Price</p>
               <p>
                 $
-                {Math.floor(
-                  cartItems.reduce((total, item) => total + item.price, 0)
-                )}
+                {cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)}
               </p>
             </div>
 
@@ -101,9 +104,7 @@ const CartPage = () => {
               <p>Total</p>
               <p>
                 $
-                {Math.floor(
-                  cartItems.reduce((total, item) => total + item.price, 0)
-                ) - discount}
+                {cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)}
               </p>
             </div>
 

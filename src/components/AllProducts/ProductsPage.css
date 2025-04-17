@@ -250,19 +250,6 @@
   flex-direction: row-reverse;
 }
 
-.add-to-cart .cart-btn {
-  padding: 8px 10px;
-  background-color: var(--main-color);
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-to-cart .cart-btn:hover {
-  background-color: #dc2626;
-  transform: translateY(-2px);
-}
-
 .add-to-cart .count {
   display: flex;
   justify-content: center;

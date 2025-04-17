@@ -145,7 +145,7 @@
   position: relative;
   overflow: hidden;
   transition: 0.3s;
-} 
+}
 
 .nav-links-menu-container .link:not(:last-child) {
   border-bottom: 2px solid #93939352;
@@ -236,6 +236,26 @@
   display: none;
 }
 
+.navbar-cart {
+  position: relative;
+}
+
+.navbar-cart .cart-count {
+  position: absolute;
+  top: -6px;
+  right: -2px;
+  background-color: #dc2626;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .registration {
   display: flex;
   justify-content: center;
@@ -291,7 +311,7 @@
   .nav-links .link.linkAr {
     width: 80px;
   }
-  
+
 }
 
 @media (max-width: 1024px) {
@@ -356,7 +376,7 @@
 
   .logo img {
     width: 50px;
-    height: 40px; 
+    height: 40px;
   }
 }
 

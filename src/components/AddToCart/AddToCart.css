@@ -22,3 +22,17 @@
 .add-to-cart-container .quantity-selector button:disabled {
     cursor: no-drop;
 }
+
+.add-to-cart-container .cart-btn .check {
+    position: absolute;
+    left: -50%;
+    transform: translateX(-50%);
+    transition: .3s;
+}
+
+.add-to-cart-container .cart-btn .cart-plus {
+    position: relative;
+    transition: 0.3s;
+    left: 50%;
+    transform: translateX(-50%);
+}

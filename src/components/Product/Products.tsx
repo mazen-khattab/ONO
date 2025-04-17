@@ -13,7 +13,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "./Products.css";
 import { useTranslation } from "react-i18next";
-import { useCart } from "../../CartContext";
 import AddToCart from "../AddToCart/AddToCart";
 
 const products = [
@@ -122,15 +121,6 @@ const products = [
 const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { i18n, t } = useTranslation("Home");
-  const { addToCart } = useCart();
-
-  const toggleFavorite = (productId: number) => {
-    setFavorites((prev) =>
-      prev.includes(productId)
-        ? prev.filter((id) => id !== productId)
-        : [...prev, productId]
-    );
-  };
 
   return (
     <section
@@ -150,9 +140,11 @@ const Products = () => {
             slidesPerView={"auto"}
             spaceBetween={35}
             loop={true}
-            // autoplay={{
-            //   delay: 3000,
-            // }}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
             coverflowEffect={{
               rotate: 0,
               stretch: 0,

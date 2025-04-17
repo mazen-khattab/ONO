@@ -2,11 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Navbar.css";
 import logo from "../images/Logo.jpg";
 import { useTranslation } from "react-i18next";
+import { useCart } from "../CartContext";
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
   const [menuActive, setMenuActive] = useState(false);
   const { i18n, t } = useTranslation("Home");
+  const { cartItems } = useCart();
+
+  const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const savedLang = JSON.parse(localStorage.getItem("lang"));
 
@@ -47,22 +51,40 @@ const Navbar = () => {
           </a>
 
           <div className="nav-links">
-            <a href="/" className={savedLang?.code === `ar` ? "link linkAr" : "link"}>
+            <a
+              href="/"
+              className={savedLang?.code === `ar` ? "link linkAr" : "link"}
+            >
               {t("header.home")}
             </a>
-            <a href="AllProducts" className={savedLang?.code === `ar` ? "link linkAr" : "link"}>
+            <a
+              href="AllProducts"
+              className={savedLang?.code === `ar` ? "link linkAr" : "link"}
+            >
               {t("header.products")}
             </a>
-            <a href="about" className={savedLang?.code === `ar` ? "link linkAr" : "link"}>
+            <a
+              href="about"
+              className={savedLang?.code === `ar` ? "link linkAr" : "link"}
+            >
               {t("header.about")}
             </a>
-            <a href="./WhyUs" className={savedLang?.code === `ar` ? "link linkAr" : "link"}>
+            <a
+              href="./WhyUs"
+              className={savedLang?.code === `ar` ? "link linkAr" : "link"}
+            >
               {t("header.why us")}
             </a>
           </div>
 
           <div
-            className={`${menuActive ? "nav-links-menu" : "nav-links-menu disappear"} ${savedLang?.code === `ar` ? "nav-links-menu-ar" : "nav-links-menu-en"}`}
+            className={`${
+              menuActive ? "nav-links-menu" : "nav-links-menu disappear"
+            } ${
+              savedLang?.code === `ar`
+                ? "nav-links-menu-ar"
+                : "nav-links-menu-en"
+            }`}
           >
             <i className="fa-solid fa-xmark close" onClick={CloseMenu}></i>
             <div className="nav-links-menu-container">
@@ -84,11 +106,11 @@ const Navbar = () => {
               </a>
             </div>
           </div>
-
+          
           <div className="nav-actions">
             <div className="icons">
               <div className="language-selector" onClick={dropdownLang}>
-                <i className="fa-solid fa-language language-button"></i>
+                <i className="fa-solid fa-globe language-button"></i>
                 <div
                   className={
                     isActive
@@ -99,10 +121,12 @@ const Navbar = () => {
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
-                      onClick={() => {{
-                        changeAllLanguage(lang.code);
-                        changeLanguage(lang);
-                      }}}
+                      onClick={() => {
+                        {
+                          changeAllLanguage(lang.code);
+                          changeLanguage(lang);
+                        }
+                      }}
                       className="language-option"
                     >
                       {lang.name}
@@ -111,7 +135,12 @@ const Navbar = () => {
                 </div>
               </div>
 
-              <a href="/Cart" className="fa-solid fa-cart-shopping icon cart"></a>
+              <a
+                href="/Cart"
+                className="fa-solid fa-cart-shopping icon navbar-cart"
+              >
+                <span className="cart-count">{totalQuantity}</span>
+              </a>
             </div>
 
             <div className="registration">
