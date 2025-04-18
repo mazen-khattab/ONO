@@ -5,28 +5,24 @@ import { ShoppingBag } from "lucide-react";
 import "./Cart.css";
 import { useCart } from "../../CartContext";
 import AddToCart from "../AddToCart/AddToCart";
+import { useTranslation } from "react-i18next";
 
 const CartPage = () => {
-  const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
+    const { i18n, t } = useTranslation("Cart");
+  const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } =
+    useCart();
   const [discount, setDiscount] = useState(0);
-  const [formData, setFormData] = useState({
-    products: [],
-    discount: 0,
-    price: 0,
-    totalPrice: 0,
-  });
+  const [price, setPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const totalQuantity = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(formData);
-    setFormData({ products: [], discount: 0, price: 0, totalPrice: 0 });
+  const DeleteProduct = (product) => {
+    removeFromCart(product);
   };
-
-  const DeleteProduct = (id) => {
-    removeFromCart(id);
-  }
 
   if (cartItems.length === 0) {
     return (
@@ -35,10 +31,10 @@ const CartPage = () => {
 
         <div className="cart-content-empty">
           <ShoppingBag className="empty-cart-icon" />
-          <h2>العربه فارغة</h2>
-          <h3>لم يتم اضافة اي منتجات الى العربة</h3>
+          <h2>{t("empty_cart")}</h2>
+          <h3>{t("no_items")}</h3>
           <a href="./AllProducts" className="cart-shop-now">
-            Shop Now
+          {t("shop_now")}
           </a>
         </div>
 
@@ -51,12 +47,12 @@ const CartPage = () => {
     <div>
       <Navbar></Navbar>
       <div className="cart-container">
-        <h2>Shopping Cart</h2>
+        <h2>{t("Shopping")}</h2>
 
         <div className="cart-content">
           <div className="cart-items">
-            {cartItems.map((item, index) => (
-              <div key={index} className="cart-item">
+            {cartItems.map((item) => (
+              <div key={item.id} className="cart-item">
                 <div className="img-container">
                   <img
                     src={item.image}
@@ -69,47 +65,61 @@ const CartPage = () => {
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
                   <p>Age: {item.ageRange}</p>
-                  <p style={{marginBottom: "10px"}}>${item.price}</p>
+                  <p style={{ marginBottom: "10px" }}>${item.price}</p>
                   <div>
-                    <i className="fa-solid fa-trash" onClick={() => DeleteProduct(item.id)}></i>
-                    <AddToCart Product={item} quant={item.quantity} disable={false} increaseable={true}></AddToCart>
+                    <i
+                      className="fa-solid fa-trash"
+                      onClick={() => DeleteProduct(item)}
+                    ></i>
+                    <AddToCart
+                      Product={item}
+                      quant={item.quantity}
+                      disable={false}
+                      increaseable={true}
+                    ></AddToCart>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          <form className="price-container" onSubmit={handleSubmit}>
-            <h2>Order summary</h2>
+          <div className="price-container">
+            <form>
+              <h2>{t("summary")}</h2>
 
-            <div className="items-details">
-              <p>Items</p>
-              <p>{totalQuantity}</p>
-            </div>
+              <div className="items-details">
+                <p>{t("items")}</p>
+                <p>{totalQuantity}</p>
+              </div>
 
-            <div className="sub-price">
-              <p>Price</p>
-              <p>
-                $
-                {cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)}
-              </p>
-            </div>
+              <div className="sub-price">
+                <p>{t("price")}</p>
+                <p>
+                  $
+                  {cartItems
+                  .reduce((total, item) => total + (item.price * item.quantity), 0)
+                  .toFixed(2)}
+                </p>
+              </div>
 
-            <div className="discount-details">
-              <p>Discount</p>
-              <p>{discount}</p>
-            </div>
+              <div className="discount-details">
+                <p>{t("discount")}</p>
+                <p>{discount}</p>
+              </div>
 
-            <div className="total-price">
-              <p>Total</p>
-              <p>
-                $
-                {cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)}
-              </p>
-            </div>
+              <div className="total-price">
+                <p>{t("total")}</p>
+                <p>
+                  $
+                  {cartItems
+                  .reduce((total, item) => total + (item.price * item.quantity), 0)
+                  .toFixed(2)}
+                </p>
+              </div>
 
-            <button>Complete the order</button>
-          </form>
+              <button>{t("complete")}</button>
+            </form>
+          </div>
         </div>
       </div>
       <Footer></Footer>

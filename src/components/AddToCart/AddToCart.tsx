@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./AddToCart.css";
 import { useCart } from "../../CartContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,14 +12,20 @@ const AddToCart = ({
   const [go, setGo] = useState(false);
   const [activeIncrease, setActiveIncrease] = useState(increaseable);
   const [quantity, setQuantity] = useState(quant);
-  const { addToCart, increaseQuantity, decreaseQuantity, cartItems } =
+  const { addToCart, increaseQuantity, decreaseQuantity } =
     useCart();
 
   const handleAddToCart = () => {
     addToCart(Product, quantity);
     setGo(true);
     setTimeout(() => setGo(false), 2000);
+
+    setQuantity(1)
   };
+
+  useEffect(() => {
+    setQuantity(quant);
+  }, [quant]);
 
   const increase = (product) => {
     if (activeIncrease) {

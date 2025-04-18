@@ -47,9 +47,9 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  const removeFromCart = (productId) => {
+  const removeFromCart = (product) => {
     setCartItems((prevItems) =>
-      prevItems.filter((item) => item.id !== productId)
+      prevItems.filter((item) => item.id !== product.id)
     );
   };
 

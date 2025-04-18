@@ -1,0 +1,12 @@
+{
+    "Shopping": "Shopping Cart",
+    "summary": "Order summary", 
+    "items": "Items", 
+    "price": "Price",
+    "discount": "Discount", 
+    "total": "Total Price", 
+    "complete": "Complete the order", 
+    "empty_cart": "Your cart is empty",
+    "no_items": "No products have been added to the cart",
+    "shop_now": "Shop Now"
+}
