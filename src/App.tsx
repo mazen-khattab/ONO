@@ -10,7 +10,7 @@ import LoginPage from "./components/Login/Login";
 import Contact from "./components/ContactUs/Contact";
 import AllProducts from "./components/AllProducts/ProductsPage";
 import WhyUs from "./components/WhyUs/WhyUs";
-import CartPage from "./components/CartPage/cart";
+import CartPage from "./components/CartPage/Cart";
 import { CartProvider } from "./CartContext";
 
 function App() {
