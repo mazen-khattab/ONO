@@ -70,7 +70,7 @@
     position: relative;
 }
 
-.price-container form {
+.price-container .complete {
     position: sticky;
     top: 80px;
     padding: 16px;
@@ -87,7 +87,7 @@
     color: var(--main-color);
 }
 
-.price-container div {
+.price-container .complete div {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -97,7 +97,7 @@
     font-size: 18px;
 }
 
-.price-container button {
+.complete-order {
     width: fit-content;
     margin: auto;
     display: block;
@@ -113,7 +113,7 @@
     transition: .3s;
 }
 
-.price-container button:hover {
+button:hover {
     background-color: #df030c;
 }
 
@@ -169,6 +169,62 @@
     flex-direction: row-reverse;
 }
 
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    z-index: 1000;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    gap: 10px;
+}
+
+.checkout-form .form-close-btn {
+    position: absolute;
+    right: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.checkout-title {
+    color: var(--main-color);
+    margin-bottom: 5px;
+    font-size: 28px;
+}
+
+.order-contact-info {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.order-contact-info input {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.order-contact-info select {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.checkout-container .complete-order {
+    margin: 20px 0 0;
+    width: 100%;
+}
+
 @media (max-width: 1024px) {
     .cart-container {
         padding: 80px 32px;
@@ -179,7 +235,7 @@
         margin-bottom: 14px;
     }
 
-    .cart-item .cart-item-details{
+    .cart-item .cart-item-details {
         padding: 12px
     }
 
@@ -194,12 +250,12 @@
         margin-bottom: 13px;
     }
 
-    .price-container div {
+    .price-container .complete div {
         margin-bottom: 13px;
         font-size: 16px;
     }
 
-    .price-container form {
+    .price-container .complete {
         padding: 14px
     }
 
@@ -208,7 +264,7 @@
         font-size: 16px;
     }
 
-    .cart-item .cart-item-details{
+    .cart-item .cart-item-details {
         padding: 12px
     }
 
@@ -241,7 +297,7 @@
     .cart-content-empty h3 {
         font-size: 20px;
     }
-    
+
     .cart-items {
         padding-bottom: 20px;
     }

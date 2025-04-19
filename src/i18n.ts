@@ -38,6 +38,10 @@ i18n
         Cart: enCart
       },
     },
+    detection: {
+      order: ["localStorage"],
+      caches: ["localStorage"], 
+    },
     fallbackLng: "ar",
     ns: ["home", "about", "allProducts", "whyUs", "Login", "cart"],
     defaultNS: "home",

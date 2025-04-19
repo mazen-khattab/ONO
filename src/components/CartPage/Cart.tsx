@@ -8,12 +8,39 @@ import AddToCart from "../AddToCart/AddToCart";
 import { useTranslation } from "react-i18next";
 
 const CartPage = () => {
-    const { i18n, t } = useTranslation("Cart");
+  const { i18n, t } = useTranslation("Cart");
   const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } =
     useCart();
   const [discount, setDiscount] = useState(0);
   const [price, setPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [formActive, setFromActive] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    governorate: "",
+    city: "",
+  });
+
+  const governorates = ["Cairo", "Giza", "Alexandria"];
+  const citiesByGovernorate = {
+    Cairo: ["Nasr City", "Heliopolis", "Maadi"],
+    Giza: ["Dokki", "Mohandessin", "6th October"],
+    Alexandria: ["Smouha", "Stanley", "Gleem"],
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted Data:", formData);
+    onSubmit?.(formData);
+  };
 
   const totalQuantity = cartItems.reduce(
     (total, item) => total + item.quantity,
@@ -34,7 +61,7 @@ const CartPage = () => {
           <h2>{t("empty_cart")}</h2>
           <h3>{t("no_items")}</h3>
           <a href="./AllProducts" className="cart-shop-now">
-          {t("shop_now")}
+            {t("shop_now")}
           </a>
         </div>
 
@@ -84,7 +111,7 @@ const CartPage = () => {
           </div>
 
           <div className="price-container">
-            <form>
+            <div className="complete">
               <h2>{t("summary")}</h2>
 
               <div className="items-details">
@@ -97,8 +124,11 @@ const CartPage = () => {
                 <p>
                   $
                   {cartItems
-                  .reduce((total, item) => total + (item.price * item.quantity), 0)
-                  .toFixed(2)}
+                    .reduce(
+                      (total, item) => total + item.price * item.quantity,
+                      0
+                    )
+                    .toFixed(2)}
                 </p>
               </div>
 
@@ -112,15 +142,98 @@ const CartPage = () => {
                 <p>
                   $
                   {cartItems
-                  .reduce((total, item) => total + (item.price * item.quantity), 0)
-                  .toFixed(2)}
+                    .reduce(
+                      (total, item) => total + item.price * item.quantity,
+                      0
+                    )
+                    .toFixed(2)}
                 </p>
               </div>
 
-              <button>{t("complete")}</button>
-            </form>
+              <button className="complete-order" onClick={() => setFromActive(!formActive)}>{t("complete")}</button>
+            </div>
           </div>
         </div>
+      </div>
+
+      <div className="checkout-container" style={formActive ? {display: "block"} : {display: "none"}}>
+        <form className="checkout-form" onSubmit={handleSubmit}>
+          <i className="fa-solid fa-xmark form-close-btn" onClick={() => setFromActive(!formActive)}></i>
+          <h2 className="checkout-title">Contact Info</h2>
+
+          <div className="order-contact-info">
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              required
+              value={formData.name}
+              onChange={handleChange}
+            />
+
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone Number"
+              required
+              value={formData.phone}
+              onChange={handleChange}
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              required
+              value={formData.email}
+              onChange={handleChange}
+            />
+
+            <select
+              name="governorate"
+              required
+              value={formData.governorate}
+              onChange={handleChange}
+            >
+              <option value="">Select Governorate</option>
+              {governorates.map((gov) => (
+                <option key={gov} value={gov}>
+                  {gov}
+                </option>
+              ))}
+            </select>
+
+            <select
+              name="city"
+              required
+              value={formData.city}
+              onChange={handleChange}
+              disabled={!formData.governorate}
+            >
+              <option value="">Select City</option>
+              {formData.governorate &&
+                citiesByGovernorate[formData.governorate].map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+            </select>
+
+            <input
+              type="text"
+              name="fullyAddress"
+              placeholder="Address"
+              autoComplete="off"
+              required
+            />
+          </div>
+
+          <button type="submit" className="complete-order">
+            Complete Order
+          </button>
+        </form>
+
+        <div className="modal-overlay"></div>
       </div>
       <Footer></Footer>
     </div>
