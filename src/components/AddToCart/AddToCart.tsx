@@ -10,17 +10,30 @@ const AddToCart = ({
   increaseable = false,
 }) => {
   const [go, setGo] = useState(false);
+  const [active, setActive] = useState(true);
   const [activeIncrease, setActiveIncrease] = useState(increaseable);
   const [quantity, setQuantity] = useState(quant);
   const { addToCart, increaseQuantity, decreaseQuantity } =
     useCart();
 
   const handleAddToCart = () => {
-    addToCart(Product, quantity);
+    if (active) {
+      AddedToCart();
+    }
+
+    setActive(false);
+
+    setTimeout(() => {
+      setActive(true);
+    }, 2000);
+  };
+
+  const AddedToCart = () => {
+       addToCart(Product, quantity);
     setGo(true);
     setTimeout(() => setGo(false), 2000);
 
-    setQuantity(1)
+    setQuantity(1);
   };
 
   useEffect(() => {

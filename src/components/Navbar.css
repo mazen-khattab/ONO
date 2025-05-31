@@ -1,5 +1,5 @@
 :root {
-  --font-size: 15px
+  --font-size: 15px;
 }
 
 .navbar {
@@ -34,7 +34,6 @@
 .logo img {
   width: 60px;
   height: 50px;
-
 }
 
 .nav-links {
@@ -57,7 +56,7 @@
 }
 
 .nav-links-menu-ar {
-  left: 0
+  left: 0;
 }
 
 .nav-links-menu-en {
@@ -256,11 +255,48 @@
   align-items: center;
 }
 
+.navbar .user-info {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.navbar .user-name {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.navbar .logout-btn {
+  padding: 3px 10px;
+  background-color: var(--main-color);
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.navbar .logout-btn:hover {
+  background-color: #e50b14;
+}
+
 .registration {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px
+  gap: 10px;
 }
 
 .register-btn {
@@ -311,7 +347,6 @@
   .nav-links .link.linkAr {
     width: 80px;
   }
-
 }
 
 @media (max-width: 1024px) {
@@ -371,7 +406,7 @@
 
 @media (max-width: 600px) {
   .icon {
-    padding: 6px
+    padding: 6px;
   }
 
   .logo img {

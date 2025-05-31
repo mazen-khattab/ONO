@@ -101,9 +101,15 @@ const items: CarouselItem[] = [
   },
 ];
 
-const HomeCarousel: React.FC = (props) => {
+interface HomeCarouselProps {
+  direction?: 'normal' | 'reverse';
+  classname?: string;
+}
+
+const HomeCarousel: React.FC<HomeCarouselProps> = (props) => {
   const [isPaused, setIsPaused] = useState(false);
-  const savedLang = JSON.parse(localStorage.getItem("lang"));
+  const langString = localStorage.getItem("lang");
+  const savedLang = langString ? JSON.parse(langString) : null;
 
   return (
     <div 
@@ -111,7 +117,7 @@ const HomeCarousel: React.FC = (props) => {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className={`carousel-track ${isPaused ? 'paused' : ''}`} style={{'animation-direction': props.direction}}>
+      <div className={`carousel-track ${isPaused ? 'paused' : ''}`} style={{animationDirection: props.direction}}>
         {[...items, ...items].map((item, index) => (
           <div key={`${item.id}-${index}`} className="carousel-item">
             <div className="carousel-card">

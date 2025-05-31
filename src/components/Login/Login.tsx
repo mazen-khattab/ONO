@@ -1,109 +1,101 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./Loign.css";
+import { Mail, Lock, ArrowRight } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import api from "../../Services/api.js";
 
-function LoginPage(props) {
-  console.log(props.move)
-  const [signIn, setSignIn] = useState(props.move);
-  const [singUp, setSignUp] = useState(props.move);
+function LoginPage() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
   const { i18n, t } = useTranslation("Login");
+  const [loading, setLoading] = useState(false);
 
-  const handleSingIn = () => {
-    setSignIn(!signIn);
-    setSignUp(!singUp);
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
 
-  const handleSingUp = () => {
-    setSignUp(!singUp);
-    setSignIn(!signIn);
+    setError(""); 
+
+    try {
+      const response = await api.post("/Auth/Login", {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      console.log(response)
+
+      window.location.href = "/";
+    } catch (error) {
+      setError("invalid email or password");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="body">
-      <h1 className="login-page">ONO</h1>
-      <div className="login-container">
-        <div
-          className={signIn ? "slider move" : singUp ? "slider move" : "slider"}
-        />
-
-        <div
-          className={
-            signIn
-              ? "WH-container welcome-container welcome-container-disappear"
-              : "WH-container welcome-container"
-          }
-        >
-          <h1>{t("hello")}</h1>
-          <p>{t("start_journey")}</p>
-          <button id="sign-in" onClick={handleSingIn} style={{ fontFamily: "cairo, serif" }}>
-          {t("sign_in")}
-          </button>
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <h2>Welcome Back</h2>
+          {error && (
+            <p className="error-message" style={{ color: "var(--main-color)" }}>
+              {error}
+            </p>
+          )}
         </div>
 
-        <div
-          className={
-            singUp
-              ? "WH-container hello-container"
-              : "WH-container hello-container hello-container-disappear"
-          }
-        >
-          <h1>{t("welcome_back")}</h1>
-          <p>{t("keep_connected")}</p>
-          <button id="sign-up" onClick={handleSingUp} style={{ fontFamily: "cairo, serif" }}>
-          {t("sign_up")}
-          </button>
-        </div>
-
-        <div
-          className={
-            signIn
-              ? "form sign-up-form sign-up-form-disappear"
-              : "form sign-up-form"
-          }
-        >
-          <h2>{t("create_account")}</h2>
-          <form id="signUp-form">
-            <div className="form-group">
-              <label htmlFor="name">{t("name")}</label>
-              <input type="text" id="name" name="name" required/>
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">{t("email")}</label>
-              <input type="text" id="email" name="email" required/>
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">{t("password")}</label>
-              <input type="password" id="password" name="password" required />
-            </div>
-            <button type="submit">{t("sign_up")}</button>
-          </form>
-        </div>
-
-        <div
-          className={
-            singUp
-              ? "form sign-in-form"
-              : "form sign-in-form sign-in-form-disappear"
-          }
-        >
-          <h2>{t("sign_in")}</h2>
-          <form id="signIn-form">
-            <div className="form-group">
-              <label htmlFor="email">{t("email")}</label>
-              <input type="text" id="email" name="email" required />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">{t("password")}</label>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="login-form-group">
+            <div className="login-input-group">
+              <Mail className="login-input-icon" size={18} />
               <input
-                type="password"
-                id="password"
-                name="password"
+                type="email"
+                id="email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                placeholder="Enter your email"
                 required
               />
             </div>
-            <button type="submit">{t("sign_in")}</button>
-          </form>
-        </div>
+          </div>
+
+          <div className="login-form-group">
+            <div className="login-input-group">
+              <Lock className="login-input-icon" size={18} />
+              <input
+                type="password"
+                id="password"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+          </div>
+
+          <button type="submit" className="login-button">
+            {loading ? (
+              <div className="spinner" />
+            ) : (
+              <>
+                <span>Sign In</span>
+                <ArrowRight size={18} />
+              </>
+            )}
+          </button>
+
+          <p className="login-redirect">
+            Don't have an account? <Link to="/register">Sign up</Link>
+          </p>
+        </form>
       </div>
     </div>
   );

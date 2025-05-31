@@ -7,52 +7,56 @@ import About from "./components/About/About";
 import Discounts from "./components/Discounts/Discounts";
 import Footer from "./components/Footer/Footer";
 import LoginPage from "./components/Login/Login";
+import Register from "./components/Register/Register";
 import Contact from "./components/ContactUs/Contact";
 import AllProducts from "./components/AllProducts/ProductsPage";
 import WhyUs from "./components/WhyUs/WhyUs";
 import CartPage from "./components/CartPage/Cart";
 import { CartProvider } from "./CartContext";
+import { AuthProvider } from "./Services/authContext";
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <Routes>
-          {/* Home Page Route */}
-          <Route
-            path="/"
-            element={
-              <div className="min-h-screen">
-                <Navbar />
-                <Hero />
-                <Products />
-                <Contact />
-                <Discounts />
-                <Footer />
-              </div>
-            }
-          />
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          <Routes>
+            {/* Home Page Route */}
+            <Route
+              path="/"
+              element={
+                <div className="min-h-screen">
+                  <Navbar />
+                  <Hero />
+                  <Products />
+                  <Contact />
+                  <Discounts />
+                  <Footer />
+                </div>
+              }
+            />
 
-          {/* Login Page Route */}
-          <Route path="/login" element={<LoginPage move={true} />} />
+            {/* Login Page Route */}
+            <Route path="/login" element={<LoginPage />} />
 
-          {/* Register Page Route */}
-          <Route path="/register" element={<LoginPage move={false} />} />
+            {/* Register Page Route */}
+            <Route path="/register" element={<Register />} />
 
-          {/* All Products Page Route */}
-          <Route path="/AllProducts" element={<AllProducts />} />
+            {/* All Products Page Route */}
+            <Route path="/AllProducts" element={<AllProducts />} />
 
-          {/* Why us page Route */}
-          <Route path="/WhyUs" element={<WhyUs></WhyUs>} />
+            {/* Why us page Route */}
+            <Route path="/WhyUs" element={<WhyUs />} />
 
-          {/* About Page Route */}
-          <Route path="/About" element={<About></About>} />
+            {/* About Page Route */}
+            <Route path="/About" element={<About />} />
 
-          {/* Cart Page Route */}
-          <Route path="/Cart" element={<CartPage></CartPage>} />
-        </Routes>
-      </Router>
-    </CartProvider>
+            {/* Cart Page Route */}
+            <Route path="/Cart" element={<CartPage />} />
+          </Routes>
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
