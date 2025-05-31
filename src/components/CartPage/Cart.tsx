@@ -22,14 +22,8 @@ const CartPage = () => {
     email: "",
     governorate: "",
     city: "",
+    fullyAddress: "",
   });
-
-  const governorates = ["Cairo", "Giza", "Alexandria"];
-  const citiesByGovernorate = {
-    Cairo: ["Nasr City", "Heliopolis", "Maadi"],
-    Giza: ["Dokki", "Mohandessin", "6th October"],
-    Alexandria: ["Smouha", "Stanley", "Gleem"],
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,7 +65,7 @@ const CartPage = () => {
   }
 
   return (
-    <div>
+    <div className="cart-page">
       <Navbar></Navbar>
       <div className="cart-container">
         <h2>{t("Shopping")}</h2>
@@ -150,23 +144,37 @@ const CartPage = () => {
                 </p>
               </div>
 
-              <button className="complete-order" onClick={() => setFromActive(!formActive)}>{t("complete")}</button>
+              <button
+                className="complete-order"
+                onClick={() => setFromActive(!formActive)}
+              >
+                {t("complete")}
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="checkout-container" style={formActive ? {display: "block"} : {display: "none"}}>
+      <div
+        className="checkout-container"
+        style={formActive ? { display: "block" } : { display: "none" }}
+      >
         <form className="checkout-form" onSubmit={handleSubmit}>
-          <i className="fa-solid fa-xmark form-close-btn" onClick={() => setFromActive(!formActive)}></i>
-          <h2 className="checkout-title">Contact Info</h2>
+          <div className="checkout-header">
+            <h2 className="checkout-title">{t("contact_info")}</h2>
+            <i
+              className="fa-solid fa-xmark form-close-btn"
+              onClick={() => setFromActive(!formActive)}
+            ></i>
+          </div>
 
           <div className="order-contact-info">
             <input
               type="text"
               name="name"
-              placeholder="Name"
+              placeholder={t("name")}
               required
+              autoComplete="off"
               value={formData.name}
               onChange={handleChange}
             />
@@ -174,8 +182,9 @@ const CartPage = () => {
             <input
               type="tel"
               name="phone"
-              placeholder="Phone Number"
+              placeholder={t("phone")}
               required
+              autoComplete="off"
               value={formData.phone}
               onChange={handleChange}
             />
@@ -183,53 +192,55 @@ const CartPage = () => {
             <input
               type="email"
               name="email"
-              placeholder="Email Address"
-              required
+              placeholder={t("email")}
+              autoComplete="off"
               value={formData.email}
               onChange={handleChange}
             />
 
-            <select
+            <input
+              type="text"
               name="governorate"
+              placeholder={t("select_governorate")}
               required
+              autoComplete="off"
               value={formData.governorate}
               onChange={handleChange}
-            >
-              <option value="">Select Governorate</option>
-              {governorates.map((gov) => (
-                <option key={gov} value={gov}>
-                  {gov}
-                </option>
-              ))}
-            </select>
+            />
 
-            <select
+            <input
+              type="text"
               name="city"
+              placeholder={t("select_city")}
               required
+              autoComplete="off"
               value={formData.city}
               onChange={handleChange}
-              disabled={!formData.governorate}
-            >
-              <option value="">Select City</option>
-              {formData.governorate &&
-                citiesByGovernorate[formData.governorate].map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
-            </select>
+            />
 
             <input
               type="text"
               name="fullyAddress"
-              placeholder="Address"
-              autoComplete="off"
+              placeholder={t("address")}
               required
+              autoComplete="off"
+              value={formData.fullyAddress}
+              onChange={handleChange}
             />
           </div>
 
+          <div className="payment-methods">
+            <h2 className="checkout-title">{t("payment_method")}</h2>
+            <div className="payment-method">
+              <label>
+                <input type="radio" name="payment" value="cash" checked />{" "}
+                {t("cash_on_delivery")}
+              </label>
+            </div>
+          </div>
+
           <button type="submit" className="complete-order">
-            Complete Order
+            {t("complete")}
           </button>
         </form>
 

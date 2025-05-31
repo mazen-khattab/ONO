@@ -3,10 +3,9 @@ import "./ProductsPage.css";
 import Navbar from "../Navbar";
 import Footer from "../Footer/Footer";
 import { useTranslation } from "react-i18next";
-import { useCart } from "../../CartContext";
 import AddToCart from "../AddToCart/AddToCart";
-
-const ITEMS_PER_PAGE = 12;
+import { Search } from "lucide-react";
+import { use } from "i18next";
 
 const categories = [
   "All Categories",
@@ -17,7 +16,7 @@ const categories = [
   "Educational Toys",
 ];
 
-const ageRanges = ["3-6 years", "7-12 years", "13+ years", "Adult"];
+const ageRanges = [3, 6, 9, 12];
 
 const products = [
   {
@@ -117,7 +116,7 @@ const products = [
     ageRange: "7-12 years",
     description: "Introduction to logic and problem-solving",
     image:
-    "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80",
     category: "Logic Games",
   },
   {
@@ -127,7 +126,7 @@ const products = [
     ageRange: "13+ years",
     description: "Complex logic challenges for advanced puzzle enthusiasts",
     image:
-    "https://images.unsplash.com/photo-1611996575749-79a3a250f948?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1611996575749-79a3a250f948?auto=format&fit=crop&q=80",
     category: "Logic Games",
   },
   {
@@ -137,7 +136,7 @@ const products = [
     ageRange: "3-6 years",
     description: "Simple and engaging puzzles for toddlers",
     image:
-    "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80",
     category: "Educational Toys",
   },
   {
@@ -147,7 +146,7 @@ const products = [
     ageRange: "Adult",
     description: "Professional-grade cube puzzles for speedcubing",
     image:
-    "https://images.unsplash.com/photo-1618842676088-c4d48a6a7c9d?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1618842676088-c4d48a6a7c9d?auto=format&fit=crop&q=80",
     category: "Brain Teasers",
   },
   {
@@ -157,7 +156,7 @@ const products = [
     ageRange: "13+ years",
     description: "Complex geometric shapes that transform and combine",
     image:
-    "https://images.unsplash.com/photo-1611996575749-79a3a250f948?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1611996575749-79a3a250f948?auto=format&fit=crop&q=80",
     category: "3D Puzzles",
   },
   {
@@ -167,80 +166,37 @@ const products = [
     ageRange: "7-12 years",
     description: "Traditional wooden puzzles with timeless appeal",
     image:
-    "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80",
     category: "Wooden Puzzles",
   },
 ];
 
 const ProductsPage = () => {
-  const savedLang = JSON.parse(localStorage.getItem("lang"));
-  const { i18n, t } = useTranslation("AllProducts");
-  const [currentPage, setCurrentPage] = useState(1);
+  const langString = localStorage.getItem("lang");
+  const savedLang = langString ? JSON.parse(langString) : null;
+  const { t } = useTranslation("AllProducts");
+
+  const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
     category: "All Categories",
-    ageRange: [],
-    priceRange: { min: 0, max: 100 },
+    ageRange: 0,
     searchQuery: "",
   });
-  const [filterActive, setFilterActive] = useState();
 
-  const filteredProducts = products.filter((product) => {
-    const matchesCategory =
-      filters.category === "All Categories" ||
-      product.category === filters.category;
-    const matchesAge =
-      filters.ageRange.length === 0 ||
-      filters.ageRange.includes(product.ageRange);
-    const matchesPrice =
-      product.price >= filters.priceRange.min &&
-      product.price <= filters.priceRange.max;
-    const matchesSearch =
-      product.name.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
-      product.description
-        .toLowerCase()
-        .includes(filters.searchQuery.toLowerCase());
+  const [filterActive, setFilterActive] = useState(false);
 
-    return matchesCategory && matchesAge && matchesPrice && matchesSearch;
-  });
-
-  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedProducts = filteredProducts.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
-
-  const hadleCategoryChange = (e) => {
-    setFilters((prev) => ({
-      ...prev,
-      searchQuery: e.target.value,
-    }));
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleAgeRangeChange = (range: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      ageRange: prev.ageRange.includes(range)
-        ? prev.ageRange.filter((r) => r !== range)
-        : [...prev.ageRange, range],
-    }));
-
-    setCurrentPage(1);
+  const handleAgeRangeChange = (range: number) => {
+    setFilters((prev) => ({ ...prev, ageRange: range }));
   };
 
   const activeFilter = () => {
     setFilterActive(!filterActive);
-  };
-
-  const handlePriceChange = (type: "min" | "max", value: number) => {
-    setFilters((prev) => ({
-      ...prev,
-      priceRange: {
-        ...prev.priceRange,
-        [type]: value,
-      },
-    }));
-    setCurrentPage(1);
   };
 
   return (
@@ -260,14 +216,17 @@ const ProductsPage = () => {
                 type="text"
                 placeholder="Search products..."
                 value={filters.searchQuery}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    searchQuery: e.target.value,
-                  }))
-                }
+                name="searchQuery"
+                onChange={(e) => handleChange(e)}
                 className="productForm-input"
+                style={{ paddingRight: "30px" }}
               />
+              <i
+                className="fa-solid fa-magnifying-glass search-icon"
+                onClick={() =>
+                  setFilters((prev) => ({ ...prev, searchQuery: search }))
+                }
+              ></i>
             </div>
           </div>
         </div>
@@ -297,10 +256,16 @@ const ProductsPage = () => {
                   <input
                     type="text"
                     placeholder="Search products..."
-                    value={filters.searchQuery}
-                    onChange={(e) => hadleCategoryChange(e)}
+                    onChange={(e) => setSearch(e.target.value)}
                     className="productForm-input"
+                    style={{ paddingRight: "30px" }}
                   />
+                  <i
+                    className="fa-solid fa-magnifying-glass search-icon"
+                    onClick={() =>
+                      setFilters((prev) => ({ ...prev, searchQuery: search }))
+                    }
+                  ></i>
                 </div>
               </div>
 
@@ -308,12 +273,8 @@ const ProductsPage = () => {
                 <h3 className="productFilter-title">{t("category")}</h3>
                 <select
                   value={filters.category}
-                  onChange={(e) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      category: e.target.value,
-                    }))
-                  }
+                  onChange={(e) => handleChange(e)}
+                  name="category"
                   className="productForm-input"
                 >
                   {categories.map((category) => (
@@ -325,38 +286,16 @@ const ProductsPage = () => {
               </div>
 
               <div className="productFilter-group">
-                <h3 className="productFilter-title">{t("price_range")}</h3>
-                <div className="productPrice-range">
-                  <div className="range-slider">
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={filters.priceRange.max}
-                      onChange={(e) =>
-                        handlePriceChange("max", Number(e.target.value))
-                      }
-                      className="productSlider"
-                    />
-                  </div>
-                  <div className="productPrice-display">
-                    <span>${filters.priceRange.min}</span>
-                    <span>${filters.priceRange.max}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="productFilter-group">
                 <h3 className="productFilter-title">{t("age_range")}</h3>
                 <div className="productCheckbox-group">
                   {ageRanges.map((range) => (
                     <label key={range} className="productCheckbox-label">
                       <input
-                        type="checkbox"
-                        checked={filters.ageRange.includes(range)}
-                        onChange={() => handleAgeRangeChange(range)}
+                        type="radio"
+                        name="ageRange"
+                        onChange={(e) => handleAgeRangeChange(range)}
                       />
-                      {range}
+                      {range}+   {t("years")}
                     </label>
                   ))}
                 </div>
@@ -366,7 +305,7 @@ const ProductsPage = () => {
 
           <main>
             <div className="allproducts-grid">
-              {paginatedProducts.map((product) => (
+              {products.map((product) => (
                 <div key={product.id} className="allProduct-card">
                   <div className="allProduct-image">
                     <img src={product.image} alt={product.name} />
@@ -387,45 +326,6 @@ const ProductsPage = () => {
                 </div>
               ))}
             </div>
-
-            {totalPages > 1 && (
-              <div className="pagination">
-                <button
-                  className="page-btn"
-                  onClick={() => {
-                    setCurrentPage((prev) => Math.max(prev - 1, 1));
-                    window.scrollTo(0, 0);
-                  }}
-                  disabled={currentPage === 1}
-                >
-                  {t("previous")}
-                </button>
-                {[...Array(totalPages)].map((_, i) => (
-                  <button
-                    key={i + 1}
-                    className={`page-btn ${
-                      currentPage === i + 1 ? "active" : ""
-                    }`}
-                    onClick={() => {
-                      setCurrentPage(i + 1);
-                      window.scrollTo(0, 0);
-                    }}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-                <button
-                  className="page-btn"
-                  onClick={() => {
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-                    window.scrollTo(0, 0);
-                  }}
-                  disabled={currentPage === totalPages}
-                >
-                  {t("next")}
-                </button>
-              </div>
-            )}
           </main>
         </div>
       </div>
