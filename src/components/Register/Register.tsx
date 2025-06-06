@@ -25,10 +25,10 @@ const Register = () => {
     setError("");
 
     const criteria = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
+      firstName: formData.firstName.trim(),
+      lastName: formData.lastName.trim(),
       phoneNumber: formData.phone,
-      email: formData.email,
+      email: formData.email.trim(),
       password: formData.password,
       confirmPassword: formData.confirmPassword,
     };
