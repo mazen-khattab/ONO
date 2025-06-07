@@ -5,8 +5,9 @@ import Footer from "../Footer/Footer";
 import { useTranslation } from "react-i18next";
 import AddToCart from "../AddToCart/AddToCart";
 import api from "../../Services/api.js";
+import { filter, pre } from "framer-motion/client";
 
-const pageSize = 10;
+const pageSize = 2;
 
 const ageRanges = [3, 6, 9, 12];
 
@@ -18,7 +19,7 @@ const ProductsPage = () => {
   const [categories, setCategories] = useState([]);
   const [pagesCount, setPagesCount] = useState(0);
 
-  var pages = Array.from({ length: pagesCount }, (_, i) => i + 1);
+  const pages = Array.from({ length: pagesCount }, (_, i) => i + 1);
 
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
@@ -63,15 +64,22 @@ const ProductsPage = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value, pageNumber: 1 }));
+
   };
 
   const handleAgeRangeChange = (range: number) => {
-    setFilters((prev) => ({ ...prev, ageRange: range }));
+    setFilters((prev) => ({ ...prev, ageRange: range, pageNumber: 1 }));
   };
 
   const activeFilter = () => {
     setFilterActive(!filterActive);
+  };
+
+  const navigateToPage = (page) => {
+    if (page !== filters.pageNumber) {
+      setFilters((prev) => ({...prev, pageNumber: page}))
+    }
   };
 
   return (
@@ -206,17 +214,45 @@ const ProductsPage = () => {
         </div>
 
         <div className="pagination">
-          <button>
+          <button
+            className="pagination-arrow"
+            onClick={() => {
+              setFilters((prev) => ({
+                ...prev,
+                pageNumber: filters.pageNumber - 1,
+              }));
+              window.scrollTo(0, 0);
+            }}
+            disabled={filters.pageNumber <= 1 ? true : false}
+          >
             <i className="fa-solid fa-left-long"></i>
           </button>
           <span>
             {pages.map((page) => (
-              <span key={page} className="pagination-page">
+              <span
+                key={page}
+                className={
+                  filters.pageNumber === page
+                    ? "pagination-pages page-active"
+                    : "pagination-pages"
+                }
+                onClick={() => {navigateToPage(page); window.scrollTo(0, 0);}}
+              >
                 {page}
               </span>
             ))}
           </span>
-          <button>
+          <button
+            className="pagination-arrow"
+            onClick={() => {
+              setFilters((prev) => ({
+                ...prev,
+                pageNumber: filters.pageNumber + 1,
+              }));
+              window.scrollTo(0, 0);
+            }}
+            disabled={filters.pageNumber >= pagesCount ? true : false}
+          >
             <i className="fa-solid fa-right-long"></i>
           </button>
         </div>
