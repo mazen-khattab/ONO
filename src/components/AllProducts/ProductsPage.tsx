@@ -5,9 +5,8 @@ import Footer from "../Footer/Footer";
 import { useTranslation } from "react-i18next";
 import AddToCart from "../AddToCart/AddToCart";
 import api from "../../Services/api.js";
-import { filter, pre } from "framer-motion/client";
 
-const pageSize = 2;
+const pageSize = 6;
 
 const ageRanges = [3, 6, 9, 12];
 
