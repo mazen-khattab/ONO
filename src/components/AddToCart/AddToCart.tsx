@@ -13,8 +13,7 @@ const AddToCart = ({
   const [active, setActive] = useState(true);
   const [activeIncrease, setActiveIncrease] = useState(increaseable);
   const [quantity, setQuantity] = useState(quant);
-  const { addToCart, increaseQuantity, decreaseQuantity } =
-    useCart();
+  const { addToCart, increaseQuantity, decreaseQuantity } = useCart();
 
   const handleAddToCart = () => {
     if (active) {
@@ -29,7 +28,7 @@ const AddToCart = ({
   };
 
   const AddedToCart = () => {
-       addToCart(Product, quantity);
+    addToCart(Product, quantity);
     setGo(true);
     setTimeout(() => setGo(false), 2000);
 
