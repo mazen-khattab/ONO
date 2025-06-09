@@ -212,6 +212,7 @@
   border: 1px solid #dddada;
   border-radius: 5px;
   width: 300px;
+  outline: none;
 }
 
 .order-contact-info select {

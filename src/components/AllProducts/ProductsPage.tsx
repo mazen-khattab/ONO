@@ -3,6 +3,7 @@ import "./ProductsPage.css";
 import Navbar from "../Navbar";
 import Footer from "../Footer/Footer";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../Services/authContext.js";
 import AddToCart from "../AddToCart/AddToCart";
 import api from "../../Services/api.js";
 
@@ -11,6 +12,7 @@ const pageSize = 6;
 const ageRanges = [3, 6, 9, 12];
 
 const ProductsPage = () => {
+  const { user } = useAuth;
   const langString = localStorage.getItem("lang");
   const savedLang = langString ? JSON.parse(langString) : null;
   const { t } = useTranslation("AllProducts");
@@ -63,8 +65,11 @@ const ProductsPage = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value, pageNumber: 1 }));
-
+    setFilters((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+      pageNumber: 1,
+    }));
   };
 
   const handleAgeRangeChange = (range: number) => {
@@ -77,7 +82,7 @@ const ProductsPage = () => {
 
   const navigateToPage = (page) => {
     if (page !== filters.pageNumber) {
-      setFilters((prev) => ({...prev, pageNumber: page}))
+      setFilters((prev) => ({ ...prev, pageNumber: page }));
     }
   };
 
@@ -189,7 +194,7 @@ const ProductsPage = () => {
           <main>
             <div className="allproducts-grid">
               {products.map((product) => (
-                <div key={product.id} className="allProduct-card">
+                <div key={product.productId} className="allProduct-card">
                   <div className="allProduct-image">
                     <img src={product.imageUrl} alt={product.name} />
                   </div>
@@ -235,7 +240,10 @@ const ProductsPage = () => {
                     ? "pagination-pages page-active"
                     : "pagination-pages"
                 }
-                onClick={() => {navigateToPage(page); window.scrollTo(0, 0);}}
+                onClick={() => {
+                  navigateToPage(page);
+                  window.scrollTo(0, 0);
+                }}
               >
                 {page}
               </span>
