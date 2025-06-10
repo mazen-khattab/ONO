@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Navbar.css";
 import logo from "../images/Logo.jpg";
 import { useTranslation } from "react-i18next";
-import { useCart } from "../CartContext";
+import { useCart } from "../Services/CartContext.tsx";
 import { useAuth } from "../Services/authContext.tsx";
 import api from "../Services/api.js";
 
@@ -10,14 +10,11 @@ const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
   const [menuActive, setMenuActive] = useState(false);
   const { i18n, t } = useTranslation("Home");
-  const { cartItems } = useCart();
+  const { cartItems, cartCount } = useCart();
 
   const { user, setUser, loading } = useAuth();
 
-  const totalQuantity = cartItems.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  const totalQuantity = cartCount;
 
   const langString = localStorage.getItem("lang");
   const savedLang = langString ? JSON.parse(langString) : null;

@@ -12,7 +12,7 @@ import Contact from "./components/ContactUs/Contact";
 import AllProducts from "./components/AllProducts/ProductsPage";
 import WhyUs from "./components/WhyUs/WhyUs";
 import CartPage from "./components/CartPage/Cart";
-import { CartProvider } from "./CartContext";
+import { CartProvider } from "./Services/CartContext";
 import { AuthProvider } from "./Services/authContext";
 
 function App() {

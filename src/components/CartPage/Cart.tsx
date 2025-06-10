@@ -3,14 +3,23 @@ import Navbar from "../Navbar";
 import Footer from "../Footer/Footer";
 import { ShoppingBag } from "lucide-react";
 import "./Cart.css";
-import { useCart } from "../../CartContext";
+import { useCart } from "../../Services/CartContext";
 import AddToCart from "../AddToCart/AddToCart";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../Services/authContext";
+import api from "../../Services/api.js";
 
 const CartPage = () => {
+  const { user } = useAuth();
   const { i18n, t } = useTranslation("Cart");
-  const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } =
-    useCart();
+  const {
+    cartItems,
+    loading,
+    cartCount,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
+  } = useCart();
   const [discount, setDiscount] = useState(0);
   const [price, setPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -36,14 +45,25 @@ const CartPage = () => {
     onSubmit?.(formData);
   };
 
-  const totalQuantity = cartItems.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  const totalQuantity = cartCount;
 
-  const DeleteProduct = (product) => {
+  const DeleteProduct = async (product) => {
+    if (user) {
+      try {
+        const response = await api.delete("/Cart/DeleteItem", {
+          params: { userId: user.userId, productId: product.productId },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     removeFromCart(product);
   };
+
+  if (user && loading) {
+    return null;
+  }
 
   if (cartItems.length === 0) {
     return (
@@ -73,10 +93,10 @@ const CartPage = () => {
         <div className="cart-content">
           <div className="cart-items">
             {cartItems.map((item) => (
-              <div key={item.id} className="cart-item">
+              <div key={item.productId} className="cart-item">
                 <div className="img-container">
                   <img
-                    src={item.image}
+                    src={item.imageUrl}
                     alt={item.name}
                     className="cart-item-image"
                   />
@@ -94,7 +114,7 @@ const CartPage = () => {
                     ></i>
                     <AddToCart
                       Product={item}
-                      quant={item.quantity}
+                      quant={item.productAmount}
                       disable={false}
                       increaseable={true}
                     ></AddToCart>
@@ -119,7 +139,7 @@ const CartPage = () => {
                   $
                   {cartItems
                     .reduce(
-                      (total, item) => total + item.price * item.quantity,
+                      (total, item) => total + item.price * item.productAmount,
                       0
                     )
                     .toFixed(2)}
@@ -137,7 +157,7 @@ const CartPage = () => {
                   $
                   {cartItems
                     .reduce(
-                      (total, item) => total + item.price * item.quantity,
+                      (total, item) => total + item.price * item.productAmount,
                       0
                     )
                     .toFixed(2)}
@@ -233,7 +253,7 @@ const CartPage = () => {
             <h2 className="checkout-title">{t("payment_method")}</h2>
             <div className="payment-method">
               <label>
-                <input type="radio" name="payment" value="cash" checked />{" "}
+                <input type="radio" name="payment" value="cash" />{" "}
                 {t("cash_on_delivery")}
               </label>
             </div>
