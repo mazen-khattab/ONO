@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./AddToCart.css";
-import { useCart } from "../../CartContext";
+import { useCart } from "../../Services/CartContext";
+import { useAuth } from "../../Services/authContext";
+import api from "../../Services/api";
 import { motion, AnimatePresence } from "framer-motion";
 
 const AddToCart = ({
@@ -9,11 +11,14 @@ const AddToCart = ({
   disable = true,
   increaseable = false,
 }) => {
+  const { user } = useAuth();
+
   const [go, setGo] = useState(false);
   const [active, setActive] = useState(true);
   const [activeIncrease, setActiveIncrease] = useState(increaseable);
   const [quantity, setQuantity] = useState(quant);
-  const { addToCart, increaseQuantity, decreaseQuantity } = useCart();
+  const { addToCart, setCartItems, increaseQuantity, decreaseQuantity } =
+    useCart();
 
   const handleAddToCart = () => {
     if (active) {
@@ -27,11 +32,23 @@ const AddToCart = ({
     }, 2000);
   };
 
-  const AddedToCart = () => {
-    addToCart(Product, quantity);
+  const AddedToCart = async () => {
+    if (user) {
+      const response = await api.post("/Cart/AddToCart", null, {
+        params: {
+          userId: user.userId,
+          productId: Product.productId,
+          amount: quantity,
+        },
+      });
+      console.log(response.data);
+      addToCart(response.data, quantity);
+    } else {
+      addToCart(Product, quantity);
+    }
+
     setGo(true);
     setTimeout(() => setGo(false), 2000);
-
     setQuantity(1);
   };
 
@@ -39,10 +56,24 @@ const AddToCart = ({
     setQuantity(quant);
   }, [quant]);
 
-  const increase = (product) => {
+  const increase = async (product) => {
     if (activeIncrease) {
       setQuantity((prev) => prev + 1);
-      increaseQuantity(product.id);
+      increaseQuantity(product.productId);
+
+      if (user) {
+        try {
+          const response = await api.put("/Cart/Increase", null, {
+            params: {
+              userId: user.userId,
+              productId: product.productId,
+            },
+          });
+          console.log(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      }
     } else {
       setQuantity((prev) => prev + 1);
     }
@@ -51,7 +82,7 @@ const AddToCart = ({
   const decrease = (product) => {
     if (activeIncrease) {
       setQuantity((prev) => Math.max(1, prev - 1));
-      decreaseQuantity(product.id);
+      decreaseQuantity(product.productId);
     } else {
       setQuantity((prev) => Math.max(1, prev - 1));
     }
