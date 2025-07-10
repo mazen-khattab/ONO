@@ -1,48 +1,72 @@
 import React, { useState, useEffect } from "react";
 import "./AddToCart.css";
-import { useCart } from "../../CartContext";
+import { useCart } from "../../Services/CartContext";
+import { useAuth } from "../../Services/authContext";
+import api from "../../Services/api";
 import { motion, AnimatePresence } from "framer-motion";
+import { useParams } from "react-router-dom";
 
-const AddToCart = ({
-  Product,
-  quant = 1,
-  disable = true,
-  increaseable = false,
-}) => {
+const AddToCart = ({ Product, quant = 1 }) => {
+  const { user, guestId } = useAuth();
+
   const [go, setGo] = useState(false);
-  const [activeIncrease, setActiveIncrease] = useState(increaseable);
+  const [active, setActive] = useState(true);
   const [quantity, setQuantity] = useState(quant);
-  const { addToCart, increaseQuantity, decreaseQuantity } =
-    useCart();
+  const [stockUnit, setStockUint] = useState(Product.stockUnit);
+  const [reserved, setReserved] = useState(Product.reserved);
+  const [canAddToCart, setCanAddToCart] = useState(true);
+  const { addToCart } = useCart();
 
   const handleAddToCart = () => {
-    addToCart(Product, quantity);
+    if (active) {
+      AddedToCart();
+    }
+
+    setActive(false);
+
+    setTimeout(() => {
+      setActive(true);
+    }, 2000);
+  };
+
+  const AddedToCart = async () => {
+    if (user) {
+      const response = await api.post("/Cart/AddToCart", null, {
+        params: {
+          productId: Product.productId,
+          amount: quantity,
+        },
+      });
+
+      addToCart(response.data, quantity);
+    } else {
+      const response = await api.post("/Cart/AddToGuestCart", null, {
+        params: {
+          productID: Product.productId,
+          amount: quantity,
+        },
+        headers: { GuestId: guestId },
+      });
+
+      addToCart(Product, quantity);
+    }
+
+    setReserved((prev) => prev + quantity);
     setGo(true);
     setTimeout(() => setGo(false), 2000);
-
-    setQuantity(1)
+    setQuantity(1);
   };
 
   useEffect(() => {
-    setQuantity(quant);
-  }, [quant]);
+    setCanAddToCart(reserved + quantity <= stockUnit);
+  }, [reserved]);
 
-  const increase = (product) => {
-    if (activeIncrease) {
-      setQuantity((prev) => prev + 1);
-      increaseQuantity(product.id);
-    } else {
-      setQuantity((prev) => prev + 1);
-    }
+  const increase = () => {
+    setQuantity((prev) => prev + 1);
   };
 
-  const decrease = (product) => {
-    if (activeIncrease) {
-      setQuantity((prev) => Math.max(1, prev - 1));
-      decreaseQuantity(product.id);
-    } else {
-      setQuantity((prev) => Math.max(1, prev - 1));
-    }
+  const decrease = () => {
+    setQuantity((prev) => Math.max(1, prev - 1));
   };
 
   return (
@@ -50,21 +74,31 @@ const AddToCart = ({
       <div className="quantity-selector">
         <button
           className="decrease"
-          onClick={() => decrease(Product)}
+          onClick={decrease}
           disabled={quantity <= 1}
         >
-          -
+          {" "}
+          -{" "}
         </button>
-        <span>{quantity}</span>
-        <button className="increase" onClick={() => increase(Product)}>
-          +
+        <span className="amount">{quantity}</span>
+        <button
+          className="increase"
+          onClick={increase}
+          disabled={quantity + reserved >= stockUnit}
+        >
+          {" "}
+          +{" "}
         </button>
       </div>
       <button
-        style={disable ? { display: "flex" } : { display: "none" }}
+        style={
+          canAddToCart
+            ? { backgroundColor: "#dc2626", cursor: "pointer" }
+            : { backgroundColor: "#b9b9b9", cursor: "no-drop" }
+        }
         className="cart-btn"
         onClick={() => {
-          handleAddToCart();
+          canAddToCart && handleAddToCart();
         }}
       >
         {go ? (

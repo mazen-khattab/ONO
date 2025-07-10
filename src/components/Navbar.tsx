@@ -2,17 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Navbar.css";
 import logo from "../images/Logo.jpg";
 import { useTranslation } from "react-i18next";
-import { useCart } from "../CartContext";
+import { useCart } from "../Services/CartContext.tsx";
+import { useAuth } from "../Services/authContext.tsx";
+import api from "../Services/api.js";
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
   const [menuActive, setMenuActive] = useState(false);
   const { i18n, t } = useTranslation("Home");
-  const { cartItems } = useCart();
+  const { cartItems, cartCount } = useCart();
 
-  const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const { user, setUser, loading } = useAuth();
 
-  const savedLang = JSON.parse(localStorage.getItem("lang"));
+  const totalQuantity = cartCount;
+
+  const langString = localStorage.getItem("lang");
+  const savedLang = langString ? JSON.parse(langString) : null;
 
   const languages = [
     { code: "en", name: t("header.English"), id: 1 },
@@ -24,6 +29,15 @@ const Navbar = () => {
       changeAllLanguage(savedLang.code);
     }
   }, []);
+
+  const Logout = async () => {
+    try {
+      const response = await api.post("/Auth/logout");
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   const changeAllLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -41,6 +55,10 @@ const Navbar = () => {
   const changeLanguage = (lang) => {
     localStorage.setItem("lang", JSON.stringify(lang));
   };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <nav className="navbar">
@@ -106,7 +124,7 @@ const Navbar = () => {
               </a>
             </div>
           </div>
-          
+
           <div className="nav-actions">
             <div className="icons">
               <div className="language-selector" onClick={dropdownLang}>
@@ -143,14 +161,21 @@ const Navbar = () => {
               </a>
             </div>
 
-            <div className="registration">
-              <a href="register" className="register-btn">
-                {t("header.register")}
-              </a>
-              <a href="login" className="login-btn">
-                {t("header.login")}
-              </a>
-            </div>
+            {user ? (
+              <div className="user-info">
+                <p className="user-name">{user.userName.slice(0, 2)}</p>
+                <button className="logout-btn" onClick={Logout}>{t("header.logout")}</button>
+              </div>
+            ) : (
+              <div className="registration">
+                <a href="/register" className="register-btn">
+                  {t("header.register")}
+                </a>
+                <a href="/login" className="login-btn">
+                  {t("header.login")}
+                </a>
+              </div>
+            )}
 
             <i className="fa-solid fa-bars icon menu" onClick={CloseMenu}></i>
           </div>

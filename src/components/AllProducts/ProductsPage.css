@@ -46,12 +46,29 @@
   gap: 2rem;
 }
 
+.allProducts-page .search-input {
+  position: relative;
+}
+
 .productFilters-section {
   background: white;
   padding: 1rem 1.5rem;
   border-radius: 8px;
   box-shadow: 1px 2px 6px 1px rgba(0, 0, 0, 0.1);
   height: fit-content;
+}
+
+.allProducts-page .search-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 2px;
+  height: 100%;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .filter-close {
@@ -164,11 +181,6 @@
   top: 0;
 }
 
-.allProduct-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
-}
-
 .allProduct-image {
   position: relative;
   aspect-ratio: 1;
@@ -177,22 +189,15 @@
 
 .allProduct-image img {
   height: 100%;
+  width: 100%;
   object-fit: cover;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.allProduct-card:hover .allProduct-image img {
-  transform: scale(1.1);
 }
 
 .allProduct-info {
   padding: 1.25rem;
   transform: translateY(0);
   transition: transform 0.3s ease;
-}
-
-.allProduct-card:hover .allProduct-info {
-  transform: translateY(-4px);
 }
 
 .allProduct-category {
@@ -230,10 +235,7 @@
   justify-content: space-between;
   align-items: center;
   transition: transform 0.3s ease;
-}
-
-.allProduct-card:hover .allProduct-footer {
-  transform: translateY(-2px);
+  margin-bottom: 16px;
 }
 
 .allProduct-price {
@@ -286,13 +288,48 @@
   color: white;
 }
 
-
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
   margin-top: 3rem;
+}
+
+.pagination .pagination-arrow {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #c9c9c9;
+  cursor: pointer;
+  background: var(--main-color);
+  color: white;
+  transition: 0.3s;
+}
+
+.pagination .pagination-arrow:not(:disabled):hover {
+  background-color: #dddddd;
+  color: black;
+}
+
+.pagination .pagination-arrow:disabled {
+  cursor: no-drop;
+  opacity: 0.5;
+}
+
+.pagination .pagination-pages {
+  padding: 5px;
+  width: 30px;
+  display: inline-block;
+  text-align: center;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.pagination .pagination-pages.page-active {
+  background-color: var(--main-color);
+  color: white;
 }
 
 .page-btn {
@@ -323,7 +360,7 @@
 
 @media (max-width: 900px) {
   .allProducts-container {
-    grid-template-columns: 220PX 1fr;
+    grid-template-columns: 220px 1fr;
   }
 
   .allproducts-grid {

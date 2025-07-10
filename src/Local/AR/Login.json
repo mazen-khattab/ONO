@@ -1,12 +1,13 @@
 {
     "hello": "أهلاً بيك",
     "welcome_back": "مرحب بيك",
-    "start_journey": "دخل بياناتك وابدأ الرحلة معانا",
-    "keep_connected": "علشان تفضل متواصل معانا، سجل دخول ببياناتك",
-    "create_account": "اعمل حساب",
+    "create_account": "انشاء حساب؟",
+    "Don't have an account": "ليس لدي حساب؟",
     "name": "الاسم",
     "email": "الإيميل",
     "password": "كلمة السر",
+    "confiremdPass": "تاكيد كلمة السر",
     "sign_up": "سجل",
-    "sign_in": "تسجيل دخول"
+    "sign_in": "تسجيل دخول",
+    "fname": ""
 }
