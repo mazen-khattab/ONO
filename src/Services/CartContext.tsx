@@ -2,18 +2,29 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import { useAuth } from "./authContext";
 import api from "./api.js";
 
-const CartContext = createContext();
+const CartContext = createContext({
+  cartItems: [],
+  cartCount: 0,
+  loading: false,
+  setCartItems: () => {},
+  addToCart: () => {},
+  increaseQuantity: () => {},
+  decreaseQuantity: () => {},
+  removeFromCart: () => {},
+});
 
-export const CartProvider = ({ children }) => {
-  const { user } = useAuth();
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { user, guestId } = useAuth();
   const [cartItems, setCartItems] = useState(() => {
     const storedCart = localStorage.getItem("cart");
     return storedCart ? JSON.parse(storedCart) : [];
   });
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
   const cartCount = cartItems.reduce(
-    (count, item) => count + item.productAmount,
+    (count: number, item: any) => count + item.productAmount,
     0
   );
 
@@ -25,26 +36,43 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      var cartData = JSON.parse(localStorage.getItem("cart")) || [];
+      const cart = localStorage.getItem("cart");
+      var cartData = cart ? JSON.parse(cart) : [];
 
-      cartData.map(async (element) => {
-        const response = await api.post("/Cart/AddToCart", null, {
-          params: {
-            userId: user.userId,
-            productID: element.productId,
-            amount: element.productAmount,
-          },
-        });
+      cartData.map(async (element: any) => {
+        try {
+          const response = await api.delete("/Cart/DeleteGuestItem", {
+            params: {
+              productID: element.productId,
+            },
+            headers: { GuestId: guestId },
+          });
+
+        } catch (error) {
+          console.error(error);
+        }
+
+        try {
+          const response = await api.post("/Cart/AddToCart", null, {
+            params: {
+              productID: element.productId,
+              amount: element.productAmount,
+            },
+          });
+          
+        } catch (error) {
+          console.error(error);
+        }
       });
 
       localStorage.removeItem("cart");
+      localStorage.removeItem("GuestId");
 
       const GetAllUserProducts = async () => {
         try {
-          const response = await api.get("/Cart/GetUserProducts", {
-            params: { userId: user.userId },
-          });
-          setCartItems(response.data)
+          const response = await api.get("/Cart/GetUserProducts");
+          setCartItems(response.data);
+          console.log(response.data)
         } catch (error) {
           console.error(error);
         } finally {
@@ -55,6 +83,25 @@ export const CartProvider = ({ children }) => {
       GetAllUserProducts();
     }
   }, [user]);
+
+  useEffect(() => {
+    const GetAllGuestProducts = async () => {
+      try {
+        const response = await api.get("/Cart/GetGuestProducts", {
+          headers: { GuestId: guestId },
+        });
+        setCartItems(response.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!user && guestId) {
+      GetAllGuestProducts();
+    }
+  }, [user, guestId]);
 
   const addToCart = (product, quantity = 1) => {
     setCartItems((prevItems) => {
@@ -77,7 +124,11 @@ export const CartProvider = ({ children }) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
         item.productId === productId
-          ? { ...item, productAmount: item.productAmount + 1 }
+          ? {
+              ...item,
+              productAmount: item.productAmount + 1,
+              reserved: item.reserved + 1,
+            }
           : item
       )
     );
@@ -87,7 +138,11 @@ export const CartProvider = ({ children }) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
         item.productId === productId && item.productAmount > 1
-          ? { ...item, productAmount: item.productAmount - 1 }
+          ? {
+              ...item,
+              productAmount: item.productAmount - 1,
+              reserved: item.reserved - 1,
+            }
           : item
       )
     );

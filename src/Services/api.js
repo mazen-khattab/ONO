@@ -32,7 +32,8 @@ api.interceptors.response.use(
       error.response.status === 401 &&
       !originalRequest._retry &&
       !originalRequest.url.includes("/Auth/Refresh") &&
-      !originalRequest.url.includes("/Auth/Get-Profile")
+      !originalRequest.url.includes("/Auth/Get-Profile") &&
+      !originalRequest.url.includes("/Auth/Login")
     ) {
       originalRequest._retry = true;
 

@@ -1,28 +1,44 @@
 import React, { useState } from "react";
-import Navbar from "../Navbar";
-import Footer from "../Footer/Footer";
-import { ShoppingBag } from "lucide-react";
-import "./Cart.css";
-import { useCart } from "../../Services/CartContext";
-import AddToCart from "../AddToCart/AddToCart";
+import Navbar from "../Navbar.js";
+import Footer from "../Footer/Footer.js";
+import { ConeIcon, ShoppingBag } from "lucide-react";
+import "./CartPage.css";
+import { useCart } from "../../Services/CartContext.js";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../../Services/authContext";
+import { useAuth } from "../../Services/authContext.js";
 import api from "../../Services/api.js";
 
 const CartPage = () => {
-  const { user } = useAuth();
-  const { i18n, t } = useTranslation("Cart");
+  const { user, guestId } = useAuth();
+  const { t } = useTranslation("Cart");
+  type CartItem = {
+    productId: number;
+    imageUrl: string;
+    name: string;
+    description: string;
+    ageRange: string;
+    price: number;
+    productAmount: number;
+    stockUnit: number;
+    reserved: number;
+  };
+
   const {
     cartItems,
     loading,
     cartCount,
+    removeFromCart,
     increaseQuantity,
     decreaseQuantity,
-    removeFromCart,
+  }: {
+    cartItems: CartItem[];
+    loading: boolean;
+    cartCount: number;
+    removeFromCart: (item: CartItem) => void;
+    increaseQuantity: (id: number) => void;
+    decreaseQuantity: (id: number) => void;
   } = useCart();
   const [discount, setDiscount] = useState(0);
-  const [price, setPrice] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
   const [formActive, setFromActive] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -45,14 +61,53 @@ const CartPage = () => {
     onSubmit?.(formData);
   };
 
-  const totalQuantity = cartCount;
+  const Increase = async (id: number) => {
+    try {
+      const response = await api.put("/Cart/Increase", null, {
+        params: {
+          productId: id,
+        },
+      });
+
+      increaseQuantity(id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const Decrease = async (id: number) => {
+    try {
+      const response = await api.put("/Cart/Decrease", null, {
+        params: {
+          productId: id,
+        },
+      });
+
+      decreaseQuantity(id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const DeleteProduct = async (product) => {
     if (user) {
       try {
         const response = await api.delete("/Cart/DeleteItem", {
-          params: { userId: user.userId, productId: product.productId },
+          params: { productId: product.productId },
         });
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        const response = await api.delete("/Cart/DeleteGuestItem", {
+          params: {
+            productID: product.productId,
+          },
+          headers: { GuestId: guestId },
+        });
+
+        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -61,7 +116,7 @@ const CartPage = () => {
     removeFromCart(product);
   };
 
-  if (user && loading) {
+  if (loading) {
     return null;
   }
 
@@ -109,15 +164,27 @@ const CartPage = () => {
                   <p style={{ marginBottom: "10px" }}>${item.price}</p>
                   <div>
                     <i
-                      className="fa-solid fa-trash"
+                      className="fa-solid fa-trash delete-btn"
                       onClick={() => DeleteProduct(item)}
                     ></i>
-                    <AddToCart
-                      Product={item}
-                      quant={item.productAmount}
-                      disable={false}
-                      increaseable={true}
-                    ></AddToCart>
+
+                    <div className="product-amount">
+                      <button
+                        className="increase-amount"
+                        onClick={() => Increase(item.productId)}
+                        disabled={item.reserved >= item.stockUnit}
+                      >
+                        +
+                      </button>
+                      <p className="amount">{item.productAmount}</p>
+                      <button
+                        className="decrease-amount"
+                        disabled={item.productAmount <= 1}
+                        onClick={() => Decrease(item.productId)}
+                      >
+                        -
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -130,7 +197,7 @@ const CartPage = () => {
 
               <div className="items-details">
                 <p>{t("items")}</p>
-                <p>{totalQuantity}</p>
+                <p>{cartCount}</p>
               </div>
 
               <div className="sub-price">

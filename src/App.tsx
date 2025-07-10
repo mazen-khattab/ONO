@@ -11,7 +11,7 @@ import Register from "./components/Register/Register";
 import Contact from "./components/ContactUs/Contact";
 import AllProducts from "./components/AllProducts/ProductsPage";
 import WhyUs from "./components/WhyUs/WhyUs";
-import CartPage from "./components/CartPage/Cart";
+import CartPage from "./components/CartPage/CartPage";
 import { CartProvider } from "./Services/CartContext";
 import { AuthProvider } from "./Services/authContext";
 

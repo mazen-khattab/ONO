@@ -7,7 +7,7 @@ import { useAuth } from "../../Services/authContext.js";
 import AddToCart from "../AddToCart/AddToCart";
 import api from "../../Services/api.js";
 
-const pageSize = 6;
+const pageSize = 30;
 
 const ageRanges = [3, 6, 9, 12];
 
@@ -65,6 +65,7 @@ const ProductsPage = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
+    console.log(e.target.name, e.target.value);
     setFilters((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -102,9 +103,8 @@ const ProductsPage = () => {
               <input
                 type="text"
                 placeholder="Search products..."
-                value={filters.Search}
                 name="Search"
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => setSearch(e.target.value)}
                 className="productForm-input"
                 style={{ paddingRight: "30px" }}
               />

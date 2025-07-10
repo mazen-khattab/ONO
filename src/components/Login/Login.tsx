@@ -26,8 +26,6 @@ function LoginPage() {
         password: formData.password,
       });
 
-      console.log(response)
-
       window.location.href = "/";
     } catch (error) {
       setError("invalid email or password");
