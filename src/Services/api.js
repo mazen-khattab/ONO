@@ -1,6 +1,10 @@
 import axios from "axios";
 
-//const API_URL = "http://193.227.24.31:5050/api";
+let navigateTo = null;
+export const setNavigate = (fn) => {
+  navigateTo = fn;
+};
+
 const API_URL = "https://localhost:7146/api";
 
 const api = axios.create({
@@ -13,39 +17,45 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (config) => config,
+  (error) => Promise.reject(error)
 );
 
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    // console.log(error);
+
+    // console.log(error.response.status === 401);
+    // console.log(!originalRequest._retry);
+    // console.log(!originalRequest.url.includes("/Auth/Refresh"));
+    // console.log(!originalRequest.url.includes("/Auth/Login"));
 
     if (
       error.response.status === 401 &&
       !originalRequest._retry &&
       !originalRequest.url.includes("/Auth/Refresh") &&
-      !originalRequest.url.includes("/Auth/Get-Profile") &&
-      !originalRequest.url.includes("/Auth/Login")
+      !originalRequest.url.includes("/Auth/Login") && 
+      !originalRequest.url.includes("/Get-userRoles")
     ) {
       originalRequest._retry = true;
-
       try {
+        // console.log("inside refresh")
         const response = await api.post("/Auth/Refresh");
+        // console.log(response);
         return api(originalRequest);
       } catch {
-        window.location.href = "/login";
+        
+        if (navigateTo) {
+          navigateTo("/login");
+        }
+
         return Promise.reject(error);
       }
     }
 
+    // console.log(error);
     return Promise.reject(error);
   }
 );

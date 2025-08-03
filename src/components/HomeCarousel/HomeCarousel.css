@@ -31,7 +31,7 @@
 
 .carousel-track {
   will-change: transform;
-  animation: scrollVertically 40s linear infinite;
+  animation: scrollVertically 30s linear infinite;
 }
 
 .carousel-track.paused {
@@ -90,8 +90,13 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  padding: 0 16px 30px;
+  background: linear-gradient(to top, rgb(0 0 0 / 80%) 10%, transparent 50%);
+  height: 100%;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  text-align: center;
 }
 
 .card-front-content h3 {
@@ -102,12 +107,13 @@
 
 .card-back {
   transform: rotateY(180deg);
-  background-color: #4338ca;
+  background-color: var(--main-color);
   border-radius: 70px;
-  padding: 1.5rem;
+  padding: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
 .card-back-content {
@@ -115,7 +121,7 @@
 }
 
 .card-back-content h3 {
-  font-size: 1.25rem;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 1rem;
 }
@@ -249,6 +255,6 @@
 
 @media (max-width: 768px) {
   .carousel-container {
-    display: none
+    display: none;
   }
 }

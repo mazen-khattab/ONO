@@ -273,6 +273,7 @@
   border-radius: 50%;
   font-weight: 700;
   cursor: pointer;
+  color: black;
 }
 
 .navbar .logout-btn {

@@ -106,10 +106,6 @@ const Navbar = () => {
           >
             <i className="fa-solid fa-xmark close" onClick={CloseMenu}></i>
             <div className="nav-links-menu-container">
-              <div className="user">
-                <i className="fa-solid fa-circle-user"></i>
-                <p>User_name</p>
-              </div>
               <a href="/" className="link">
                 {t("header.home")}
               </a>
@@ -163,8 +159,10 @@ const Navbar = () => {
 
             {user ? (
               <div className="user-info">
-                <p className="user-name">{user.userName.slice(0, 2)}</p>
-                <button className="logout-btn" onClick={Logout}>{t("header.logout")}</button>
+                <a href="/UserProfile" className="user-name">{user.userName.slice(0, 2)}</a>
+                <button className="logout-btn" onClick={Logout}>
+                  {t("header.logout")}
+                </button>
               </div>
             ) : (
               <div className="registration">

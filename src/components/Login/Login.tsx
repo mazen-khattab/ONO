@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "./Loign.css";
 import { Mail, Lock, ArrowRight } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import api from "../../Services/api.js";
 
 function LoginPage() {
@@ -11,20 +10,21 @@ function LoginPage() {
     password: "",
   });
   const [error, setError] = useState("");
-  const { i18n, t } = useTranslation("Login");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    setError(""); 
+    setError("");
 
     try {
       const response = await api.post("/Auth/Login", {
         email: formData.email,
         password: formData.password,
       });
+
+      console.log(response.data)
 
       window.location.href = "/";
     } catch (error) {

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../Navbar.js";
 import Footer from "../Footer/Footer.js";
-import { ConeIcon, ShoppingBag } from "lucide-react";
+import { Coins, ShoppingBag } from "lucide-react";
 import "./CartPage.css";
 import { useCart } from "../../Services/CartContext.js";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,10 @@ import { useAuth } from "../../Services/authContext.js";
 import api from "../../Services/api.js";
 
 const CartPage = () => {
-  const { user, guestId } = useAuth();
+  const { user, setUser, guestId, getUserProfile } = useAuth();
+  const [completeLoading, setCompleteLoading] = useState(false);
+  const [registerError, setRegisterError] = useState("");
+  const [orderCompletedActive, setOrderCompletedActive] = useState(false);
   const { t } = useTranslation("Cart");
   type CartItem = {
     productId: number;
@@ -25,11 +28,14 @@ const CartPage = () => {
 
   const {
     cartItems,
-    loading,
+    setCartItems,
+    cartLoading,
     cartCount,
     removeFromCart,
     increaseQuantity,
     decreaseQuantity,
+    migrateGuestCartData,
+    getUserProducts
   }: {
     cartItems: CartItem[];
     loading: boolean;
@@ -40,52 +46,209 @@ const CartPage = () => {
   } = useCart();
   const [discount, setDiscount] = useState(0);
   const [formActive, setFromActive] = useState(false);
+  const [userProfile, setUserProfile] = useState([]);
 
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     phone: "",
     email: "",
-    governorate: "",
-    city: "",
-    fullyAddress: "",
+    password: "",
+    orderNotes: "",
+    address: {
+      governorate: "",
+      city: "",
+      fullAddress: "",
+    },
   });
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await getUserProfile();
+        setFormData(response);
+        setUserProfile(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (user) {
+      fetchUserProfile();
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      address: { ...prev.address, [name]: value },
+    }));
+  };
+
+  const handleUserRegistration = async () => {
+    setRegisterError("");
+
+    const criteria = {
+      firstName: formData.firstName.trim(),
+      lastName: formData.lastName.trim(),
+      phoneNumber: formData.phone,
+      email: formData.email.trim(),
+      password: formData.password,
+      confirmPassword: formData.password,
+    };
+
+    try {
+      await api.post("/Auth/Register", criteria);
+    } catch (error) {
+      console.error(error);
+      setRegisterError(
+        error.response?.data || "Registration failed. Please try again."
+      );
+      return false;
+    }
+
+    try {
+      await migrateGuestCartData();
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setCompleteLoading(false);
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted Data:", formData);
-    onSubmit?.(formData);
+    setCompleteLoading(true);
+    const totalprice = cartItems.reduce(
+      (total, item) => total + item.price * item.productAmount,
+      0
+    );
+
+    let productItems = cartItems;
+
+    if (!user) {
+      const response = await handleUserRegistration();
+
+      if (!response) {
+        setCompleteLoading(false);
+        return;
+      }
+      
+      const profile = await getUserProfile();
+      setUserProfile(profile);
+
+      const userProducts = await getUserProducts();
+      productItems = userProducts;
+    }
+
+    console.log(userProfile);
+    if (userProfile?.address === null) {
+      console.log(`add user address`);
+      const addressInfo = {
+        governorate: formData.address.governorate,
+        city: formData.address.city,
+        fullAddress: formData.address.fullAddress,
+      };
+
+      try {
+        const response = await api.post("/User/AddUserAddress", addressInfo);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    const orderInfo = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      Phone: formData.phone,
+      notes: formData.orderNotes,
+      totalPrice: totalprice,
+      address: formData.address,
+      cartItems: productItems,
+    };
+
+    try {
+      const response = await api.post("/Order/CompleteOrder", orderInfo);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+
+    setOrderCompletedActive(true);
+    setCartItems([]);
+
+    setTimeout(() => {
+      setOrderCompletedActive(false);
+      setFromActive(false);
+    }, 5000);
   };
 
   const Increase = async (id: number) => {
-    try {
-      const response = await api.put("/Cart/Increase", null, {
-        params: {
-          productId: id,
-        },
-      });
+    if (user) {
+      try {
+        const response = await api.put("/Cart/Increase", null, {
+          params: {
+            productId: id,
+          },
+        });
 
-      increaseQuantity(id);
-    } catch (error) {
-      console.error(error);
+        increaseQuantity(id);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        const response = await api.put("/Cart/IncreaseGuest", null, {
+          params: {
+            productID: id,
+          },
+          headers: { GuestId: guestId },
+        });
+
+        increaseQuantity(id);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
   const Decrease = async (id: number) => {
-    try {
-      const response = await api.put("/Cart/Decrease", null, {
-        params: {
-          productId: id,
-        },
-      });
+    if (user) {
+      try {
+        const response = await api.put("/Cart/Decrease", null, {
+          params: {
+            productId: id,
+          },
+        });
 
-      decreaseQuantity(id);
-    } catch (error) {
-      console.error(error);
+        decreaseQuantity(id);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        const response = await api.put("/Cart/DecreaseGuest", null, {
+          params: {
+            productID: id,
+          },
+          headers: { GuestId: guestId },
+        });
+
+        decreaseQuantity(id);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -116,11 +279,11 @@ const CartPage = () => {
     removeFromCart(product);
   };
 
-  if (loading) {
+  if (cartLoading) {
     return null;
   }
 
-  if (cartItems.length === 0) {
+  if (cartItems.length === 0 && !formActive) {
     return (
       <div>
         <Navbar></Navbar>
@@ -203,7 +366,7 @@ const CartPage = () => {
               <div className="sub-price">
                 <p>{t("price")}</p>
                 <p>
-                  $
+                  <span className="price-currency">EGP</span>
                   {cartItems
                     .reduce(
                       (total, item) => total + item.price * item.productAmount,
@@ -221,7 +384,7 @@ const CartPage = () => {
               <div className="total-price">
                 <p>{t("total")}</p>
                 <p>
-                  $
+                  <span className="price-currency">EGP</span>
                   {cartItems
                     .reduce(
                       (total, item) => total + item.price * item.productAmount,
@@ -246,7 +409,13 @@ const CartPage = () => {
         className="checkout-container"
         style={formActive ? { display: "block" } : { display: "none" }}
       >
-        <form className="checkout-form" onSubmit={handleSubmit}>
+        <form
+          className="checkout-form"
+          onSubmit={handleSubmit}
+          style={
+            orderCompletedActive ? { display: "none" } : { display: "flex" }
+          }
+        >
           <div className="checkout-header">
             <h2 className="checkout-title">{t("contact_info")}</h2>
             <i
@@ -256,83 +425,206 @@ const CartPage = () => {
           </div>
 
           <div className="order-contact-info">
-            <input
-              type="text"
-              name="name"
-              placeholder={t("name")}
-              required
-              autoComplete="off"
-              value={formData.name}
-              onChange={handleChange}
-            />
+            <p
+              style={{
+                textAlign: "center",
+                color: "red",
+                marginBottom: "10px",
+              }}
+            >
+              {registerError}
+            </p>
 
-            <input
-              type="tel"
-              name="phone"
-              placeholder={t("phone")}
-              required
-              autoComplete="off"
-              value={formData.phone}
-              onChange={handleChange}
-            />
+            <div className="order-contact-grid">
+              <div>
+                <label htmlFor="fname">
+                  {t("fname")} <span>*</span>
+                </label>
+                <input
+                  id="fname"
+                  type="text"
+                  name="firstName"
+                  placeholder={t("enter") + " " + t("fname")}
+                  required
+                  autoComplete="off"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                />
+              </div>
 
-            <input
-              type="email"
-              name="email"
-              placeholder={t("email")}
-              autoComplete="off"
-              value={formData.email}
-              onChange={handleChange}
-            />
+              <div>
+                <label htmlFor="lname">
+                  {t("lname")} <span>*</span>
+                </label>
+                <input
+                  id="lname"
+                  type="text"
+                  name="lastName"
+                  placeholder={t("enter") + " " + t("lname")}
+                  required
+                  autoComplete="off"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
 
-            <input
-              type="text"
-              name="governorate"
-              placeholder={t("select_governorate")}
-              required
-              autoComplete="off"
-              value={formData.governorate}
-              onChange={handleChange}
-            />
+            <div className="order-contact-grid">
+              <div>
+                <label htmlFor="email">
+                  {t("email")} <span>*</span>
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder={t("enter") + " " + t("email")}
+                  autoComplete="off"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
 
-            <input
-              type="text"
-              name="city"
-              placeholder={t("select_city")}
-              required
-              autoComplete="off"
-              value={formData.city}
-              onChange={handleChange}
-            />
+              <div>
+                <label htmlFor="phone">
+                  {t("phone")}
+                  <span>*</span>
+                </label>
+                <input
+                  id="phone"
+                  type="number"
+                  name="phone"
+                  placeholder={t("enter") + " " + t("phone")}
+                  autoComplete="off"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
 
-            <input
-              type="text"
-              name="fullyAddress"
-              placeholder={t("address")}
-              required
-              autoComplete="off"
-              value={formData.fullyAddress}
-              onChange={handleChange}
-            />
+            <div className="order-contact-grid">
+              <div>
+                <label htmlFor="governorate">
+                  {t("select_governorate")} <span>*</span>
+                </label>
+                <input
+                  id="governorate"
+                  type="text"
+                  name="governorate"
+                  placeholder={t("enter") + " " + t("select_governorate")}
+                  required
+                  autoComplete="off"
+                  value={formData.address?.governorate || ""}
+                  onChange={handleAddressChange}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="city">
+                  {t("select_city")} <span>*</span>
+                </label>
+                <input
+                  id="city"
+                  type="text"
+                  name="city"
+                  placeholder={t("enter") + " " + t("select_city")}
+                  required
+                  autoComplete="off"
+                  value={formData.address?.city || ""}
+                  onChange={handleAddressChange}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="fullyAddress">
+                {t("address")} <span>*</span>
+              </label>
+              <input
+                id="fullyAddress"
+                type="text"
+                name="fullAddress"
+                placeholder={t("full address")}
+                required
+                autoComplete="off"
+                value={formData.address?.fullAddress || ""}
+                onChange={handleAddressChange}
+              />
+            </div>
+
+            {!user && (
+              <div>
+                <label htmlFor="password">
+                  {t("password-lable")} <span>*</span>
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  placeholder={t("enter") + " " + t("password")}
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
+
+            <div className="textarea">
+              <label htmlFor="orderNotes">{t("notes")}:</label>
+              <textarea
+                id="orderNotes"
+                name="orderNotes"
+                value={formData.orderNotes}
+                onChange={handleChange}
+              ></textarea>
+            </div>
           </div>
 
           <div className="payment-methods">
             <h2 className="checkout-title">{t("payment_method")}</h2>
             <div className="payment-method">
               <label>
-                <input type="radio" name="payment" value="cash" />{" "}
+                <input type="radio" name="payment" value="cash" required />{" "}
                 {t("cash_on_delivery")}
               </label>
             </div>
           </div>
 
           <button type="submit" className="complete-order">
-            {t("complete")}
+            {completeLoading === true ? (
+              <div className="spinner" />
+            ) : (
+              t("complete")
+            )}
           </button>
         </form>
 
+        <div
+          className="successfullMessage-container"
+          style={
+            orderCompletedActive ? { display: "flex" } : { display: "none" }
+          }
+        >
+          <i
+            className="fa-solid fa-xmark form-close-btn"
+            onClick={() => setFromActive(!formActive)}
+          ></i>
+          <div className="icon-container">
+            <i className="fa-solid fa-check"></i>
+          </div>
+          <div className="info-container">
+            <p>The order completed successfull, we will contact you in 24H</p>
+          </div>
+          <div className="cart-shop-now-container">
+            <a href="./AllProducts" className="cart-shop-now">
+              {t("shop_now")}
+            </a>
+          </div>
+        </div>
+
         <div className="modal-overlay"></div>
       </div>
+
       <Footer></Footer>
     </div>
   );

@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { X } from "lucide-react";
 import "./ProductsPage.css";
 import Navbar from "../Navbar";
 import Footer from "../Footer/Footer";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../../Services/authContext.js";
 import AddToCart from "../AddToCart/AddToCart";
 import api from "../../Services/api.js";
 
-const pageSize = 30;
+const pageSize = 12;
 
 const ageRanges = [3, 6, 9, 12];
 
 const ProductsPage = () => {
-  const { user } = useAuth;
   const langString = localStorage.getItem("lang");
   const savedLang = langString ? JSON.parse(langString) : null;
   const { t } = useTranslation("AllProducts");
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [pagesCount, setPagesCount] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const pages = Array.from({ length: pagesCount }, (_, i) => i + 1);
 
@@ -196,7 +196,11 @@ const ProductsPage = () => {
               {products.map((product) => (
                 <div key={product.productId} className="allProduct-card">
                   <div className="allProduct-image">
-                    <img src={product.imageUrl} alt={product.name} />
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      onClick={() => setSelectedProduct(product)}
+                    />
                   </div>
                   <div className="allProduct-info">
                     <div className="allProduct-category">
@@ -216,6 +220,40 @@ const ProductsPage = () => {
             </div>
           </main>
         </div>
+
+        {selectedProduct && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="close-button"
+              >
+                <X />
+              </button>
+              <div className="modal-grid">
+                <div className="modal-image">
+                  <img
+                    src={selectedProduct.imageUrl}
+                    alt={selectedProduct.name}
+                  />
+                </div>
+                <div className="modal-details">
+                  <h3 className="modal-title">{selectedProduct.name}</h3>
+                  <p className="modal-description">
+                    {selectedProduct.description}
+                  </p>
+                  <p className="modal-age">
+                    Recommended Age: {selectedProduct.ageRange}
+                  </p>
+                  <div className="price-cart">
+                    <div className="modal-price">${selectedProduct.price}</div>
+                    <AddToCart Product={selectedProduct}></AddToCart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="pagination">
           <button

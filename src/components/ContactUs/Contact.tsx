@@ -1,21 +1,36 @@
 import React, { useState } from "react";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
 import "./Contact.css";
 import { useTranslation } from "react-i18next";
+import api from "../../Services/api.js"
+import { Phone } from "lucide-react";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
+    phone: "",
     message: "",
   });
 
   const { i18n, t } = useTranslation("Home");
   const savedLang = JSON.parse(localStorage.getItem("lang"));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormData({ name: "", email: "", message: "" });
+    console.log(formData);
+
+    const contactUsInfo = {
+      name: formData.name,
+      phoneNumber: formData.phone
+    }
+
+    try {
+      const response = await api.post("/User/ContactUs", contactUsInfo);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+
+    setFormData({ name: "", phone: "", message: "" });
   };
 
   return (
@@ -27,14 +42,14 @@ const Contact = () => {
             <i className="fa-solid fa-envelope info-icon"></i>
             <div className="info-text">
               <h4>{t("contact.email")}</h4>
-              <p>------------</p>
+              <p>ONOStore@gmail.com</p>
             </div>
           </div>
           <div className="info-item">
             <i className="fa-solid fa-phone-flip info-icon"></i>
             <div className="info-text">
               <h4>{t("contact.phone")}</h4>
-              <p>------------</p>
+              <p>01023839637</p>
             </div>
           </div>
           <div className="info-item">
@@ -67,31 +82,17 @@ const Contact = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="email" className="form-label">
-              {t("contact.email")}
+            <label htmlFor="phone" className="form-label">
+              {t("contact.phone")}
             </label>
             <input
-              type="email"
-              id="email"
-              value={formData.email}
+              type="number"
+              id="phone"
+              value={formData.phone}
               onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
+                setFormData({ ...formData, phone: e.target.value })
               }
               className="form-input"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="message" className="form-label">
-              {t("contact.message")}
-            </label>
-            <textarea
-              id="message"
-              value={formData.message}
-              onChange={(e) =>
-                setFormData({ ...formData, message: e.target.value })
-              }
-              className="form-textarea"
               required
             />
           </div>
