@@ -4,7 +4,6 @@ import { useCart } from "../../Services/CartContext";
 import { useAuth } from "../../Services/authContext";
 import api from "../../Services/api";
 import { motion, AnimatePresence } from "framer-motion";
-import { useParams } from "react-router-dom";
 
 const AddToCart = ({ Product, quant = 1 }) => {
   const { user, guestId } = useAuth();

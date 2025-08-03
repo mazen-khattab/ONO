@@ -20,12 +20,12 @@
     "Shop Now": "Shop Now"
   },
   "featured products": {
-    "title": "Featured Products",
+    "title": "Products",
     "show": "Show All Products"
   },
   "contact": {
-    "contactUs": "Contact Us",
-    "weLoveToHear": "We'd love to hear from you",
+    "contactUs": "Need Help?",
+    "weLoveToHear": "if you have any questions, feel free to contact us",
     "getInTouch": "Get in Touch",
     "email": "Email",
     "phone": "Phone",
