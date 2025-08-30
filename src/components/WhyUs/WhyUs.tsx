@@ -28,7 +28,7 @@ function Why() {
 
   return (
     <div>
-      <Navbar></Navbar>
+      <Navbar activePage={3}></Navbar>
 
       <div className="why-us-page">
         <section className="why-section">

@@ -10,7 +10,7 @@ const About = () => {
 
   return (
     <div>
-      <Navbar></Navbar>
+      <Navbar activePage={2}></Navbar>
 
       <section id="about" className="about-section">
         <div className="about-container">

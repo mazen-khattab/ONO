@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../Navbar.js";
 import Footer from "../Footer/Footer.js";
-import { Coins, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import "./CartPage.css";
 import { useCart } from "../../Services/CartContext.js";
 import { useTranslation } from "react-i18next";
@@ -35,7 +35,7 @@ const CartPage = () => {
     increaseQuantity,
     decreaseQuantity,
     migrateGuestCartData,
-    getUserProducts
+    getUserProducts,
   }: {
     cartItems: CartItem[];
     loading: boolean;
@@ -142,7 +142,7 @@ const CartPage = () => {
         setCompleteLoading(false);
         return;
       }
-      
+
       const profile = await getUserProfile();
       setUserProfile(profile);
 
@@ -323,29 +323,29 @@ const CartPage = () => {
                 <div className="cart-item-details">
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
-                  <p>Age: {item.ageRange}</p>
-                  <p style={{ marginBottom: "10px" }}>${item.price}</p>
+                  <p className="product-age">Age: {item.ageRange}</p>
+                    
+                  <p className="product-price">Price: {item.price}<span className="price-currency">EGP</span></p>
+                  <i
+                    className="fa-solid fa-close delete-btn"
+                    onClick={() => DeleteProduct(item)}
+                  ></i>
                   <div>
-                    <i
-                      className="fa-solid fa-trash delete-btn"
-                      onClick={() => DeleteProduct(item)}
-                    ></i>
-
                     <div className="product-amount">
-                      <button
-                        className="increase-amount"
-                        onClick={() => Increase(item.productId)}
-                        disabled={item.reserved >= item.stockUnit}
-                      >
-                        +
-                      </button>
-                      <p className="amount">{item.productAmount}</p>
                       <button
                         className="decrease-amount"
                         disabled={item.productAmount <= 1}
                         onClick={() => Decrease(item.productId)}
                       >
                         -
+                      </button>
+                      <p className="amount">{item.productAmount}</p>
+                      <button
+                        className="increase-amount"
+                        onClick={() => Increase(item.productId)}
+                        disabled={item.reserved >= item.stockUnit}
+                      >
+                        +
                       </button>
                     </div>
                   </div>
@@ -366,13 +366,13 @@ const CartPage = () => {
               <div className="sub-price">
                 <p>{t("price")}</p>
                 <p>
-                  <span className="price-currency">EGP</span>
                   {cartItems
                     .reduce(
                       (total, item) => total + item.price * item.productAmount,
                       0
                     )
                     .toFixed(2)}
+                    <span className="price-currency">EGP</span>
                 </p>
               </div>
 
@@ -384,13 +384,13 @@ const CartPage = () => {
               <div className="total-price">
                 <p>{t("total")}</p>
                 <p>
-                  <span className="price-currency">EGP</span>
                   {cartItems
                     .reduce(
                       (total, item) => total + item.price * item.productAmount,
                       0
                     )
                     .toFixed(2)}
+                    <span className="price-currency">EGP</span>
                 </p>
               </div>
 

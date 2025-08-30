@@ -88,7 +88,7 @@ const Products = () => {
                   </div>
 
                   <div className="product-info">
-                    <div className="product-header">
+                    <div className="product-header" onClick={() => setSelectedProduct(product)}>
                       <h3 className="product-title">{product.name}</h3>
                       <p className="product-description">
                         {product.description}

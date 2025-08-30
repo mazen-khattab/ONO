@@ -42,6 +42,8 @@
 
 .loader p {
   color: white;
+  font-size: 45px;
+  font-weight: 700;
 }
 
 .words {
@@ -55,11 +57,12 @@
   height: 100%;
   padding: 0 6px;
   color: var(--main-color);
+  font-size: 45px;
 }
 
 .hero-description {
   color: #bdbdbd;
-  font-size: 20px;
+  font-size: 24px;
   width: 350px;
   margin-bottom: 40px;
 }
@@ -97,7 +100,26 @@
 
 .shop-now:hover::after {
   width: 100%;
+}
 
+@media (max-width: 1200px) {
+  .loader p {
+    font-size: 40px;
+  }
+
+  .word {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .loader p {
+    font-size: 35px;
+  }
+
+  .word {
+    font-size: 35px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -113,7 +135,7 @@
   .hero-description {
     width: 100%;
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
   }
 
   .word {
@@ -125,48 +147,47 @@
       -webkit-transform: translateY(-102%);
       transform: translateY(-102%);
     }
-  
+
     25% {
       -webkit-transform: translateY(-100%);
       transform: translateY(-100%);
     }
-  
+
     35% {
       -webkit-transform: translateY(-202%);
       transform: translateY(-202%);
     }
-  
+
     50% {
       -webkit-transform: translateY(-200%);
       transform: translateY(-200%);
     }
-  
+
     60% {
       -webkit-transform: translateY(-302%);
       transform: translateY(-302%);
     }
-  
+
     75% {
       -webkit-transform: translateY(-300%);
       transform: translateY(-300%);
     }
-  
+
     85% {
       -webkit-transform: translateY(-402%);
       transform: translateY(-402%);
     }
-  
+
     100% {
       -webkit-transform: translateY(-400%);
       transform: translateY(-400%);
     }
   }
-  
 }
 
 @media (max-width: 650px) {
   .card {
-    padding: 0 7px;
+    padding: 0 16px;
   }
 
   .loader {
@@ -174,7 +195,7 @@
   }
 
   .hero-description {
-    font-size: 16px;
+    font-size: 18px;
   }
 }
 
@@ -183,8 +204,30 @@
     font-size: 25px;
   }
 
+  .loader p {
+    font-size: 30px;
+  }
+
+  .word {
+    font-size: 30px;
+  }
+
   .hero-description {
-    font-size: 14px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .loader p {
+    font-size: 28px;
+  }
+
+  .word {
+    font-size: 28px;
+  }
+
+  .hero-description {
+    font-size: 16px;
   }
 }
 
@@ -193,9 +236,17 @@
     font-size: 24px;
   }
 
+  .loader p {
+    font-size: 24px;
+  }
+
+  .word {
+    font-size: 24px;
+  }
+
   .hero-description {
-    font-size: 14px;
-    width: 250px;
+    font-size: 18px;
+    width: 300px;
     margin: 0 auto 40px;
   }
 }
@@ -210,10 +261,28 @@
   .loader {
     font-size: 22px;
   }
+
+  .loader p {
+    font-size: 23px;
+  }
+
+  .word {
+    font-size: 23px;
+  }
 }
 
 @media (max-width: 380px) {
   .loader {
     font-size: 21px;
+  }
+}
+
+@media (max-width: 360px) {
+  .loader p {
+    font-size: 22px;
+  }
+
+  .word {
+    font-size: 22px;
   }
 }
