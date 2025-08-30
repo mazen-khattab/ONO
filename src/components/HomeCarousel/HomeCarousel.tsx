@@ -32,7 +32,7 @@ const HomeCarousel: React.FC<HomeCarouselProps> = (props) => {
             <div className="carousel-card">
               {/* Front side */}
               <div className="card-front">
-                <img src={item.imageUrl} alt={item.name} />
+                <img src={item.imageUrl} alt={item.name} loading="lazy"/>
                 <div className="card-front-content">
                   <h3>{item.name}</h3>
                 </div>

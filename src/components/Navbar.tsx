@@ -6,9 +6,14 @@ import { useCart } from "../Services/CartContext.tsx";
 import { useAuth } from "../Services/authContext.tsx";
 import api from "../Services/api.js";
 
-const Navbar = () => {
+interface NavbarProps {
+  activePage: number;
+}
+
+const Navbar = ({ activePage }: NavbarProps) => {
   const [isActive, setIsActive] = useState(false);
   const [menuActive, setMenuActive] = useState(false);
+  const [userMenuActive, setUserMenuActive] = useState(false);
   const { i18n, t } = useTranslation("Home");
   const { cartItems, cartCount } = useCart();
 
@@ -24,10 +29,33 @@ const Navbar = () => {
     { code: "ar", name: t("header.Arabic"), id: 2 },
   ];
 
+  const navLinks = [
+    { name: t("header.home"), link: "/" },
+    { name: t("header.products"), link: "/AllProducts" },
+    { name: t("header.about"), link: "/about" },
+    { name: t("header.why us"), link: "/WhyUs" },
+  ];
+
   useEffect(() => {
     if (savedLang) {
       changeAllLanguage(savedLang.code);
     }
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMenuActive(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const Logout = async () => {
@@ -46,10 +74,16 @@ const Navbar = () => {
 
   const dropdownLang = () => {
     setIsActive(!isActive);
+    setUserMenuActive(false);
   };
 
   const CloseMenu = () => {
     setMenuActive(!menuActive);
+  };
+
+  const CloseUserMenu = () => {
+    setUserMenuActive(!userMenuActive);
+    setIsActive(false);
   };
 
   const changeLanguage = (lang) => {
@@ -69,35 +103,24 @@ const Navbar = () => {
           </a>
 
           <div className="nav-links">
-            <a
-              href="/"
-              className={savedLang?.code === `ar` ? "link linkAr" : "link"}
-            >
-              {t("header.home")}
-            </a>
-            <a
-              href="AllProducts"
-              className={savedLang?.code === `ar` ? "link linkAr" : "link"}
-            >
-              {t("header.products")}
-            </a>
-            <a
-              href="about"
-              className={savedLang?.code === `ar` ? "link linkAr" : "link"}
-            >
-              {t("header.about")}
-            </a>
-            <a
-              href="./WhyUs"
-              className={savedLang?.code === `ar` ? "link linkAr" : "link"}
-            >
-              {t("header.why us")}
-            </a>
+            {navLinks.map((link, index) => (
+              <a
+                href={link.link}
+                key={link.name}
+                className={`${
+                  savedLang?.code === `ar` ? "link linkAr" : "link"
+                } ${index === activePage ? "active" : ""}`}
+              >
+                {link.name}
+              </a>
+            ))}
           </div>
 
           <div
             className={`${
-              menuActive ? "nav-links-menu" : "nav-links-menu disappear"
+              menuActive && window.innerWidth <= 768
+                ? "nav-links-menu"
+                : "nav-links-menu disappear"
             } ${
               savedLang?.code === `ar`
                 ? "nav-links-menu-ar"
@@ -106,18 +129,15 @@ const Navbar = () => {
           >
             <i className="fa-solid fa-xmark close" onClick={CloseMenu}></i>
             <div className="nav-links-menu-container">
-              <a href="/" className="link">
-                {t("header.home")}
-              </a>
-              <a href="AllProducts" className="link">
-                {t("header.products")}
-              </a>
-              <a href="about" className="link">
-                {t("header.about")}
-              </a>
-              <a href="./WhyUs" className="link">
-                {t("header.why us")}
-              </a>
+              {navLinks.map((link, index) => (
+                <a
+                  key={link.name}
+                  href={link.link}
+                  className={activePage === index ? "link active" : "link"}
+                >
+                  {link.name}
+                </a>
+              ))}
             </div>
           </div>
 
@@ -131,6 +151,7 @@ const Navbar = () => {
                       ? "language-dropdown"
                       : "language-dropdown disappear"
                   }
+                  style={savedLang?.code === "ar" ? { left: 0 } : { right: 0 }}
                 >
                   {languages.map((lang) => (
                     <button
@@ -158,11 +179,21 @@ const Navbar = () => {
             </div>
 
             {user ? (
-              <div className="user-info">
-                <a href="/UserProfile" className="user-name">{user.userName.slice(0, 2)}</a>
-                <button className="logout-btn" onClick={Logout}>
-                  {t("header.logout")}
-                </button>
+              <div className="user-info-container" onClick={CloseUserMenu}>
+                <div className="user-info">{user.userName.slice(0, 2)}</div>
+                <div
+                  className="user-info-drop-down"
+                  style={{
+                    display: userMenuActive ? "flex" : "none",
+                    ...(savedLang?.code === "ar" ? { left: 0 } : { right: 0 }),
+                  }}
+                >
+                  <a href="/UserProfile">User Profile</a>
+                  <a href="/OrderHistory">Order History</a>
+                  <button className="logout-btn" onClick={Logout}>
+                    {t("header.logout")}
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="registration">

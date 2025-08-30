@@ -6,6 +6,7 @@ import Footer from "../Footer/Footer";
 import { useTranslation } from "react-i18next";
 import AddToCart from "../AddToCart/AddToCart";
 import api from "../../Services/api.js";
+import { div } from "framer-motion/client";
 
 const pageSize = 12;
 
@@ -19,6 +20,7 @@ const ProductsPage = () => {
   const [categories, setCategories] = useState([]);
   const [pagesCount, setPagesCount] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [productLoading, setProductLoading] = useState(true);
 
   const pages = Array.from({ length: pagesCount }, (_, i) => i + 1);
 
@@ -32,6 +34,7 @@ const ProductsPage = () => {
   });
 
   const GetAllProducts = async () => {
+    setProductLoading(true);
     try {
       const response = await api.get("/Product/GetProducts", {
         params: filters,
@@ -40,6 +43,8 @@ const ProductsPage = () => {
       setPagesCount(Math.ceil(response.data.count / pageSize));
     } catch (error) {
       console.error("Error fetching products:", error);
+    } finally {
+      setProductLoading(false);
     }
   };
 
@@ -89,7 +94,7 @@ const ProductsPage = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar activePage={1} />
 
       <div className="allProducts-page">
         <div className="filter-section">
@@ -192,32 +197,41 @@ const ProductsPage = () => {
           </div>
 
           <main>
-            <div className="allproducts-grid">
-              {products.map((product) => (
-                <div key={product.productId} className="allProduct-card">
-                  <div className="allProduct-image">
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
+            {productLoading ? (
+              <div className="spinner-container">
+                <div className="spinner"></div>
+              </div>
+            ) : (
+              <div className="allproducts-grid">
+                {products.map((product) => (
+                  <div key={product.productId} className="allProduct-card">
+                    <div
+                      className="allProduct-container"
                       onClick={() => setSelectedProduct(product)}
-                    />
-                  </div>
-                  <div className="allProduct-info">
-                    <div className="allProduct-category">
-                      {product.cateName}
-                    </div>
-                    <h3 className="allProduct-name">{product.name}</h3>
-                    <p className="allProduct-description">
-                      {product.description.slice(0, 50)}...
-                    </p>
-                    <div className="allProduct-footer">
-                      <div className="allProduct-price">${product.price}</div>
+                    >
+                      <div className="allProduct-image">
+                        <img src={product.imageUrl} alt={product.name} />
+                      </div>
+                      <div className="allProduct-info">
+                        <h3 className="allProduct-name">{product.name}</h3>
+                        <div className="allProduct-category">
+                          {product.cateName}
+                        </div>
+                        <p className="allProduct-description">
+                          {product.description.slice(0, 50)}...
+                        </p>
+                        <div className="allProduct-footer">
+                          <div className="allProduct-price">
+                            ${product.price}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <AddToCart Product={product}></AddToCart>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </main>
         </div>
 

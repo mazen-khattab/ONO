@@ -10,7 +10,7 @@
   margin-bottom: 3rem;
 }
 
-.select-input {
+.products-section .select-input {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #d1d5db;
@@ -19,16 +19,16 @@
   color: #374151;
 }
 
-.select-input:focus {
+.products-section .select-input:focus {
   outline: none;
   border-color: #dc2626;
 }
 
-.swiper-wrapper {
+.products-section .swiper-wrapper {
   height: 32rem;
 }
 
-.swiper-slide {
+.products-section .swiper-slide {
   width: 20rem;
   height: 28rem;
   border-radius: 20px;
@@ -39,14 +39,14 @@
   overflow: hidden;
 }
 
-.product-image {
+.products-section .product-image {
   width: 100%;
   cursor: pointer;
   object-fit: cover;
   aspect-ratio: 3 / 2;
 }
 
-.product-info {
+.products-section .product-info {
   width: 100%;
   height: 100%;
   padding: 16px 10px;
@@ -57,134 +57,49 @@
   gap: 15px;
 }
 
-.product-info .product-header {
+.products-section .product-info .product-header {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  cursor: pointer;
 }
 
-.product-info .product-title {
+.products-section .product-info .product-title {
   font-size: 20px;
   text-align: center;
 }
 
-.product-info .product-description {
+.products-section .product-info .product-description {
   font-size: 15px;
   font-weight: 600;
   color: #656565;
 }
 
-.product-info .product-age {
+.products-section .product-info .product-age {
   font-size: 15px;
   font-weight: 600;
   color: #656565;
 }
 
-.product-footer {
+.products-section .product-footer {
   width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
-.product-info .product-price {
-  font-size: 15px;
-  font-weight: 600;
+.products-section .product-info .product-price {
+  font-size: 16px;
+  font-weight: 900;
   color: #656565;
 }
 
-.swiper-slide-shadow-left,
-.swiper-slide-shadow-right {
+.products-section .swiper-slide-shadow-left,
+.products-section .swiper-slide-shadow-right {
   display: none;
 }
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  padding: 1rem;
-  backdrop-filter: blur(4px);
-}
-
-.modal-content {
-  background: white;
-  border-radius: 0.5rem;
-  max-width: 30rem;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.close-button {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  padding: 0.25rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  border-radius: 9999px;
-  transition: 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.close-button:hover {
-  background-color: #f3f4f6;
-}
-
-.modal-grid {
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  aspect-ratio: 1 / 1;
-}
-
-.modal-details {
-  padding: 0 16px 10px;
-}
-
-.modal-title {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.modal-description {
-  color: #4b5563;
-  margin-bottom: 1rem;
-}
-
-.modal-age {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 1rem;
-}
-
-.price-cart {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-
-.modal-price {
-  font-size: 1.875rem;
-  font-weight: bold;
-  color: #dc2626;
-  margin-bottom: 1rem;
-}
-
-.showAll {
+.products-section .showAll {
   position: relative;
   top: 10px;
   left: 50%;
@@ -202,7 +117,7 @@
   color: black;
 }
 
-.showAll::before {
+.products-section .showAll::before {
   content: "";
   position: absolute;
   top: 0;
@@ -215,11 +130,11 @@
   border-radius: 7px;
 }
 
-.showAll:hover {
+.products-section .showAll:hover {
   color: white;
 }
 
-.showAll:hover::before {
+.products-section .showAll:hover::before {
   width: 100%;
 }
 
@@ -228,7 +143,7 @@
     padding: 48px 32px;
   }
 
-  .swiper-slide {
+  .products-section .swiper-slide {
     width: 19rem;
     height: 27rem;
   }
@@ -237,34 +152,34 @@
     font-size: 2.5rem;
   }
 
-  .product-info {
+  .products-section .product-info {
     padding: 10px;
     gap: 13px;
   }
 }
 
 @media (max-width: 900px) {
-  .swiper-wrapper {
+  .products-section .swiper-wrapper {
     height: 31rem;
   }
 
-  .product-info {
+  .products-section .product-info {
     gap: 13px;
   }
 
-  .product-info .product-title {
+  .products-section .product-info .product-title {
     font-size: 19px;
   }
 
-  .product-info .product-description {
+  .products-section .product-info .product-description {
     font-size: 14px;
   }
 
-  .product-info .product-age {
+  .products-section .product-info .product-age {
     font-size: 14px;
   }
 
-  .product-info .product-price {
+  .products-section .product-info .product-price {
     font-size: 14px;
   }
 }
@@ -278,151 +193,151 @@
     font-size: 2rem;
   }
 
-  .swiper-slide {
+  .products-section .swiper-slide {
     width: 17rem;
     height: 25rem;
   }
 
-  .product-info .product-title {
+  .products-section .product-info .product-title {
     font-size: 19px;
   }
 
-  .product-info .product-description {
+  .products-section .product-info .product-description {
     font-size: 14px;
   }
 
-  .product-info .product-age {
+  .products-section .product-info .product-age {
     font-size: 14px;
   }
 
-  .product-info .product-price {
+  .products-section .product-info .product-price {
     font-size: 14px;
   }
 
-  .cart-btn {
+  .products-section .cart-btn {
     padding: 6px 10px;
     font-size: 14px;
   }
 
-  .swiper-button-next {
+  .products-section .swiper-button-next {
     top: 40%;
   }
 
-  .swiper-button-prev {
+  .products-section .swiper-button-prev {
     top: 40%;
   }
 
-  .swiper-pagination-bullets.swiper-pagination-horizontal {
+  .products-section .swiper-pagination-bullets.swiper-pagination-horizontal {
     bottom: 50px;
   }
 
-  .showAll {
+  .products-section .showAll {
     top: -30px;
   }
 
-  .modal-title {
+  .products-section .modal-title {
     font-size: 22px;
   }
 
-  .modal-content {
+  .products-section .modal-content {
     max-width: 26rem;
   }
 
-  .modal-description {
+  .products-section .modal-description {
     font-size: 14px;
     margin-bottom: 10px;
   }
 
-  .modal-age {
+  .products-section .modal-age {
     margin-bottom: 7px;
   }
 
-  .modal-price {
+  .products-section .modal-price {
     margin-bottom: 10px;
   }
 }
 
 @media (max-width: 650px) {
-  .swiper-slide {
+  .products-section .swiper-slide {
     width: 15rem;
     height: 23rem;
   }
 
-  .product-info {
+  .products-section .product-info {
     gap: 11px;
   }
 
-  .product-info .product-title {
+  .products-section .product-info .product-title {
     font-size: 17px;
   }
 
-  .product-info .product-description {
+  .products-section .product-info .product-description {
     font-size: 13px;
   }
 
-  .product-info .product-age {
+  .products-section .product-info .product-age {
     font-size: 13px;
   }
 
-  .product-info .product-price {
+  .products-section .product-info .product-price {
     font-size: 13px;
   }
 
-  .cart-btn {
+  .products-section .cart-btn {
     padding: 5px 8px;
     font-size: 13px;
   }
 }
 
 @media (max-width: 450px) {
-  .swiper-slide {
-    width: 13rem;
+  .products-section .swiper-slide {
+    width: 14rem;
     height: 21rem;
   }
 
-  .product-info {
+  .products-section .product-info {
     gap: 11px;
   }
 
-  .product-info .product-title {
+  .products-section .product-info .product-title {
     font-size: 16px;
   }
 
-  .product-info .product-description {
+  .products-section .product-info .product-description {
     font-size: 12px;
   }
 
-  .product-info .product-age {
+  .products-section .product-info .product-age {
     font-size: 12px;
   }
 
-  .product-info .product-price {
+  .products-section .product-info .product-price {
     font-size: 12px;
   }
 
-  .cart-btn {
+  .products-section .cart-btn {
     padding: 5px 8px;
     font-size: 12px;
   }
 
-  .modal-title {
+  .products-section .modal-title {
     font-size: 21px;
   }
 
-  .modal-content {
+  .products-section .modal-content {
     max-width: 23rem;
   }
 
-  .modal-description {
+  .products-section .modal-description {
     font-size: 13px;
     margin-bottom: 8px;
   }
 
-  .modal-age {
+  .products-section .modal-age {
     margin-bottom: 7px;
   }
 
-  .modal-price {
+  .products-section .modal-price {
     margin-bottom: 8px;
   }
 }

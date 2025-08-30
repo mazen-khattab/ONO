@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero/Hero";
 import Products from "./components/Product/Products";
@@ -13,6 +18,7 @@ import AllProducts from "./components/AllProducts/ProductsPage";
 import WhyUs from "./components/WhyUs/WhyUs";
 import UserProfile from "./components/UserProfile/UserProfile";
 import CartPage from "./components/CartPage/CartPage";
+import OrderHistory from "./components/OrderHistory/OrderHistory.js";
 import { CartProvider } from "./Services/CartContext";
 import { AuthProvider } from "./Services/authContext";
 import { ProductProvider } from "./Services/ProductsContext";
@@ -39,7 +45,7 @@ function App() {
                 path="/"
                 element={
                   <div className="min-h-screen">
-                    <Navbar />
+                    <Navbar activePage={0} />
                     <Hero />
                     <Products />
                     <Contact />
@@ -69,6 +75,9 @@ function App() {
 
               {/* User Profile Route */}
               <Route path="/UserProfile" element={<UserProfile />} />
+
+              {/* Order History Route */}
+              <Route path="/OrderHistory" element={<OrderHistory />} />
             </Routes>
           </Router>
         </ProductProvider>

@@ -32,14 +32,14 @@ const UserProfile = () => {
       fullAddress: "",
     },
   });
-  const [errorMessage, setErrorMessage] = useState("");
+  const [infoErrorMessage, setInfoErrorMessage] = useState("")
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const response = await getUserProfile();
-        console.log(response)
         setFormData(response);
       } catch (error) {
         console.error(error);
@@ -93,12 +93,16 @@ const UserProfile = () => {
     try {
       const response = await api.post("/User/updateUserProfile", userInfo);
       console.log(response.data);
+      setIsEditing(false);
       window.location.reload();
     } catch (error) {
       console.error(error);
+      setInfoErrorMessage(error.response.data)
     }
 
-    setIsEditing(false);
+    setTimeout(() => {
+      setInfoErrorMessage("")
+    }, 4000);
   };
 
   const handleCancel = () => {
@@ -114,7 +118,7 @@ const UserProfile = () => {
     e.preventDefault();
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setErrorMessage("Passwords do not match");
+      setPasswordErrorMessage("Passwords do not match");
       return;
     }
 
@@ -134,9 +138,9 @@ const UserProfile = () => {
       });
 
       setSuccessMessage(response.data);
-      setErrorMessage("");
+      setPasswordErrorMessage("");
     } catch (error) {
-      setErrorMessage(error.response.data);
+      setPasswordErrorMessage(error.response.data);
       console.error(error);
     }
 
@@ -182,6 +186,7 @@ const UserProfile = () => {
           <div className="profile-content">
             <div className="profile-section">
               <h2 className="section-title">Personal Information</h2>
+              <p className="error-message" style={{marginBottom: "16px"}}>{infoErrorMessage}</p>
               <div className="form-grid">
                 <div className="form-group">
                   <label className="form-label">
@@ -337,7 +342,7 @@ const UserProfile = () => {
             <div className="profile-section">
               <h2 className="section-title">Change Password</h2>
               <form onSubmit={handlePasswordSubmit} className="password-form">
-                <p className="error-message">{errorMessage}</p>
+                <p className="error-message">{passwordErrorMessage}</p>
                 <p className="success-message">{successMessage}</p>
                 <div className="form-grid">
                   <div className="form-group full-width">

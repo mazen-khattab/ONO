@@ -231,12 +231,12 @@
   box-shadow: 0 4px 12px rgba(236, 28, 37, 0.3);
 }
 
-.profile-page .password-form .error-message {
+.profile-content .error-message {
   color: red;
   text-align: center;
 }
 
-.profile-page .password-form .success-message {
+.profile-content .success-message {
   color: #089f08;
   text-align: center;
 }

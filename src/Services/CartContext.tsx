@@ -39,7 +39,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [cartItems]);
 
   const getUserProducts = async () => {
-    const response = await api.get("/Cart/GetUserProducts");
+    const response = await api.get("/Cart/GetUsersCart");
     setCartItems(response.data);
 
     return response.data;
