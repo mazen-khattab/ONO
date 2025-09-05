@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import "./ProductsPage.css";
 import Navbar from "../Navbar";
@@ -6,7 +6,6 @@ import Footer from "../Footer/Footer";
 import { useTranslation } from "react-i18next";
 import AddToCart from "../AddToCart/AddToCart";
 import api from "../../Services/api.js";
-import { div } from "framer-motion/client";
 
 const pageSize = 12;
 
@@ -21,6 +20,9 @@ const ProductsPage = () => {
   const [pagesCount, setPagesCount] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [productLoading, setProductLoading] = useState(true);
+  const [currentDotIndex, setCurrentDotIndex] = useState(0);
+
+  let gallaryContainerRef = useRef<HTMLDivElement>(null);
 
   const pages = Array.from({ length: pagesCount }, (_, i) => i + 1);
 
@@ -91,6 +93,42 @@ const ProductsPage = () => {
       setFilters((prev) => ({ ...prev, pageNumber: page }));
     }
   };
+
+  const next = () => {
+    if (gallaryContainerRef.current) {
+      console.log(gallaryContainerRef.current.offsetWidth);
+      gallaryContainerRef.current.scrollBy({
+        left: gallaryContainerRef.current.offsetWidth,
+        behavior: "smooth",
+      });
+
+      setCurrentDotIndex((prevIndex) =>
+        prevIndex === selectedProduct.gallary.length - 1
+          ? prevIndex
+          : prevIndex + 1
+      );
+    }
+  };
+
+  const prev = () => {
+    if (gallaryContainerRef.current) {
+      gallaryContainerRef.current.scrollBy({
+        left: -gallaryContainerRef.current.offsetWidth,
+        behavior: "smooth",
+      });
+
+      setCurrentDotIndex((prevIndex) =>
+        prevIndex === 0
+          ? prevIndex
+          : prevIndex - 1
+      );
+    }
+  };
+
+  const closeTheSelectedProduct = () => {
+    setSelectedProduct(null);
+    setCurrentDotIndex(0);
+  }
 
   return (
     <div>
@@ -239,17 +277,50 @@ const ProductsPage = () => {
           <div className="modal-overlay">
             <div className="modal-content">
               <button
-                onClick={() => setSelectedProduct(null)}
+                onClick={closeTheSelectedProduct}
                 className="close-button"
               >
                 <X />
               </button>
               <div className="modal-grid">
                 <div className="modal-image">
-                  <img
-                    src={selectedProduct.imageUrl}
-                    alt={selectedProduct.name}
-                  />
+                  {selectedProduct.gallary?.length <= 0 ? (
+                    <div className="modal-image">
+                      <img
+                        src={selectedProduct.imageUrl}
+                        alt={selectedProduct.name}
+                      />
+                    </div>
+                  ) : (
+                    <div className="gallary-image" ref={gallaryContainerRef}>
+                      <div className="prev navigation-button" onClick={prev}>
+                        <i className="fa-solid fa-caret-left"></i>
+                      </div>
+                      {selectedProduct.gallary?.map((img) => (
+                        <img
+                          key={img.altText}
+                          src={img.imageUrl}
+                          alt={img.altText}
+                        />
+                      ))}
+                      <div className="next navigation-button" onClick={next}>
+                        <i className="fa-solid fa-caret-right"></i>
+                      </div>
+
+                      <div className="gallary-dot-container">
+                        {selectedProduct.gallary.map((_, index) => (
+                          <i
+                            key={index}
+                            className={
+                              index === currentDotIndex
+                                ? "gallary-dot active"
+                                : "gallary-dot"
+                            }
+                          ></i>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="modal-details">
                   <h3 className="modal-title">{selectedProduct.name}</h3>
