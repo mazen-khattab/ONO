@@ -1,5 +1,5 @@
 /* Reset and base styles */
-@import url('https://fonts.googleapis.com/css2?family=Liter&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Liter&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
   --main-color: #ec1c25;
@@ -9,13 +9,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'cairo', serif;
+  font-family: "cairo", serif;
 }
 
 a {
   text-decoration: none;
 }
-
 
 body {
   line-height: 1.6;
@@ -95,7 +94,6 @@ body {
   max-width: 30rem;
   width: 100%;
   position: relative;
-  overflow: hidden;
 }
 
 .close-button {
@@ -111,6 +109,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
 }
 
 .close-button:hover {
@@ -122,11 +121,79 @@ body {
   flex-direction: column;
 }
 
+.modal-grid .gallary-image {
+  display: flex;
+  align-items: center;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  border-radius: 8px 8px 0 0;
+  overscroll-behavior-x: contain;
+  touch-action: none;
+}
+
 .modal-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   aspect-ratio: 1 / 1;
+  scroll-snap-align: start;
+  border-radius: 8px 8px 0 0;
+}
+
+.modal-grid .navigation-button {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.modal-grid .prev {
+  left: 10px;
+}
+
+.modal-grid .next {
+  right: 10px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.modal-grid .gallary-dot-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: absolute;
+  bottom: 30%;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #00000014;
+  border-radius: 16px;
+  padding: 5px 8px;
+}
+
+.modal-grid .gallary-dot {
+  width: 12px;
+  height: 12px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  border: 1.5px solid rgb(216, 216, 216);
+}
+
+.modal-grid .gallary-dot.active {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-details {
@@ -172,6 +239,48 @@ body {
 @media (min-width: 1024px) {
   .grid-cols-4 {
     grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 490px) {
+  .modal-grid .gallary-dot-container {
+    bottom: 32%;
+  }
+}
+
+@media (max-width: 458px) {
+  .modal-grid .gallary-dot-container {
+    bottom: 35%;
+  }
+}
+
+@media (max-width: 448px) {
+  .modal-grid .gallary-dot-container {
+    bottom: 36%;
+  }
+}
+
+@media (max-width: 429px) {
+  .modal-grid .gallary-dot-container {
+    bottom: 37%;
+  }
+}
+
+@media (max-width: 412px) {
+  .modal-grid .gallary-dot-container {
+    bottom: 38%;
+  }
+}
+
+@media (max-width: 395px) {
+  .modal-grid .gallary-dot-container {
+    bottom: 39%;
+  }
+}
+
+@media (max-width: 383px) {
+  .modal-grid .gallary-dot-container {
+    bottom: 40%;
   }
 }
 
