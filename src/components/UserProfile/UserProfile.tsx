@@ -11,7 +11,7 @@ import {
   Save,
   Edit3,
 } from "lucide-react";
-import "./userProfile.css";
+import "UserProfile.css";
 import Navbar from "../Navbar";
 import Footer from "../Footer/Footer";
 import { useAuth } from "../../Services/authContext";
