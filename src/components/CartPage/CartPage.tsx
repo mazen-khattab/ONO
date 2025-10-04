@@ -469,7 +469,7 @@ const CartPage = () => {
               </div>
             </div>
 
-            <div className="order-contact-grid">
+            <div className="order-contact-grid ">
               <div>
                 <label htmlFor="email">
                   {t("email")} <span>*</span>
