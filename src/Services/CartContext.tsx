@@ -1,14 +1,13 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { useAuth } from "./authContext";
 import api from "./api.js";
-import { mirrorEasing } from "framer-motion";
 
 const CartContext = createContext({
   cartItems: [],
   cartCount: 0,
   loading: false,
   setCartItems: () => {},
-  addToCart: () => {},
+  addToCart: (Product: any, quantity: number) => {},
   increaseQuantity: () => {},
   decreaseQuantity: () => {},
   removeFromCart: () => {},
@@ -73,7 +72,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         }
 
         await getUserProducts();
-
       } catch (error) {
         console.error("Error migrating cart:", error);
       } finally {
