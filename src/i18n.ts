@@ -42,7 +42,7 @@ i18n
       order: ["localStorage"],
       caches: ["localStorage"], 
     },
-    fallbackLng: "ar",
+    fallbackLng: "en",
     ns: ["home", "about", "allProducts", "whyUs", "Login", "cart"],
     defaultNS: "home",
     interpolation: {
