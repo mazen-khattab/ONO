@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./AddToCart.css";
 import { useCart } from "../../Services/CartContext";
 import { useAuth } from "../../Services/authContext";
 import api from "../../Services/api";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const AddToCart = ({ Product, quant = 1 }) => {
   const { user, guestId } = useAuth();
@@ -11,8 +11,6 @@ const AddToCart = ({ Product, quant = 1 }) => {
   const [go, setGo] = useState(false);
   const [active, setActive] = useState(true);
   const [quantity, setQuantity] = useState(quant);
-  const [stockUnit, setStockUint] = useState(Product.stockUnit);
-  const [reserved, setReserved] = useState(Product.reserved);
   const [canAddToCart, setCanAddToCart] = useState(true);
   const { addToCart } = useCart();
 
@@ -39,7 +37,7 @@ const AddToCart = ({ Product, quant = 1 }) => {
 
       addToCart(response.data, quantity);
     } else {
-      const response = await api.post("/Cart/AddToGuestCart", null, {
+      await api.post("/Cart/AddToGuestCart", null, {
         params: {
           productID: Product.productId,
           amount: quantity,
@@ -50,15 +48,15 @@ const AddToCart = ({ Product, quant = 1 }) => {
       addToCart(Product, quantity);
     }
 
-    setReserved((prev) => prev + quantity);
+    Product.reserved += quantity;
     setGo(true);
     setTimeout(() => setGo(false), 2000);
     setQuantity(1);
   };
 
   useEffect(() => {
-    setCanAddToCart(reserved + quantity <= stockUnit);
-  }, [reserved]);
+    setCanAddToCart(Product.reserved + quantity <= Product.stockUnit);
+  }, [Product.reserved]);
 
   const increase = () => {
     setQuantity((prev) => prev + 1);
@@ -83,7 +81,7 @@ const AddToCart = ({ Product, quant = 1 }) => {
         <button
           className="increase"
           onClick={increase}
-          disabled={quantity + reserved >= stockUnit}
+          disabled={quantity + Product.reserved >= Product.stockUnit}
         >
           {" "}
           +{" "}

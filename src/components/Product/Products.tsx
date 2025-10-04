@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { X, Search, Heart } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
@@ -16,12 +16,24 @@ import { useTranslation } from "react-i18next";
 import AddToCart from "../AddToCart/AddToCart";
 import { useProducts } from "../../Services/ProductsContext";
 
-const Products = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const { i18n, t } = useTranslation("Home");
+type Product = {
+  productId: string;
+  name: string;
+  description: string;
+  ageRange: string;
+  price: number;
+  imageUrl: string;
+  gallary: { imageUrl: string; altText: string }[];
+};
 
+const Products = () => {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const { i18n, t } = useTranslation("Home");
   const { getProducts } = useProducts();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [currentDotIndex, setCurrentDotIndex] = useState(0);
+
+  let gallaryContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -35,6 +47,40 @@ const Products = () => {
 
     fetchProducts();
   }, []);
+
+  const next = () => {
+    if (gallaryContainerRef.current) {
+      console.log(gallaryContainerRef.current.offsetWidth);
+      gallaryContainerRef.current.scrollBy({
+        left: gallaryContainerRef.current.offsetWidth,
+        behavior: "smooth",
+      });
+
+      setCurrentDotIndex((prevIndex) =>
+        prevIndex === selectedProduct.gallary.length - 1
+          ? prevIndex
+          : prevIndex + 1
+      );
+    }
+  };
+
+  const prev = () => {
+    if (gallaryContainerRef.current) {
+      gallaryContainerRef.current.scrollBy({
+        left: -gallaryContainerRef.current.offsetWidth,
+        behavior: "smooth",
+      });
+
+      setCurrentDotIndex((prevIndex) =>
+        prevIndex === 0 ? prevIndex : prevIndex - 1
+      );
+    }
+  };
+
+  const closeTheSelectedProduct = () => {
+    setSelectedProduct(null);
+    setCurrentDotIndex(0);
+  };
 
   return (
     <section
@@ -88,7 +134,10 @@ const Products = () => {
                   </div>
 
                   <div className="product-info">
-                    <div className="product-header" onClick={() => setSelectedProduct(product)}>
+                    <div
+                      className="product-header"
+                      onClick={() => setSelectedProduct(product)}
+                    >
                       <h3 className="product-title">{product.name}</h3>
                       <p className="product-description">
                         {product.description}
@@ -123,14 +172,50 @@ const Products = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <button
-              onClick={() => setSelectedProduct(null)}
+              onClick={closeTheSelectedProduct}
               className="close-button"
             >
               <X />
             </button>
             <div className="modal-grid">
               <div className="modal-image">
-                <img src={selectedProduct.imageUrl} alt={selectedProduct.name} />
+                {selectedProduct.gallary?.length <= 0 ? (
+                  <div className="modal-image">
+                    <img
+                      src={selectedProduct.imageUrl}
+                      alt={selectedProduct.name}
+                    />
+                  </div>
+                ) : (
+                  <div className="gallary-image" ref={gallaryContainerRef}>
+                    <div className="prev navigation-button" onClick={prev}>
+                      <i className="fa-solid fa-caret-left"></i>
+                    </div>
+                    {selectedProduct.gallary?.map((img) => (
+                      <img
+                        key={img.altText}
+                        src={img.imageUrl}
+                        alt={img.altText}
+                      />
+                    ))}
+                    <div className="next navigation-button" onClick={next}>
+                      <i className="fa-solid fa-caret-right"></i>
+                    </div>
+
+                    <div className="gallary-dot-container">
+                      {selectedProduct.gallary.map((_, index) => (
+                        <i
+                          key={index}
+                          className={
+                            index === currentDotIndex
+                              ? "gallary-dot active"
+                              : "gallary-dot"
+                          }
+                        ></i>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="modal-details">
                 <h3 className="modal-title">{selectedProduct.name}</h3>

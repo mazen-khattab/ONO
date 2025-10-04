@@ -11,14 +11,35 @@ const pageSize = 12;
 
 const ageRanges = [3, 6, 9, 12];
 
+type GallaryImage = {
+  imageUrl: string;
+  altText: string;
+};
+
+type Product = {
+  productId: number;
+  name: string;
+  cateName: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  ageRange: number;
+  gallary: GallaryImage[];
+};
+
+type Category = {
+  id: number;
+  name: string;
+};
+
 const ProductsPage = () => {
   const langString = localStorage.getItem("lang");
   const savedLang = langString ? JSON.parse(langString) : null;
   const { t } = useTranslation("AllProducts");
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [pagesCount, setPagesCount] = useState(0);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [productLoading, setProductLoading] = useState(true);
   const [currentDotIndex, setCurrentDotIndex] = useState(0);
 
@@ -41,6 +62,7 @@ const ProductsPage = () => {
       const response = await api.get("/Product/GetProducts", {
         params: filters,
       });
+      console.log(response.data.data);
       setProducts(response.data.data);
       setPagesCount(Math.ceil(response.data.count / pageSize));
     } catch (error) {
@@ -88,7 +110,7 @@ const ProductsPage = () => {
     setFilterActive(!filterActive);
   };
 
-  const navigateToPage = (page) => {
+  const navigateToPage = (page: any) => {
     if (page !== filters.pageNumber) {
       setFilters((prev) => ({ ...prev, pageNumber: page }));
     }
@@ -96,7 +118,6 @@ const ProductsPage = () => {
 
   const next = () => {
     if (gallaryContainerRef.current) {
-      console.log(gallaryContainerRef.current.offsetWidth);
       gallaryContainerRef.current.scrollBy({
         left: gallaryContainerRef.current.offsetWidth,
         behavior: "smooth",
