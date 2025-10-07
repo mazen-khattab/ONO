@@ -86,6 +86,7 @@ body {
   z-index: 50;
   padding: 1rem;
   backdrop-filter: blur(4px);
+  overflow-y: scroll;
 }
 
 .modal-content {
@@ -176,7 +177,7 @@ body {
   justify-content: center;
   gap: 8px;
   position: absolute;
-  bottom: 30%;
+  bottom: 32%;
   right: 50%;
   transform: translateX(50%);
   background-color: #00000014;
@@ -234,6 +235,27 @@ body {
   .grid-cols-2 {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .modal-content {
+    max-width: 26rem;
+  }
+
+  .modal-title {
+    font-size: 22px;
+  }
+
+  .modal-description {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .modal-age {
+    margin-bottom: 7px;
+  }
+
+  .modal-price {
+    margin-bottom: 10px;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -251,6 +273,29 @@ body {
 @media (max-width: 458px) {
   .modal-grid .gallary-dot-container {
     bottom: 35%;
+  }
+}
+
+@media (max-width: 450px) {
+  .modal-grid .gallary-dot-container {
+    bottom: 35%;
+  }
+
+  .modal-title {
+    font-size: 21px;
+  }
+
+  .modal-description {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .modal-age {
+    margin-bottom: 7px;
+  }
+
+  .modal-price {
+    margin-bottom: 8px;
   }
 }
 
