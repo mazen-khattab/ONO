@@ -5,12 +5,19 @@ export const setNavigate = (fn) => {
   navigateTo = fn;
 };
 
-const API_URL = "https://ono.runasp.net/api";
-// const API_URL = "https://localhost:7146/api";
+// const API_URL = "https://ono.runasp.net/api";
+// const api = axios.create({
+//   baseURL: "/api/",
+//   credentials: "include",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   withCredentials: true,
+// });
 
+const API_URL = "https://localhost:7146/api";
 const api = axios.create({
-  // baseURL: API_URL,
-  baseURL: "/api/",
+  baseURL: API_URL,
   credentials: "include",
   headers: {
     "Content-Type": "application/json",
