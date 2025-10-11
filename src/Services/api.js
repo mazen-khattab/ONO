@@ -10,7 +10,7 @@ const API_URL = "https://ono.runasp.net/api";
 
 const api = axios.create({
   // baseURL: API_URL,
-  baseURL: "",
+  baseURL: "/api/",
   credentials: "include",
   headers: {
     "Content-Type": "application/json",
