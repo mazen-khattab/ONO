@@ -19,6 +19,8 @@ let API_URL = "";
 
 if (import.meta.env.MODE === "development") {
   API_URL = "https://localhost:7146/api";
+} else {
+  API_URL = "/api/";
 }
 
 const api = axios.create({
