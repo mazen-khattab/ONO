@@ -15,7 +15,12 @@ export const setNavigate = (fn) => {
 //   withCredentials: true,
 // });
 
-const API_URL = "https://localhost:7146/api";
+let API_URL = "";
+
+if (import.meta.env.MODE === "development") {
+  API_URL = "https://localhost:7146/api";
+}
+
 const api = axios.create({
   baseURL: API_URL,
   credentials: "include",
@@ -45,7 +50,7 @@ api.interceptors.response.use(
       error.response.status === 401 &&
       !originalRequest._retry &&
       !originalRequest.url.includes("/Auth/Refresh") &&
-      !originalRequest.url.includes("/Auth/Login") && 
+      !originalRequest.url.includes("/Auth/Login") &&
       !originalRequest.url.includes("/Get-userRoles")
     ) {
       originalRequest._retry = true;
@@ -55,7 +60,6 @@ api.interceptors.response.use(
         // console.log(response);
         return api(originalRequest);
       } catch {
-        
         if (navigateTo) {
           navigateTo("/login");
         }
