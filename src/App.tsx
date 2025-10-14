@@ -19,9 +19,11 @@ import WhyUs from "./components/WhyUs/WhyUs";
 import UserProfile from "./components/UserProfile/UserProfile";
 import CartPage from "./components/CartPage/CartPage";
 import OrderHistory from "./components/OrderHistory/OrderHistory.js";
+import GlobalMessage from "./components/Message/GlobalMessage.js";
 import { CartProvider } from "./Services/CartContext";
 import { AuthProvider } from "./Services/authContext";
 import { ProductProvider } from "./Services/ProductsContext";
+import { MessageProvider } from "./Services/MessageContext.js";
 import { setNavigate } from "./Services/api.js";
 
 function NavigationSetter() {
@@ -36,51 +38,54 @@ function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <ProductProvider>
-          <Router>
-            <NavigationSetter />
-            <Routes>
-              {/* Home Page Route */}
-              <Route
-                path="/"
-                element={
-                  <div className="min-h-screen">
-                    <Navbar activePage={0} />
-                    <Hero />
-                    <Products />
-                    <Contact />
-                    <Discounts />
-                    <Footer />
-                  </div>
-                }
-              />
+        <MessageProvider>
+          <ProductProvider>
+            <Router>
+              <NavigationSetter />
+              <GlobalMessage />
+              <Routes>
+                {/* Home Page Route */}
+                <Route
+                  path="/"
+                  element={
+                    <div className="min-h-screen">
+                      <Navbar activePage={0} />
+                      <Hero />
+                      <Products />
+                      <Contact />
+                      <Discounts />
+                      <Footer />
+                    </div>
+                  }
+                />
 
-              {/* Login Page Route */}
-              <Route path="/login" element={<LoginPage />} />
+                {/* Login Page Route */}
+                <Route path="/login" element={<LoginPage />} />
 
-              {/* Register Page Route */}
-              <Route path="/register" element={<Register />} />
+                {/* Register Page Route */}
+                <Route path="/register" element={<Register />} />
 
-              {/* All Products Page Route */}
-              <Route path="/AllProducts" element={<AllProducts />} />
+                {/* All Products Page Route */}
+                <Route path="/AllProducts" element={<AllProducts />} />
 
-              {/* Why us page Route */}
-              <Route path="/WhyUs" element={<WhyUs />} />
+                {/* Why us page Route */}
+                <Route path="/WhyUs" element={<WhyUs />} />
 
-              {/* About Page Route */}
-              <Route path="/About" element={<About />} />
+                {/* About Page Route */}
+                <Route path="/About" element={<About />} />
 
-              {/* Cart Page Route */}
-              <Route path="/Cart" element={<CartPage />} />
+                {/* Cart Page Route */}
+                <Route path="/Cart" element={<CartPage />} />
 
-              {/* User Profile Route */}
-              <Route path="/UserProfile" element={<UserProfile />} />
+                {/* User Profile Route */}
+                <Route path="/UserProfile" element={<UserProfile />} />
 
-              {/* Order History Route */}
-              <Route path="/OrderHistory" element={<OrderHistory />} />
-            </Routes>
-          </Router>
-        </ProductProvider>
+                {/* Order History Route */}
+                <Route path="/OrderHistory" element={<OrderHistory />} />
+              </Routes>
+            </Router>
+          </ProductProvider>
+        </MessageProvider>
       </CartProvider>
     </AuthProvider>
   );
