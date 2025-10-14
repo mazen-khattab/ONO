@@ -46,7 +46,7 @@
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #dc2626;
+  background-color: var(--main-color);
   text-align: center;
   color: white;
   border-radius: 10px;
@@ -149,7 +149,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: 0.3s;
-  background-color: #dc2626;
+  background-color: var(--main-color);
 }
 
 .submit-btn:hover {

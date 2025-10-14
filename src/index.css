@@ -231,6 +231,39 @@ body {
   margin-bottom: 1rem;
 }
 
+.section {
+  padding: 5rem 0;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #fff;
+  border-top: 5px solid var(--main-color);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin: 0 auto;
+}
+
+.message-container {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (min-width: 768px) {
   .grid-cols-2 {
     grid-template-columns: repeat(2, 1fr);
@@ -326,25 +359,5 @@ body {
 @media (max-width: 383px) {
   .modal-grid .gallary-dot-container {
     bottom: 40%;
-  }
-}
-
-.section {
-  padding: 5rem 0;
-}
-
-.spinner {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #fff;
-  border-top: 5px solid var(--main-color);
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-  margin: 0 auto;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
   }
 }

@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import "./AddToCart.css";
 import { useCart } from "../../Services/CartContext";
 import { useAuth } from "../../Services/authContext";
-import api from "../../Services/api";
 import { motion } from "framer-motion";
+import { useMessage } from "../../Services/MessageContext";
+import api from "../../Services/api";
 
 const AddToCart = ({ Product, quant = 1 }) => {
   const { user, guestId } = useAuth();
+  const { showMessage } = useMessage();
 
   const [go, setGo] = useState(false);
   const [active, setActive] = useState(true);
@@ -28,27 +30,40 @@ const AddToCart = ({ Product, quant = 1 }) => {
 
   const AddedToCart = async () => {
     if (user) {
-      const response = await api.post("/Cart/AddToCart", null, {
-        params: {
-          productId: Product.productId,
-          amount: quantity,
-        },
-      });
+      try {
+        const response = await api.post("/Cart/AddToCart", null, {
+          params: {
+            productId: Product.productId,
+            amount: quantity,
+          },
+        });
 
-      addToCart(response.data, quantity);
+        addToCart(response.data, quantity);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        showMessage("The product has been added to cart", true);
+      }
     } else {
-      await api.post("/Cart/AddToGuestCart", null, {
-        params: {
-          productID: Product.productId,
-          amount: quantity,
-        },
-        headers: { GuestId: guestId },
-      });
+      try {
+        await api.post("/Cart/AddToGuestCart", null, {
+          params: {
+            productID: Product.productId,
+            amount: quantity,
+          },
+          headers: { GuestId: guestId },
+        });
 
-      addToCart(Product, quantity);
+        addToCart(Product, quantity);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        showMessage("The product has been added to cart", true);
+      }
     }
 
     Product.reserved += quantity;
+
     setGo(true);
     setTimeout(() => setGo(false), 2000);
     setQuantity(1);

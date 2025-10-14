@@ -6,6 +6,7 @@ import "./CartPage.css";
 import { useCart } from "../../Services/CartContext.js";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../Services/authContext.js";
+import { useMessage } from "../../Services/MessageContext";
 import api from "../../Services/api.js";
 
 const CartPage = () => {
@@ -13,7 +14,10 @@ const CartPage = () => {
   const [completeLoading, setCompleteLoading] = useState(false);
   const [registerError, setRegisterError] = useState("");
   const [orderCompletedActive, setOrderCompletedActive] = useState(false);
+  const [orderNumber, setOrderNumber] = useState(0);
   const { t } = useTranslation("Cart");
+  const { showMessage } = useMessage();
+  
   type CartItem = {
     productId: number;
     imageUrl: string;
@@ -118,8 +122,6 @@ const CartPage = () => {
     } catch (error) {
       console.error(error);
       return false;
-    } finally {
-      setCompleteLoading(false);
     }
 
     return true;
@@ -134,6 +136,7 @@ const CartPage = () => {
     );
 
     let productItems = cartItems;
+    let profile;
 
     if (!user) {
       const response = await handleUserRegistration();
@@ -143,16 +146,14 @@ const CartPage = () => {
         return;
       }
 
-      const profile = await getUserProfile();
+      profile = await getUserProfile();
       setUserProfile(profile);
 
       const userProducts = await getUserProducts();
       productItems = userProducts;
     }
-
-    console.log(userProfile);
-    if (userProfile?.address === null) {
-      console.log(`add user address`);
+    
+    if (profile?.address === null) {
       const addressInfo = {
         governorate: formData.address.governorate,
         city: formData.address.city,
@@ -161,7 +162,6 @@ const CartPage = () => {
 
       try {
         const response = await api.post("/User/AddUserAddress", addressInfo);
-        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -180,17 +180,20 @@ const CartPage = () => {
 
     try {
       const response = await api.post("/Order/CompleteOrder", orderInfo);
-      console.log(response.data);
+      setOrderNumber(response.data);
     } catch (error) {
       console.error(error);
+    } finally {
+      showMessage("The order has been completed", true);
+      setCompleteLoading(false);
     }
 
     setOrderCompletedActive(true);
     setCartItems([]);
 
     setTimeout(() => {
-      setOrderCompletedActive(false);
-      setFromActive(false);
+      // setOrderCompletedActive(false);
+      // setFromActive(false);
     }, 5000);
   };
 
@@ -269,8 +272,6 @@ const CartPage = () => {
           },
           headers: { GuestId: guestId },
         });
-
-        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -613,7 +614,7 @@ const CartPage = () => {
             <i className="fa-solid fa-check"></i>
           </div>
           <div className="info-container">
-            <p>The order completed successfull, we will contact you in 24H</p>
+            <p>The order completed successfull, we will contact you in 24H, the order number is #{orderNumber}</p>
           </div>
           <div className="cart-shop-now-container">
             <a href="./AllProducts" className="cart-shop-now">

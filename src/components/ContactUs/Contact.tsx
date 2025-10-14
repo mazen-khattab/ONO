@@ -1,42 +1,62 @@
 import React, { useState } from "react";
 import "./Contact.css";
 import { useTranslation } from "react-i18next";
-import api from "../../Services/api.js"
-import { Phone } from "lucide-react";
+import { useMessage } from "../../Services/MessageContext";
+import api from "../../Services/api.js";
 
 const Contact = () => {
+  const { showMessage } = useMessage();
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const { i18n, t } = useTranslation("Home");
-  const savedLang = JSON.parse(localStorage.getItem("lang"));
+
+  const langString = localStorage.getItem("lang");
+  const savedLang = langString ? JSON.parse(langString) : null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
 
+    setLoading(true);
+    
     const contactUsInfo = {
       name: formData.name,
-      phoneNumber: formData.phone
-    }
-
+      phoneNumber: formData.phone,
+    };
+    
     try {
       const response = await api.post("/User/ContactUs", contactUsInfo);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
+      showMessage("Your message has been sent successfully", true);
     }
 
     setFormData({ name: "", phone: "", message: "" });
   };
 
   return (
-    <section id="contact" className={savedLang?.code === `ar` ? "contact contact-ar" : "contact contact-en"}>
+    <section
+      id="contact"
+      className={
+        savedLang?.code === `ar` ? "contact contact-ar" : "contact contact-en"
+      }
+    >
       <div className="contact-content">
-        <div className={savedLang?.code === `ar` ? "contact-info contact-info-ar" : "contact-info contact-info-en"}>
+        <div
+          className={
+            savedLang?.code === `ar`
+              ? "contact-info contact-info-ar"
+              : "contact-info contact-info-en"
+          }
+        >
           <h3>{t("contact.getInTouch")}</h3>
           <div className="info-item">
             <i className="fa-solid fa-envelope info-icon"></i>
@@ -97,8 +117,16 @@ const Contact = () => {
             />
           </div>
           <button type="submit" className="submit-btn">
-            <span>{t("contact.sendMessage")}</span>
-            <i className="fa-solid fa-paper-plane"></i>
+            {loading === true ? (
+              <div className="spinner" />
+            ) : (
+              <div>
+                <span style={{ paddingRight: "8px" }}>
+                  {t("contact.sendMessage")}
+                </span>
+                <i className="fa-solid fa-paper-plane"></i>
+              </div>
+            )}
           </button>
         </form>
       </div>
