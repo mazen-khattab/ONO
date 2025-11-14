@@ -41,25 +41,16 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    // console.log(error);
 
-    // console.log(error.response.status === 401);
-    // console.log(!originalRequest._retry);
-    // console.log(!originalRequest.url.includes("/Auth/Refresh"));
-    // console.log(!originalRequest.url.includes("/Auth/Login"));
+    if (error.response.status === 401 && !originalRequest._retry) {
 
-    if (
-      error.response.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.url.includes("/Auth/Refresh") &&
-      !originalRequest.url.includes("/Auth/Login") &&
-      !originalRequest.url.includes("/Get-userRoles")
-    ) {
       originalRequest._retry = true;
+      console.log(originalRequest);
       try {
-        // console.log("inside refresh")
-        const response = await api.post("/Auth/Refresh");
-        // console.log(response);
+        await api.post("/Auth/Refresh");
+
+        console.log("called refresh token endpoint")
+
         return api(originalRequest);
       } catch {
         if (navigateTo) {
@@ -70,7 +61,6 @@ api.interceptors.response.use(
       }
     }
 
-    // console.log(error);
     return Promise.reject(error);
   }
 );

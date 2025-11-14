@@ -4,6 +4,7 @@ import { useCart } from "../../Services/CartContext";
 import { useAuth } from "../../Services/authContext";
 import { motion } from "framer-motion";
 import { useMessage } from "../../Services/MessageContext";
+import { useTranslation } from "react-i18next";
 import api from "../../Services/api";
 
 const AddToCart = ({ Product, quant = 1 }) => {
@@ -15,6 +16,8 @@ const AddToCart = ({ Product, quant = 1 }) => {
   const [quantity, setQuantity] = useState(quant);
   const [canAddToCart, setCanAddToCart] = useState(true);
   const { addToCart } = useCart();
+
+  const { i18n, t } = useTranslation("Global");
 
   const handleAddToCart = () => {
     if (active) {
@@ -42,7 +45,7 @@ const AddToCart = ({ Product, quant = 1 }) => {
       } catch (error) {
         console.error(error);
       } finally {
-        showMessage("The product has been added to cart", true);
+        showMessage(t("add_to_cart_message"), true);
       }
     } else {
       try {
@@ -58,7 +61,7 @@ const AddToCart = ({ Product, quant = 1 }) => {
       } catch (error) {
         console.error(error);
       } finally {
-        showMessage("The product has been added to cart", true);
+        showMessage(t("add_to_cart_message"), true);
       }
     }
 

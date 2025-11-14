@@ -15,6 +15,7 @@ import "./UserProfile.css";
 import Navbar from "../Navbar";
 import Footer from "../Footer/Footer";
 import { useAuth } from "../../Services/authContext";
+import { useTranslation } from "react-i18next";
 import api from "../../Services/api.js";
 
 const UserProfile = () => {
@@ -35,6 +36,11 @@ const UserProfile = () => {
   const [infoErrorMessage, setInfoErrorMessage] = useState("")
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const { i18n, t } = useTranslation("User_profile");
+
+  const langString = localStorage.getItem("lang");
+  const savedLang = langString ? JSON.parse(langString) : null;
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -80,8 +86,6 @@ const UserProfile = () => {
   };
 
   const handleSave = async () => {
-    console.log("Saving profile:", formData);
-
     const userInfo = {
       fname: formData.firstName,
       lname: formData.lastName,
@@ -92,7 +96,6 @@ const UserProfile = () => {
 
     try {
       const response = await api.post("/User/updateUserProfile", userInfo);
-      console.log(response.data);
       setIsEditing(false);
       window.location.reload();
     } catch (error) {
@@ -160,23 +163,23 @@ const UserProfile = () => {
               <User size={48} />
             </div>
             <div className="profile-title">
-              <h1>User Profile</h1>
-              <p>Manage your personal information</p>
+              <h1>{t("user_profile")}</h1>
+              <p>{t("manage_personal_info")}</p>
             </div>
-            <div className="profile-actions">
+            <div style={savedLang.code === 'ar' ? {marginRight: 'auto'} : {marginLeft: 'auto'}}>
               {!isEditing ? (
                 <button onClick={() => setIsEditing(true)} className="edit-btn">
                   <Edit3 size={18} />
-                  Edit Profile
+                  {t("edit_profile")}
                 </button>
               ) : (
                 <div className="edit-actions">
                   <button onClick={handleCancel} className="cancel-btn">
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button onClick={handleSave} className="save-btn">
                     <Save size={18} />
-                    Save Changes
+                    {t("save_changes")}
                   </button>
                 </div>
               )}
@@ -185,23 +188,23 @@ const UserProfile = () => {
 
           <div className="profile-content">
             <div className="profile-section">
-              <h2 className="section-title">Personal Information</h2>
-              <p className="error-message" style={{marginBottom: "16px"}}>{infoErrorMessage}</p>
+              <h2 className="section-title">{t("personal_information")}</h2>
+              <p className="error-message" style={{ marginBottom: "16px" }}>
+                {infoErrorMessage}
+              </p>
               <div className="form-grid">
                 <div className="form-group">
                   <label className="form-label">
                     <User size={18} />
-                    First Name
+                    {t("first_name")}
                   </label>
                   {isEditing ? (
                     <input
                       type="text"
                       value={formData.firstName}
-                      onChange={(e) =>
-                        handleInputChange("firstName", e.target.value)
-                      }
+                      onChange={(e) => handleInputChange("firstName", e.target.value)}
                       className="form-input"
-                      placeholder="Enter your first name"
+                      placeholder={t("enter_first_name")}
                     />
                   ) : (
                     <div className="form-display">{formData.firstName}</div>
@@ -211,17 +214,15 @@ const UserProfile = () => {
                 <div className="form-group">
                   <label className="form-label">
                     <User size={18} />
-                    Last Name
+                    {t("last_name")}
                   </label>
                   {isEditing ? (
                     <input
                       type="text"
                       value={formData.lastName}
-                      onChange={(e) =>
-                        handleInputChange("lastName", e.target.value)
-                      }
+                      onChange={(e) => handleInputChange("lastName", e.target.value)}
                       className="form-input"
-                      placeholder="Enter your first name"
+                      placeholder={t("enter_last_name")}
                     />
                   ) : (
                     <div className="form-display">{formData.lastName}</div>
@@ -231,17 +232,15 @@ const UserProfile = () => {
                 <div className="form-group">
                   <label className="form-label">
                     <Mail size={18} />
-                    Email Address
+                    {t("email_address")}
                   </label>
                   {isEditing ? (
                     <input
                       type="email"
                       value={formData.email}
-                      onChange={(e) =>
-                        handleInputChange("email", e.target.value)
-                      }
+                      onChange={(e) => handleInputChange("email", e.target.value)}
                       className="form-input"
-                      placeholder="Enter your email"
+                      placeholder={t("enter_email")}
                     />
                   ) : (
                     <div className="form-display">{formData.email}</div>
@@ -251,17 +250,15 @@ const UserProfile = () => {
                 <div className="form-group">
                   <label className="form-label">
                     <Phone size={18} />
-                    Phone Number
+                    {t("phone_number")}
                   </label>
                   {isEditing ? (
                     <input
                       type="tel"
                       value={formData.phone}
-                      onChange={(e) =>
-                        handleInputChange("phone", e.target.value)
-                      }
+                      onChange={(e) => handleInputChange("phone", e.target.value)}
                       className="form-input"
-                      placeholder="Enter your phone number"
+                      placeholder={t("enter_phone")}
                     />
                   ) : (
                     <div className="form-display">{formData.phone}</div>
@@ -271,12 +268,12 @@ const UserProfile = () => {
             </div>
 
             <div className="profile-section">
-              <h2 className="section-title">Address Information</h2>
+              <h2 className="section-title">{t("address_information")}</h2>
               <div className="form-grid">
                 <div className="form-group">
                   <label className="form-label">
                     <Globe size={18} />
-                    Governorate
+                    {t("governorate")}
                   </label>
                   {isEditing ? (
                     <input
@@ -286,7 +283,7 @@ const UserProfile = () => {
                         handleAddressChange("governorate", e.target.value)
                       }
                       className="form-input"
-                      placeholder="Enter your governorate"
+                      placeholder={t("enter_governorate")}
                     />
                   ) : (
                     <div className="form-display">
@@ -298,17 +295,15 @@ const UserProfile = () => {
                 <div className="form-group">
                   <label className="form-label">
                     <Building size={18} />
-                    City
+                    {t("city")}
                   </label>
                   {isEditing ? (
                     <input
                       type="text"
                       value={formData.address?.city || ""}
-                      onChange={(e) =>
-                        handleAddressChange("city", e.target.value)
-                      }
+                      onChange={(e) => handleAddressChange("city", e.target.value)}
                       className="form-input"
-                      placeholder="Enter your city"
+                      placeholder={t("enter_city")}
                     />
                   ) : (
                     <div className="form-display">{formData.address?.city || ""}</div>
@@ -318,7 +313,7 @@ const UserProfile = () => {
                 <div className="form-group full-width">
                   <label className="form-label">
                     <Road size={18} />
-                    Full Address
+                    {t("full_address")}
                   </label>
                   {isEditing ? (
                     <input
@@ -328,7 +323,7 @@ const UserProfile = () => {
                         handleAddressChange("fullAddress", e.target.value)
                       }
                       className="form-input"
-                      placeholder="Enter Your full address (area, street, building number)"
+                      placeholder={t("enter_full_address")}
                     />
                   ) : (
                     <div className="form-display">
@@ -340,7 +335,7 @@ const UserProfile = () => {
             </div>
 
             <div className="profile-section">
-              <h2 className="section-title">Change Password</h2>
+              <h2 className="section-title">{t("change_password")}</h2>
               <form onSubmit={handlePasswordSubmit} className="password-form">
                 <p className="error-message">{passwordErrorMessage}</p>
                 <p className="success-message">{successMessage}</p>
@@ -348,7 +343,7 @@ const UserProfile = () => {
                   <div className="form-group full-width">
                     <label className="form-label">
                       <Lock size={18} />
-                      Current Password
+                      {t("current_password")}
                     </label>
                     <input
                       type="password"
@@ -357,7 +352,7 @@ const UserProfile = () => {
                         handlePasswordChange("oldPassword", e.target.value)
                       }
                       className="form-input"
-                      placeholder="Enter your current password"
+                      placeholder={t("enter_current_password")}
                       required
                     />
                   </div>
@@ -365,7 +360,7 @@ const UserProfile = () => {
                   <div className="form-group">
                     <label className="form-label">
                       <Lock size={18} />
-                      New Password
+                      {t("new_password")}
                     </label>
                     <input
                       type="password"
@@ -374,7 +369,7 @@ const UserProfile = () => {
                         handlePasswordChange("newPassword", e.target.value)
                       }
                       className="form-input"
-                      placeholder="Enter new password"
+                      placeholder={t("enter_new_password")}
                       required
                     />
                   </div>
@@ -382,7 +377,7 @@ const UserProfile = () => {
                   <div className="form-group">
                     <label className="form-label">
                       <Lock size={18} />
-                      Confirm New Password
+                      {t("confirm_new_password")}
                     </label>
                     <input
                       type="password"
@@ -391,7 +386,7 @@ const UserProfile = () => {
                         handlePasswordChange("confirmPassword", e.target.value)
                       }
                       className="form-input"
-                      placeholder="Confirm new password"
+                      placeholder={t("confirm_password_placeholder")}
                       required
                     />
                   </div>
@@ -400,7 +395,7 @@ const UserProfile = () => {
                 <div className="password-actions">
                   <button type="submit" className="change-password-btn">
                     <Lock size={18} />
-                    Change Password
+                    {t("change_password_button")}
                   </button>
                 </div>
               </form>
@@ -408,6 +403,7 @@ const UserProfile = () => {
           </div>
         </div>
       </div>
+
 
       <Footer></Footer>
     </div>

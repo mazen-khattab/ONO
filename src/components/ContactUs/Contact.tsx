@@ -121,7 +121,7 @@ const Contact = () => {
               <div className="spinner" />
             ) : (
               <div>
-                <span style={{ paddingRight: "8px" }}>
+                <span style={{ padding: "8px" }}>
                   {t("contact.sendMessage")}
                 </span>
                 <i className="fa-solid fa-paper-plane"></i>
