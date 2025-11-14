@@ -62,7 +62,6 @@ const ProductsPage = () => {
       const response = await api.get("/Product/GetProducts", {
         params: filters,
       });
-      console.log(response.data.data);
       setProducts(response.data.data);
       setPagesCount(Math.ceil(response.data.count / pageSize));
     } catch (error) {

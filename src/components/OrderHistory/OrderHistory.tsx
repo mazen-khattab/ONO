@@ -7,6 +7,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import "./OrderHistory.css";
 import Navbar from "../Navbar";
 import Footer from "../Footer/Footer";
@@ -33,6 +34,8 @@ interface Order {
 const OrderHistory = () => {
   const [expandedOrders, setExpandedOrders] = useState<string[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+
+  const { i18n, t } = useTranslation("Order_history");
 
   useEffect(() => {
     const getOrders = async () => {
@@ -89,8 +92,8 @@ const OrderHistory = () => {
             <div className="header-content">
               <Package className="header-icon" size={100} />
               <div>
-                <h1 className="page-title">Order History</h1>
-                <p className="page-subtitle">View and track your past orders</p>
+                <h1 className="page-title">{t("order_history")}</h1>
+                <p className="page-subtitle">{t("view_and_track_orders")}</p>
               </div>
             </div>
           </div>
@@ -105,18 +108,16 @@ const OrderHistory = () => {
                   <div className="order-info">
                     <div className="order-id">
                       <Package size={20} />
-                      <span>Order #{order.orderId}</span>
+                      <span>
+                        {t("order")} #{order.orderId}
+                      </span>
                     </div>
                     <div className="order-meta">
                       <div className="order-date">
                         <Calendar size={16} />
                         <span>{formatDate(order.orderDate)}</span>
                       </div>
-                      <div
-                        className={`order-status ${getStatusColor(
-                          order.status
-                        )}`}
-                      >
+                      <div className={`order-status ${getStatusColor(order.status)}`}>
                         {order.status}
                       </div>
                     </div>
@@ -125,7 +126,7 @@ const OrderHistory = () => {
                     <div className="order-total">
                       <span>
                         {order.totalPrice.toFixed(2)}{" "}
-                        <span className="currency">EGP</span>{" "}
+                        <span className="currency">{t("currency")}</span>{" "}
                       </span>
                     </div>
                     <button className="expand-btn">
@@ -153,14 +154,14 @@ const OrderHistory = () => {
                             </p>
                             <div className="product-meta">
                               <span className="product-age">
-                                Age: {product.ageRange}
+                                {t("age")}: {product.ageRange}
                               </span>
                               <span className="product-price">
-                                Price: {product.price * product.productAmount}{" "}
-                                <span className="currency">EGP</span>
+                                {t("price")}: {product.price * product.productAmount}{" "}
+                                <span className="currency">{t("currency")}</span>
                               </span>
                               <span className="product-quantity">
-                                Qty: {product.productAmount}
+                                {t("quantity")}: {product.productAmount}
                               </span>
                             </div>
                           </div>
@@ -176,13 +177,10 @@ const OrderHistory = () => {
           {orders.length === 0 && (
             <div className="empty-orders">
               <Package className="empty-icon" size={64} />
-              <h2>No Orders Yet</h2>
-              <p>
-                You haven't placed any orders yet. Start shopping to see your
-                order history here.
-              </p>
+              <h2>{t("no_orders_yet")}</h2>
+              <p>{t("no_orders_message")}</p>
               <a href="/AllProducts" className="shop-now-btn">
-                Start Shopping
+                {t("start_shopping")}
               </a>
             </div>
           )}

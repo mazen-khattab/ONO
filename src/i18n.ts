@@ -8,6 +8,9 @@ import enProduct from "./Local/EN/AllProducts.json";
 import enWhyUs from "./Local/EN/WhyUs.json";
 import enLogin from "./Local/EN/Login.json";
 import enCart from "./Local/EN/Cart.json"
+import enGlobal from './Local/EN/Global.json'
+import enOrderHistory from "./Local/EN/OrderHistory.json"
+import enUserProfile from './Local/EN/UserProfile.json'
 
 import arHome from "./Local/AR/Home.json";
 import arAbout from "./Local/AR/About.json";
@@ -15,6 +18,9 @@ import arProduct from "./Local/AR/AllProducts.json";
 import arWhyUs from "./Local/AR/WhyUs.json";
 import arLogin from "./Local/AR/Login.json";
 import arCart from "./Local/AR/Cart.json"
+import arGlobal from './Local/AR/Global.json'
+import arOrderHistory from "./Local/AR/OrderHistory.json"
+import arUserProfile from './Local/AR/UserProfile.json'
 
 i18n
   .use(LanguageDetector)
@@ -27,7 +33,10 @@ i18n
         AllProducts: arProduct,
         WhyUs: arWhyUs,
         Login: arLogin,
-        Cart: arCart
+        Cart: arCart,
+        Global: arGlobal,
+        Order_history: arOrderHistory,
+        User_profile: arUserProfile,
       },
       en: {
         Home: enHome,
@@ -35,15 +44,18 @@ i18n
         AllProducts: enProduct,
         WhyUs: enWhyUs,
         Login: enLogin,
-        Cart: enCart
+        Cart: enCart,
+        Global: enGlobal,
+        Order_history: enOrderHistory,
+        User_profile: enUserProfile,
       },
     },
     detection: {
       order: ["localStorage"],
-      caches: ["localStorage"], 
+      caches: ["localStorage"],
     },
     fallbackLng: "en",
-    ns: ["home", "about", "allProducts", "whyUs", "Login", "cart"],
+    ns: ["home", "about", "allProducts", "whyUs", "Login", "cart", "global", "user_profile", "order_history"],
     defaultNS: "home",
     interpolation: {
       escapeValue: false,

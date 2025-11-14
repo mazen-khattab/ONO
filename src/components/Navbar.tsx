@@ -188,8 +188,8 @@ const Navbar = ({ activePage }: NavbarProps) => {
                     ...(savedLang?.code === "ar" ? { left: 0 } : { right: 0 }),
                   }}
                 >
-                  <a href="/UserProfile">User Profile</a>
-                  <a href="/OrderHistory">Order History</a>
+                  <a href="/UserProfile">{t("header.user_profile")}</a>
+                  <a href="/OrderHistory">{t("header.order_history")}</a>
                   <button className="logout-btn" onClick={Logout}>
                     {t("header.logout")}
                   </button>

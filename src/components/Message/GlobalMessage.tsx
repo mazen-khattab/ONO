@@ -9,7 +9,7 @@ const GlobalMessage: React.FC = () => {
 
   return (
     <div className="global-message">
-      {message}
+      <p>{message}</p>
       {isSuccess ? (
         <i
           className="fa-solid fa-circle-check fa-lg"
