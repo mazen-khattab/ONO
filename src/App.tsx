@@ -5,6 +5,7 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero/Hero";
 import Products from "./components/Product/Products";
@@ -42,6 +43,7 @@ function App() {
           <ProductProvider>
             <Router>
               <NavigationSetter />
+              <SpeedInsights />
               <GlobalMessage />
               <Routes>
                 {/* Home Page Route */}
